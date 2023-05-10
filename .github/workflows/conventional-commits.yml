@@ -9,13 +9,9 @@ on:
         required: false
         type: string
 
-permissions:
-  pull-requests: write
-  contents: read
-
 jobs:
   conventional-commits:
-    if: !contains(split('${{ github.event.inputs.ignore-actors }}', ','), github.actor)
+    if: (!contains(split('${{ github.event.inputs.ignore-actors }}', ','), github.actor))
     name: Report Conventional Commits
     runs-on: ubuntu-latest
     steps:
