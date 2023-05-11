@@ -1,9 +1,44 @@
 ![Greenbone Logo](https://www.greenbone.net/wp-content/uploads/gb_new-logo_horizontal_rgb_small.png)
 
-# Greenbone GitHub Actions Workflows
+# Greenbone GitHub Actions Workflows <!-- omit in toc -->
 
 Repository that contains a collection of reusable GitHub Actions workflows for
 Greenbone projects
+
+- [Workflows](#workflows)
+  - [Convention Commits](#convention-commits)
+- [Support](#support)
+- [Maintainer](#maintainer)
+- [License](#license)
+
+## Workflows
+
+### Convention Commits
+
+A workflow for reporting the usage of conventional commits in a GitHub Pull
+Request.
+
+```yaml
+name: Conventional Commits
+
+on:
+  pull_request:
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  conventional-commits:
+    name: Conventional Commits
+    uses: greenbone/workflows/.github/workflows/conventional-commits.yml@main
+```
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| ignore-actors | A comma separated list of users to ignore PRs from | Optional |
 
 ## Support
 
