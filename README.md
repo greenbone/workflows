@@ -7,7 +7,7 @@ Greenbone projects
 
 ## Support
 
-For any question on the usage of python-gvm please use the
+For any question on the usage of the workflows please use the
 [Greenbone Community Forum](https://forum.greenbone.net/). If you
 found a problem with the software, please
 [create an issue](https://github.com/greenbone/workflows/issues)
