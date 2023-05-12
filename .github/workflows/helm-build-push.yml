@@ -2,6 +2,9 @@ name: Helm chart release on tag
 
 on:
   workflow_call:
+    charts:
+      type: str
+      description: "What Charts should be updated? Can be comma separated list."
 
 jobs:
   release-helm-chart:
@@ -11,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         chart:
-          - opensight-asset-management-backend
+          [ split(${{ github.event.inputs.charts }}, ',') ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
