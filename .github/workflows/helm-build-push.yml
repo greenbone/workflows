@@ -5,6 +5,7 @@ on:
     charts:
       type: str
       description: "What Charts should be updated? Can be comma separated list."
+    secrets: inherit
 
 jobs:
   release-helm-chart:
@@ -20,16 +21,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Get version from tag
-        shell: bash
         run: |
           vtag='${{github.ref_name}}'
-          echo "TAG=${vtag:1}" >> $GITHUB_ENV
+          echo "tag=${vtag:1}" >> $GITHUB_OUTPUT
 
       - name: Run helm version upgrade
         uses: greenbone/actions/helm-version-upgrade@v2
         with:
           chart-path: ${{ github.workspace }}/charts/${{ matrix.chart }}
-          chart-version: ${{ env.TAG }}
+          chart-version: ${{ steps.version.outputs.tag }}
 
       - name: Print Chart.yaml
         run: |
