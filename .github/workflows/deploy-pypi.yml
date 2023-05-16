@@ -1,0 +1,16 @@
+name: Deploy on PyPI
+
+on:
+  workflow_call:
+    secrets:
+      PYPI_TOKEN:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and publish to PyPI
+        uses: greenbone/actions/pypi-upload@v2
+        with:
+          pypi-token: ${{ secrets.PYPI_TOKEN }}
