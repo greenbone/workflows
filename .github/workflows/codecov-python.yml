@@ -1,0 +1,25 @@
+name: Calculate code coverage
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: "Python version to use"
+        default: "3.10"
+        type: string
+    secrets:
+      CODECOV_TOKEN:
+
+jobs:
+  codecov:
+    name: Upload coverage to codecov.io
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install and calculate and upload coverage to codecov.io
+        uses: greenbone/actions/coverage-python@v2
+        with:
+          python-version: "3.10"
+          cache: "true"
+          token: ${{ secrets.CODECOV_TOKEN }}
+

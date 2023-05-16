@@ -6,65 +6,45 @@ on:
       lint-packages:
         description: "Names of the Python packages to be linted"
         type: string
-      codecov:
+      mypy:
+        description: "Check types with mypy"
         default: true
-        description: "Generate coverage and upload to codecov.io"
         type: boolean
-    secrets:
-      CODECOV_TOKEN:
+      python-version:
+        description: "Python version to use"
+        default: "3.10"
+        type: string
+      test-command:
+        description: "Command to run the unit tests"
+        default: python -m unittest -v
+        type: string
 
 jobs:
   linting:
     name: Linting
     runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        python-version:
-          - "3.9"
-          - "3.10"
-          - "3.11"
     steps:
       - uses: actions/checkout@v3
       - name: Install and check with black, pylint and pontos.version
         uses: greenbone/actions/lint-python@v2
         with:
           packages: ${{ inputs.lint-packages }}
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ inputs.python-version }}
           cache: "true"
 
   test:
     name: Run all tests
     runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        python-version:
-          - "3.9"
-          - "3.10"
-          - "3.11"
     steps:
       - uses: actions/checkout@v3
       - name: Install python, poetry and dependencies
         uses: greenbone/actions/poetry@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ inputs.python-version }}
           cache: "true"
           cache-poetry-installation: "true"
       - name: Run unit tests
-        run: poetry run python -m unittest -v
-
-  codecov:
-    name: Upload coverage to codecov.io
-    if: inputs.codecov
-    needs: test
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install and calculate and upload coverage to codecov.io
-        uses: greenbone/actions/coverage-python@v2
-        with:
-          python-version: "3.10"
-          cache: "true"
-          token: ${{ secrets.CODECOV_TOKEN }}
+        run: poetry run ${{ inputs.test-command }}
 
   check-version:
     name: Check versioning for consistency
@@ -79,3 +59,15 @@ jobs:
       - name: Check version
         run: |
           poetry run pontos-version verify current
+
+  mypy:
+    name: Check type information
+    if: inputs.mypy
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run mypy
+        uses: greenbone/actions/mypy-python@v2
+        with:
+          packages: ${{ inputs.lint-packages }}
+          python-version: ${{ inputs.python-version }}
