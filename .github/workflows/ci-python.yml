@@ -20,7 +20,7 @@ on:
         type: string
       test-command:
         description: "Command to run the unit tests"
-        default: python -m unittest -v
+        default: "python -m unittest -v"
         type: string
 
 jobs:
