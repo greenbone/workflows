@@ -19,7 +19,7 @@ jobs:
       - name: Install and calculate and upload coverage to codecov.io
         uses: greenbone/actions/coverage-python@v2
         with:
-          python-version: "3.10"
+          python-version: ${{ inputs.python-version }}
           cache: "true"
           token: ${{ secrets.CODECOV_TOKEN }}
 
