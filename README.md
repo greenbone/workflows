@@ -11,6 +11,9 @@ Greenbone projects
   - [Deploy on PyPI](#deploy-on-pypi)
   - [Codecov Python](#codecov-python)
   - [Release Python](#release-python)
+  - [Release 3rd Gen](#release-3rd-gen)
+  - [Release Cloud](#release-cloud)
+  - [Helm Build/Push](#helm-buildpush)
 - [Support](#support)
 - [Maintainer](#maintainer)
 - [License](#license)
@@ -173,6 +176,147 @@ Inputs:
 | Name | Description | |
 |------|-------------|-|
 | release-type | Type of the release | Optional (default: `"calendar"`) |
+
+### Release 3rd Gen
+
+```yml
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      release-type:
+        type: choice
+        description: What kind of release do you want to do (pontos --release-type argument)?
+        options:
+          - alpha
+          - patch
+          - minor
+          - major
+          - release-candidate
+      release-version:
+        type: string
+        description: Set an explicit version, that will overwrite release-type. Fails if version is not compliant.
+
+jobs:
+  build-and-release:
+    name: Create a new release
+    uses: greenbone/workflows/.github/workflows/release-3rd-gen.yml@main
+    with:
+      release-type: ${{ inputs.release-type }}
+      release-version: ${{ inputs.release-version }}
+    secrets: inherit
+```
+
+Secrets:
+
+| Name | Description | |
+|------|-------------|-|
+| GREENBONE_BOT | Username of the Greenbone Bot Account | Required |
+| GREENBONE_BOT_TOKEN | Token for creating a GitHub release | Required |
+| GREENBONE_BOT_MAIL | Email Address of the Greenbone Bot Account for git commits | Required |
+| GPG_KEY | GPG key to sign the release files | Optional |
+| GPG_FINGERPRINT | Fingerprint of the GPG key | Required if `GPG_KEY` is set |
+| GPG_PASSPHRASE | Passphrase for the GPG key | Required if `GPG_KEY` is set |
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| release-type | Type of the release | Required if called manually (as `workflow_dispatch`) |
+| release-version | An explicit release version. If not set the release version will be determined from the current tag and the release type | Optional |
+
+### Release Cloud
+
+```yml
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      release-type:
+        type: choice
+        description: What kind of release do you want to do (pontos --release-type argument)?
+        options:
+          - alpha
+          - patch
+          - minor
+          - major
+          - release-candidate
+      release-version:
+        type: string
+        description: Set an explicit version, that will overwrite release-type. Fails if version is not compliant.
+
+jobs:
+  build-and-release:
+    name: Create a new release
+    uses: greenbone/workflows/.github/workflows/release-3rd-gen.yml@main
+    with:
+      release-type: ${{ inputs.release-type }}
+      release-version: ${{ inputs.release-version }}
+    secrets: inherit
+```
+
+Secrets:
+
+| Name | Description | |
+|------|-------------|-|
+| GREENBONE_BOT | Username of the Greenbone Bot Account | Required |
+| GREENBONE_BOT_TOKEN | Token for creating a GitHub release | Required |
+| GREENBONE_BOT_MAIL | Email Address of the Greenbone Bot Account for git commits | Required |
+| GPG_KEY | GPG key to sign the release files | Optional |
+| GPG_FINGERPRINT | Fingerprint of the GPG key | Required if `GPG_KEY` is set |
+| GPG_PASSPHRASE | Passphrase for the GPG key | Required if `GPG_KEY` is set |
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| release-type | Type of the release | Required if called manually (as `workflow_dispatch`) |
+| release-version | An explicit release version. If not set the release version will be determined from the current tag and the release type | Optional |
+| versioning-scheme | Versioning scheme to use. | Optional (default: `"semver"`) |
+
+### Helm Build/Push
+
+```yaml
+name: Helm chart release on tag
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  release-helm-chart:
+    name: Release helm chart
+    strategy:
+      fail-fast: false
+      matrix:
+        chart:
+          - foo
+          - bar
+    uses: greenbone/workflows/.github/workflows/helm-build-push.yml@main
+    with:
+      chart: ${{ matrix.chart }}
+    secrets: inherit
+```
+
+Secrets:
+
+| Name | Description | |
+|------|-------------|-|
+| GREENBONE_BOT | Username of the Greenbone Bot Account | Required |
+| GREENBONE_BOT_PACKAGES_WRITE_TOKEN | Token to upload packages to ghcr.io | Required |
+| GREENBONE_BOT_TOKEN | Token to trigger product helm chart updates | Required |
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| chart | Helm Chart to update | Required |
 
 ## Support
 
