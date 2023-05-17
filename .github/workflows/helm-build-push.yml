@@ -2,52 +2,51 @@ name: Helm chart release on tag
 
 on:
   workflow_call:
-    charts:
-      type: str
-      description: "What Charts should be updated? Can be comma separated list."
-    secrets: inherit
+    inputs:
+      chart:
+        description: "Chart to update. If several charts should be updated this workflow must be run in a matrix."
+        type: string
+        required: true
+    secrets:
+      GREENBONE_BOT:
+        required: true
+      GREENBONE_BOT_PACKAGES_WRITE_TOKEN:
+        required: true
+      GREENBONE_BOT_TOKEN:
+        required: true
 
 jobs:
   release-helm-chart:
     name: Release helm chart
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        chart:
-          [ split(${{ github.event.inputs.charts }}, ',') ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Get version from tag
+        id: version
         run: |
-          vtag='${{github.ref_name}}'
+          vtag='${{ github.ref_name }}'
           echo "tag=${vtag:1}" >> $GITHUB_OUTPUT
-
       - name: Run helm version upgrade
         uses: greenbone/actions/helm-version-upgrade@v2
         with:
-          chart-path: ${{ github.workspace }}/charts/${{ matrix.chart }}
+          chart-path: ${{ github.workspace }}/charts/${{ inputs.chart }}
           chart-version: ${{ steps.version.outputs.tag }}
-
       - name: Print Chart.yaml
         run: |
-          cat '${{ github.workspace }}/charts/${{ matrix.chart }}/Chart.yaml'
-
+          cat '${{ github.workspace }}/charts/${{ inputs.chart }}/Chart.yaml'
       - name: Upload to github registry
         uses: greenbone/actions/helm-build-push@v2
         with:
-          chart-name: ${{ matrix.chart }}
+          chart-name: ${{ inputs.chart }}
           registry: ${{ vars.IMAGE_REGISTRY }}
           registry-subpath: helm-charts/
           registry-user: ${{ secrets.GREENBONE_BOT }}
           registry-token: ${{ secrets.GREENBONE_BOT_PACKAGES_WRITE_TOKEN }}
-
       - name: Trigger product helm chart upgrade
         uses: greenbone/actions/trigger-workflow@v2
         with:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/product-helm-chart"
           workflow: product-chart-upgrade.yml
-          inputs: '{"chart": "${{ matrix.chart }}", "tag": "${{ github.ref_name }}"}'
+          inputs: '{"chart": "${{ inputs.chart }}", "tag": "${{ github.ref_name }}"}'
