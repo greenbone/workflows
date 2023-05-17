@@ -1,0 +1,28 @@
+name: Test Python package
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: "Python version to use"
+        default: "3.10"
+        type: string
+      test-command:
+        description: "Command to run the unit tests"
+        default: "python -m unittest -v"
+        type: string
+
+jobs:
+  test:
+    name: Run all tests
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install python, poetry and dependencies
+        uses: greenbone/actions/poetry@v2
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: "true"
+          cache-poetry-installation: "true"
+      - name: Run unit tests
+        run: poetry run ${{ inputs.test-command }}

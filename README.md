@@ -7,6 +7,10 @@ Greenbone projects
 
 - [Workflows](#workflows)
   - [Convention Commits](#convention-commits)
+  - [Check Versioning](#check-versioning)
+  - [Lint Python](#lint-python)
+  - [Test Python](#test-python)
+  - [Typing Python](#typing-python)
   - [CI Python](#ci-python)
   - [Deploy on PyPI](#deploy-on-pypi)
   - [Codecov Python](#codecov-python)
@@ -47,9 +51,100 @@ Inputs:
 |------|-------------|-|
 | ignore-actors | A comma separated list of users to ignore PRs from | Optional |
 
+### Check Versioning
+
+A workflow to check for consistent versioning in a project.
+
+```yml
+name: Check versioning
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  versioning:
+    uses: greenbone/workflows/.github/workflows/check-version.yml@main
+```
+
+| Name | Description | |
+|------|-------------|-|
+| python-version | Python version to use | Optional (default: `"3.10"`) |
+
+### Lint Python
+
+A workflow to lint Python project via pylint.
+
+```yml
+name: Lint Python project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  linting:
+    uses: greenbone/workflows/.github/workflows/lint-python.yml@main
+```
+
+| Name | Description | |
+|------|-------------|-|
+| python-version | Python version to use | Optional (default: `"3.10"`) |
+| lint-packages | Names of the Python packages to be linted | |
+
+### Test Python
+
+A workflow to run tests of a Python project.
+
+```yml
+name: Test Python project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  linting:
+    uses: greenbone/workflows/.github/workflows/test-python.yml@main
+```
+
+| Name | Description | |
+|------|-------------|-|
+| python-version | Python version to use | Optional (default: `"3.10"`) |
+| test-command | Command to run the unit tests | Optional (default: `"python -m unittest -v"`) |
+
+### Typing Python
+
+A workflow to check the type hints of a Python project via mypy.
+
+```yml
+name: Check type hints
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  linting:
+    uses: greenbone/workflows/.github/workflows/typing-python.yml@main
+```
+
+| Name | Description | |
+|------|-------------|-|
+| python-version | Python version to use | Optional (default: `"3.10"`) |
+| mypy-arguments | Additional arguments for mypy | Optional |
+
 ### CI Python
 
-A workflow to lint, test and check Python projects.
+A workflow to lint, test and type check Python projects.
 
 ```yaml
 name: Check Python project
@@ -80,10 +175,9 @@ Inputs:
 
 | Name | Description | |
 |------|-------------|-|
-| lint-packages | Names of the Python packages to be linted | |
-| mypy | Check types with mypy | Optional (default: true) |
-| mypy-arguments | Additional arguments for mypy | Optional |
 | python-version | Python version to use | Optional (default: `"3.10"`) |
+| lint-packages | Names of the Python packages to be linted | |
+| mypy-arguments | Additional arguments for mypy | Optional |
 | test-command | Command to run the unit tests | Optional (default: `"python -m unittest -v"`) |
 
 ### Deploy on PyPI
