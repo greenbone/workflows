@@ -1,0 +1,47 @@
+name: Deploy docs to GitHub Pages
+
+on:
+  workflow_call:
+    inputs:
+      source:
+        description: "Directory containing the sources for the documentation"
+        default: "docs"
+        type: string
+      build:
+        description: "Directory containing the build of the documentation"
+        default: "docs/build/html"
+        type: string
+      python-version:
+        description: "Python version to use"
+        default: "3.10"
+        type: string
+      environment-name:
+        description: "Name of the deployment environment"
+        default: "github-pages"
+        type: string
+
+
+jobs:
+  deploy:
+    environment:
+      name: ${{ inputs.environment-name }}
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install poetry and dependencies
+        uses: greenbone/actions/poetry@v2
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: "true"
+      - name: Build Documentation
+        run: |
+          cd ${{ inputs.source }} && poetry run make html
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ${{ inputs.build }}
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
