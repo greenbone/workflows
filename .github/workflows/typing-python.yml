@@ -1,0 +1,27 @@
+name: Check Python package type hints
+
+
+on:
+  workflow_call:
+    inputs:
+      mypy-arguments:
+        description: "Additional arguments to mypy"
+        default: ""
+        type: string
+      python-version:
+        description: "Python version to use"
+        default: "3.10"
+        type: string
+
+jobs:
+  mypy:
+    name: Check type information
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run mypy
+        uses: greenbone/actions/mypy-python@v2
+        with:
+          mypy-arguments: ${{ inputs.mypy-arguments }}
+          python-version: ${{ inputs.python-version }}
+          cache: "true"

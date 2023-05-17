@@ -1,4 +1,4 @@
-name: Build and test
+name: Check and test
 
 on:
   workflow_call:
@@ -6,10 +6,6 @@ on:
       lint-packages:
         description: "Names of the Python packages to be linted"
         type: string
-      mypy:
-        description: "Check types with mypy"
-        default: true
-        type: boolean
       mypy-arguments:
         description: "Additional arguments to mypy"
         default: ""
@@ -26,52 +22,21 @@ on:
 jobs:
   linting:
     name: Linting
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install and check with black, pylint and pontos.version
-        uses: greenbone/actions/lint-python@v2
-        with:
-          packages: ${{ inputs.lint-packages }}
-          python-version: ${{ inputs.python-version }}
-          cache: "true"
+    uses: ./.github/workflows/lint-python.yml
+    with:
+      lint-packages: ${{ inputs.lint-packages }}
+      python-version: ${{ inputs.python-version }}
 
   test:
-    name: Run all tests
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install python, poetry and dependencies
-        uses: greenbone/actions/poetry@v2
-        with:
-          python-version: ${{ inputs.python-version }}
-          cache: "true"
-          cache-poetry-installation: "true"
-      - name: Run unit tests
-        run: poetry run ${{ inputs.test-command }}
-
-  check-version:
-    name: Check versioning for consistency
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install python, poetry and dependencies
-        uses: greenbone/actions/poetry@v2
-        with:
-          cache: "true"
-          cache-poetry-installation: "true"
-      - name: Check version
-        run: |
-          poetry run pontos-version verify current
+    name: Run tests
+    uses: ./.github/workflows/test-python.yml
+    with:
+      python-version: ${{ inputs.python-version }}
+      test-command: ${{ inputs.test-command }}
 
   mypy:
     name: Check type information
-    if: inputs.mypy
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Run mypy
-        uses: greenbone/actions/mypy-python@v2
-        with:
-          mypy-arguments: ${{ inputs.mypy-arguments }}
-          python-version: ${{ inputs.python-version }}
+    uses: ./.github/workflows/typing-python.yml
+    with:
+      mypy-arguments: ${{ inputs.mypy-arguments }}
+      python-version: ${{ inputs.python-version }}

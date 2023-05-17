@@ -1,0 +1,25 @@
+name: Check project versioning
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: "Python version to use"
+        default: "3.10"
+        type: string
+
+jobs:
+  check-version:
+    name: Check versioning for consistency
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install python, poetry and dependencies
+        uses: greenbone/actions/poetry@v2
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: "true"
+          cache-poetry-installation: "true"
+      - name: Check version
+        run: |
+          poetry run pontos-version verify current

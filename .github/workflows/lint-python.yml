@@ -1,0 +1,25 @@
+name: Lint Python package
+
+on:
+  workflow_call:
+    inputs:
+      lint-packages:
+        description: "Names of the Python packages to be linted"
+        type: string
+      python-version:
+        description: "Python version to use"
+        default: "3.10"
+        type: string
+
+jobs:
+  linting:
+    name: Linting
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install and check with black, pylint and pontos.version
+        uses: greenbone/actions/lint-python@v2
+        with:
+          packages: ${{ inputs.lint-packages }}
+          python-version: ${{ inputs.python-version }}
+          cache: "true"
