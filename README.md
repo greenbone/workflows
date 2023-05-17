@@ -6,7 +6,7 @@ Repository that contains a collection of reusable GitHub Actions workflows for
 Greenbone projects
 
 - [Workflows](#workflows)
-  - [Convention Commits](#convention-commits)
+  - [Conventional Commits](#conventional-commits)
   - [Check Versioning](#check-versioning)
   - [Lint Python](#lint-python)
   - [Test Python](#test-python)
@@ -18,13 +18,14 @@ Greenbone projects
   - [Release 3rd Gen](#release-3rd-gen)
   - [Release Cloud](#release-cloud)
   - [Helm Build/Push](#helm-buildpush)
+  - [Deploy docs on GitHub Pages](#deploy-docs-on-github-pages)
 - [Support](#support)
 - [Maintainer](#maintainer)
 - [License](#license)
 
 ## Workflows
 
-### Convention Commits
+### Conventional Commits
 
 A workflow for reporting the usage of conventional commits in a GitHub Pull
 Request.
@@ -411,6 +412,47 @@ Inputs:
 | Name | Description | |
 |------|-------------|-|
 | chart | Helm Chart to update | Required |
+
+### Deploy docs on GitHub Pages
+
+A workflow to generate a Python documentation and deploy it on GitHub Pages.
+
+```yml
+name: Deploy docs to GitHub Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches:
+      - main
+
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "docs"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    uses: greenbone/workflows/.github/workflows/docs-python.yml@main
+```
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| python-version | Python version to use | Optional (default: `"3.10"`) |
+| source | Directory containing the sources for the documentation | Optional (default: `"docs"`) |
+| build | Directory containing the build of the documentation | Optional (default: `"docs/build/html"`) |
+| environment-name | Name of the deployment environment | Optional (default: `"github-pages"`) |
 
 ## Support
 
