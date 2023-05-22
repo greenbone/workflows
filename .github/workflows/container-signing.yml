@@ -1,0 +1,38 @@
+name: Container signing
+
+on:
+  workflow_call:
+    inputs:
+      digest:
+        description: "Add the digest from the docker build and push action e.g steps.build-and-push.outputs.digest"
+        type: string
+        required: true
+      tags:
+        description: "Add the tags from the Docker meta action e.g steps.meta.outputs.tags"
+        type: string
+        required: true
+    secrets:
+      COSIGN_KEY_PASSWORD:
+        required: false
+      COSIGN_KEY:
+        required: false
+
+jobs:
+  container-signing:
+    name: Container signing 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sigstore/cosign-installer@main
+      - name: Sign container image (public/private keypair)
+        if: ${{ secrets.COSIGN_KEY_PASSWORD }} && ${{ secrets.COSIGN_KEY }}
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_KEY_PASSWORD }}
+          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
+        run: |
+          echo "${{ inputs.tags }}" | xargs -I {} cosign sign --recursive --key env://COSIGN_KEY {}@${{ inputs.digest }}
+      - name: Sign the published Container Image (Keyless)
+        if: !${{ secrets.COSIGN_KEY_PASSWORD }} || !${{ secrets.COSIGN_KEY }}
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        run: |
+          echo "${{ inputs.tags }}" | xargs -I {} cosign sign --recursive --force {}@${{ inputs.digest }}
