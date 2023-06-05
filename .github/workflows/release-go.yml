@@ -1,0 +1,40 @@
+name: Release Go
+
+on:
+  workflow_call:
+    inputs:
+      release-type:
+        description: "Release type. One of alpha, patch, minor, major, release-candidate"
+        type: string
+      release-version:
+        description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
+        type: string
+    secrets:
+      GREENBONE_BOT:
+        required: true
+      GREENBONE_BOT_MAIL:
+        required: true
+      GREENBONE_BOT_TOKEN:
+        required: true
+      GPG_KEY:
+        required: false
+      GPG_FINGERPRINT:
+        required: false
+      GPG_PASSPHRASE:
+        required: false
+
+jobs:
+  build-and-release:
+    name: Create a new release
+    uses: ./.github/workflows/release-generic.yml
+    with:
+      release-type: ${{ inputs.release-type }}
+      release-version: ${{ inputs.release-version }}
+      versioning-scheme: "semver"
+    secrets:
+      GREENBONE_BOT: ${{ secrets.GREENBONE_BOT }}
+      GREENBONE_BOT_MAIL: ${{ secrets.GREENBONE_BOT_MAIL }}
+      GREENBONE_BOT_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
+      GPG_KEY: ${{ secrets.GPG_KEY }}
+      GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
+      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
