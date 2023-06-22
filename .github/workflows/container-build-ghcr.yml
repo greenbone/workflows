@@ -20,7 +20,7 @@ on:
         type: string
         default: linux/amd64
       build-context: 
-        description: "path to image build context."
+        description: "Path to image build context."
         type: string
         default: .
       build-docker-file:

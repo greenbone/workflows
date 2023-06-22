@@ -8,7 +8,7 @@ on:
         type: string
         required: true
       image-url:
-        description: "Image registry url to push to."
+        description: "Image url without registry."
         type: string
         required: true
       image-tags:
@@ -28,7 +28,7 @@ on:
         type: string
         required: true
       build-context: 
-        description: "path to image build context."
+        description: "Path to image build context."
         type: string
         default: .
       build-docker-file:
