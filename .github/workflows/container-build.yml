@@ -1,4 +1,4 @@
-name: Container build
+name: Container build and push
 
 on:
   workflow_call:
@@ -15,10 +15,6 @@ on:
         description: "Image tags."
         type: string
         required: true
-      image-registry:
-        description: "Image registry name."
-        type: string
-        default: ""
       image-platforms: 
         description: "Image platforms to build for."
         type: string
@@ -34,7 +30,7 @@ on:
 
 jobs:
   building:
-    name: Docker build
+    name: Docker build and push
     runs-on: 'ubuntu-latest'
 
     steps:
