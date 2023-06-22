@@ -19,9 +19,7 @@ on:
         description: "Set the image registry."
         type: string
         required: true
-    secrets:
-      GITHUB_TOKEN:
-        required: true
+
 jobs:
   building:
     name: Docker build
