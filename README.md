@@ -497,7 +497,7 @@ Inputs:
 | image-tags | Image tags. | Required |
 | image-platforms | Image platforms to build for. | Optional |
 | build-context | Path to image build context. | Optional |
-| build-docker-file | lth to the docker file. | Optional |
+| build-docker-file | Path to the docker file. | Optional |
 
 ## Support
 
