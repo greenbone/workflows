@@ -42,5 +42,5 @@ jobs:
       build-context: ${{ inputs.build-context }}
       build-docker-file: ${{ inputs.build-docker-file }}
     secrets: 
-     REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }} 
+      REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }} 
 
