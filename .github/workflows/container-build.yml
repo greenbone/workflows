@@ -4,21 +4,33 @@ on:
   workflow_call:
     inputs:
       image-labels:
-        description: "Set the image labels."
+        description: "Image labels."
         type: string
         required: true
       image-url:
-        description: "Set the image registry url."
+        description: "Image registry url to push to."
         type: string
         required: true
       image-tags:
-        description: "Set the image tags."
+        description: "Image tags."
         type: string
         required: true
       image-registry:
-        description: "Set the image registry."
+        description: "Image registry name."
         type: string
-        required: true
+        default: ""
+      image-platforms: 
+        description: "Image platforms to build for."
+        type: string
+        default: linux/amd64
+      build-context: 
+        description: "path to image build context."
+        type: string
+        default: .
+      build-docker-file:
+        description: "Path to the docker file."
+        type: string
+        default: ./Dockerfile
 
 jobs:
   building:
@@ -41,7 +53,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@v2
         with:
-          registry: ${{ inputs.image-registry }}
+          registry: ${{ vars.IMAGE_REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -52,10 +64,10 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ${{ inputs.build-context }}
           push: ${{ github.event_name != 'pull_request' }}
-          platforms: linux/amd64
-          file: ./Dockerfile
+          platforms: ${{ inputs.image-platforms }}
+          file: ${{ inputs.build-docker-file }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
