@@ -472,7 +472,7 @@ permissions:
 jobs:
   building:
     name: Build Container Image
-    uses: greenbone/workflows/.github/workflows/container-build-ghcr.yml@main
+    uses: greenbone/workflows/.github/workflows/container-build-push-ghcr.yml@main
     with:
       image-url: ${{ vars.IMAGE_REGISTRY }}/${{ github.repository }}
       image-labels: |

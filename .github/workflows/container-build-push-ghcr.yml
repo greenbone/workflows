@@ -8,7 +8,7 @@ on:
         type: string
         required: true
       image-url:
-        description: "Image registry url to push to."
+        description: "Image url/name without registry."
         type: string
         required: true
       image-tags:
@@ -31,7 +31,7 @@ on:
 jobs:
   building:
     name: Container build and push ghcr.io
-    uses: greenbone/workflows/.github/workflows/container-build-generic.yml@main
+    uses: greenbone/workflows/.github/workflows/container-build-push-generic.yml@main
     with:
       image-url: ${{ inputs.image-url }}
       image-labels: ${{ inputs.image-labels }}

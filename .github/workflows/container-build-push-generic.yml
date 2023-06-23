@@ -8,7 +8,7 @@ on:
         type: string
         required: true
       image-url:
-        description: "Image url without registry."
+        description: "Image url/name without registry."
         type: string
         required: true
       image-tags:
