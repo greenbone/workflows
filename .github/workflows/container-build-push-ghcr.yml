@@ -1,0 +1,46 @@
+name: Container build and push ghcr.io
+
+on:
+  workflow_call:
+    inputs:
+      image-labels:
+        description: "Image labels."
+        type: string
+        required: true
+      image-url:
+        description: "Image url/name without registry."
+        type: string
+        required: true
+      image-tags:
+        description: "Image tags."
+        type: string
+        required: true
+      image-platforms: 
+        description: "Image platforms to build for."
+        type: string
+        default: linux/amd64
+      build-context: 
+        description: "Path to image build context."
+        type: string
+        default: .
+      build-docker-file:
+        description: "Path to the docker file."
+        type: string
+        default: ./Dockerfile
+
+jobs:
+  building:
+    name: Container build and push ghcr.io
+    uses: greenbone/workflows/.github/workflows/container-build-push-generic.yml@main
+    with:
+      image-url: ${{ inputs.image-url }}
+      image-labels: ${{ inputs.image-labels }}
+      image-tags: ${{ inputs.image-tags }}
+      registry: ${{ vars.IMAGE_REGISTRY }}
+      registry-username: ${{ github.actor }}
+      image-platforms: ${{ inputs.image-platforms }}
+      build-context: ${{ inputs.build-context }}
+      build-docker-file: ${{ inputs.build-docker-file }}
+    secrets: 
+      REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }} 
+

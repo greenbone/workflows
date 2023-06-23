@@ -454,6 +454,54 @@ Inputs:
 | build | Directory containing the build of the documentation | Optional (default: `"docs/build/html"`) |
 | environment-name | Name of the deployment environment | Optional (default: `"github-pages"`) |
 
+### Build and push container images to ghcr.io or docker.io
+
+A workflow to build and push container images to ghcr.io or docker.io.
+
+```yml
+name: Build Container Image Builds
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  building:
+    name: Build Container Image
+    # ghcr.io
+    uses: greenbone/workflows/.github/workflows/container-build-push-ghcr.yml@main
+    # docker.io
+    #uses: greenbone/workflows/.github/workflows/container-build-push-docker.yml@main
+    with:
+      image-url: ${{ vars.IMAGE_REGISTRY }}/${{ github.repository }}
+      image-labels: |
+        org.opencontainers.image.vendor=Greenbone
+        org.opencontainers.image.base.name=alpine/latest
+      image-tags: |
+        # create container tag for git tags
+        type=ref,event=tag,value=latest
+        type=match,pattern=v(.*),group=1
+        type=ref,event=pr
+        # use unstable for main branch
+        type=raw,value=unstable,enable={{is_default_branch}}
+    secrets: inherit
+```
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| image-labels | Image labels. | Required |
+| image-url | Image url/name without registry. | Required |
+| image-tags | Image tags. | Required |
+| image-platforms | Image platforms to build for. | Optional |
+| build-context | Path to image build context. | Optional |
+| build-docker-file | Path to the docker file. | Optional |
+
 ## Support
 
 For any question on the usage of the workflows please use the
