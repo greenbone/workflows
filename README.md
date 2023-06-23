@@ -454,9 +454,9 @@ Inputs:
 | build | Directory containing the build of the documentation | Optional (default: `"docs/build/html"`) |
 | environment-name | Name of the deployment environment | Optional (default: `"github-pages"`) |
 
-### Build and push container images to ghcr
+### Build and push container images to ghcr.io or docker.io
 
-A workflow to build and push container images to ghcr.
+A workflow to build and push container images to ghcr.io or docker.io.
 
 ```yml
 name: Build Container Image Builds
@@ -472,7 +472,10 @@ permissions:
 jobs:
   building:
     name: Build Container Image
+    # ghcr.io
     uses: greenbone/workflows/.github/workflows/container-build-push-ghcr.yml@main
+    # docker.io
+    #uses: greenbone/workflows/.github/workflows/container-build-push-docker.yml@main
     with:
       image-url: ${{ vars.IMAGE_REGISTRY }}/${{ github.repository }}
       image-labels: |
