@@ -9,6 +9,10 @@ on:
       release-version:
         description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
         type: string
+      update-project:
+        description: "Update version in project files like `pyproject.toml`. Default is 'true'."
+        default: "true"
+        type: string
     secrets:
       GREENBONE_BOT:
         required: true
@@ -31,6 +35,7 @@ jobs:
       release-type: ${{ inputs.release-type }}
       release-version: ${{ inputs.release-version }}
       versioning-scheme: "semver"
+      update-project: ${{ inputs.update-project }}
     secrets:
       GREENBONE_BOT: ${{ secrets.GREENBONE_BOT }}
       GREENBONE_BOT_MAIL: ${{ secrets.GREENBONE_BOT_MAIL }}
