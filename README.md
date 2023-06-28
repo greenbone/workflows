@@ -19,6 +19,7 @@ Greenbone projects
   - [Release Cloud](#release-cloud)
   - [Helm Build/Push](#helm-buildpush)
   - [Deploy docs on GitHub Pages](#deploy-docs-on-github-pages)
+  - [Build and push container images to ghcr.io or docker.io](#build-and-push-container-images-to-ghcr-io-or-docker-io)
 - [Support](#support)
 - [Maintainer](#maintainer)
 - [License](#license)
@@ -501,6 +502,7 @@ Inputs:
 | image-platforms | Image platforms to build for. | Optional |
 | build-context | Path to image build context. | Optional |
 | build-docker-file | Path to the docker file. | Optional |
+| build-args | Use these build-args for the docker build process. | Optional |
 
 ## Support
 
