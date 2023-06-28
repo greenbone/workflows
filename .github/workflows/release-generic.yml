@@ -13,6 +13,10 @@ on:
         description: "Versioning Scheme to use."
         default: "semver"
         type: string
+      update-project:
+        description: "Update version in project files like `pyproject.toml`. Default is 'true'."
+        default: "true"
+        type: string
     secrets:
       GREENBONE_BOT:
         required: true
@@ -89,4 +93,4 @@ jobs:
           release-version: ${{ inputs.release-version }}
           ref: ${{ steps.ref.outputs.release_ref }}
           versioning-scheme: ${{ inputs.versioning-scheme }}
-
+          update-project: ${{ inputs.update-project }}
