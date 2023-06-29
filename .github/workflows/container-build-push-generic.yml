@@ -40,8 +40,18 @@ on:
         type: string
         default: ''
     secrets:
+      DOCKERHUB_TOKEN:
+        required: false
+      DOCKERHUB_USERNAME:
+        required: false
       REGISTRY_PASSWORD: 
         required: true
+      GREENBONE_BOT:
+        required: false
+      GREENBONE_BOT_MAIL:
+        required: false
+      GREENBONE_BOT_TOKEN:
+        required: false
 
 jobs:
   building:

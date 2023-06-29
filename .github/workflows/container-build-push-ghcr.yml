@@ -31,6 +31,13 @@ on:
         description: "Use these build-args for the docker build process."
         type: string
         default: ''
+    secrets:
+      GREENBONE_BOT:
+        required: false
+      GREENBONE_BOT_MAIL:
+        required: false
+      GREENBONE_BOT_TOKEN:
+        required: false
 
 jobs:
   building:
