@@ -7,8 +7,12 @@ on:
         description: "Names of the Python packages to be linted"
         type: string
       python-version:
-        description: "Python version to use"
+        description: "Python version to use. Default is Python '3.10'."
         default: "3.10"
+        type: string
+      linter:
+        description: "Linter to use: Default is 'pylint'."
+        default: "pylint"
         type: string
 
 jobs:
@@ -22,4 +26,5 @@ jobs:
         with:
           packages: ${{ inputs.lint-packages }}
           python-version: ${{ inputs.python-version }}
+          linter: ${{ inputs.linter }}
           cache: "true"
