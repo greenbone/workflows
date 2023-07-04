@@ -97,6 +97,7 @@ jobs:
 |------|-------------|-|
 | python-version | Python version to use | Optional (default: `"3.10"`) |
 | lint-packages | Names of the Python packages to be linted | |
+| linter | Linter to use | Optional (default: `"pylint"`) |
 
 ### Test Python
 
@@ -181,6 +182,7 @@ Inputs:
 | lint-packages | Names of the Python packages to be linted | |
 | mypy-arguments | Additional arguments for mypy | Optional |
 | test-command | Command to run the unit tests | Optional (default: `"python -m unittest -v"`) |
+| linter | Linter to use | Optional (default: `"pylint"`) |
 
 ### Deploy on PyPI
 
