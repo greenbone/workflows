@@ -9,6 +9,10 @@ on:
       release-version:
         description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
         type: string
+      git-tag-prefix:
+        description: "Set git tag prefix to the passed input. Default: ''"
+        default: ""
+        type: string
     secrets:
       GREENBONE_BOT:
         required: true
@@ -28,6 +32,7 @@ jobs:
     name: Create a new release
     uses: ./.github/workflows/release-generic.yml
     with:
+      git-tag-prefix: ${{ inputs.git-tag-prefix }}
       release-type: ${{ inputs.release-type }}
       release-version: ${{ inputs.release-version }}
       versioning-scheme: "pep440"
