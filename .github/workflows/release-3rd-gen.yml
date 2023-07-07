@@ -3,6 +3,10 @@ name: Release 3rd Gen
 on:
   workflow_call:
     inputs:
+      git-tag-prefix:
+        description: "Set git tag prefix to the passed input. Default: ''"
+        default: "v"
+        type: string
       release-type:
         description: "Release type. One of alpha, patch, minor, major, release-candidate"
         type: string

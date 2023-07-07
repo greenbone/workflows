@@ -3,6 +3,10 @@ name: Release Python package
 on:
   workflow_call:
     inputs:
+      git-tag-prefix:
+        description: "Set git tag prefix to the passed input. Default: ''"
+        default: "v"
+        type: string
       release-type:
         default: "calendar"
         type: string
@@ -39,6 +43,7 @@ jobs:
       - name: Release with release action
         uses: greenbone/actions/release@v2
         with:
+          git-tag-prefix: ${{ inputs.git-tag-prefix }}
           github-user: ${{ secrets.GREENBONE_BOT }}
           github-user-mail: ${{ secrets.GREENBONE_BOT_MAIL }}
           github-user-token: ${{ secrets.GREENBONE_BOT_TOKEN }}
