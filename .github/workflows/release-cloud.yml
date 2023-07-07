@@ -3,15 +3,15 @@ name: Release Cloud
 on:
   workflow_call:
     inputs:
+      git-tag-prefix:
+        description: "Set git tag prefix to the passed input. Default: ''"
+        default: ""
+        type: string
       release-type:
         description: "Release type. One of alpha, patch, minor, major, release-candidate"
         type: string
       release-version:
         description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
-        type: string
-      git-tag-prefix:
-        description: "Set git tag prefix to the passed input. Default: ''"
-        default: ""
         type: string
     secrets:
       GREENBONE_BOT:
