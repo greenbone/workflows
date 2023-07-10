@@ -37,7 +37,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: Container build and push 3rd gen
-        uses: greenbone/actions/container-build-push-3rd-gen@v2
+        uses: greenbone/actions/container-build-push-3rd-gen@pholthaus/cosign_tlog_container_test
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
