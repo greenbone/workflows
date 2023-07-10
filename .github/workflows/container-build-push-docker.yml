@@ -3,6 +3,18 @@ name: Container build and push docker.io
 on:
   workflow_call:
     inputs:
+      build-context:
+        description: "Path to image build context. Default: ."
+        type: string
+        default: .
+      build-docker-file:
+        description: "Path to the docker file. Default ./Dockerfile"
+        type: string
+        default: ./Dockerfile
+      build-args:
+        description: "Use these build-args for the docker build process. It is not possible to use secrets in here! Use the action."
+        type: string
+        default: ''
       image-labels:
         description: "Image labels."
         type: string
@@ -16,36 +28,30 @@ on:
         type: string
         required: true
       image-platforms: 
-        description: "Image platforms to build for."
+        description: "Image platforms to build for. Default: linux/amd64"
         type: string
         default: linux/amd64
-      build-context: 
-        description: "Path to image build context."
-        type: string
-        default: .
-      build-docker-file:
-        description: "Path to the docker file."
-        type: string
-        default: ./Dockerfile
-      build-args:
-        description: "Use these build-args for the docker build process."
-        type: string
-        default: ''
+    secrets:
+      DOCKERHUB_TOKEN:
+        required: true
+      DOCKERHUB_USERNAME:
+        required: true
 
 jobs:
   building:
-    name: Container build and push docker.io
-    uses: greenbone/workflows/.github/workflows/container-build-push-generic.yml@main
-    with:
-      image-url: ${{ inputs.image-url }}
-      image-labels: ${{ inputs.image-labels }}
-      image-tags: ${{ inputs.image-tags }}
-      registry: docker.io
-      registry-username: ${{ secrets.DOCKERHUB_USERNAME }}
-      image-platforms: ${{ inputs.image-platforms }}
-      build-context: ${{ inputs.build-context }}
-      build-docker-file: ${{ inputs.build-docker-file }}
-      build-args: ${{ inputs.build-args }}
-    secrets: 
-      REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }} 
-
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Container build and push docker.io
+        uses: greenbone/actions/container-build-push-3rd-gen@v2
+        with:
+          build-context: ${{ inputs.build-context }}
+          build-docker-file: ${{ inputs.build-docker-file }}
+          build-args: ${{ inputs.build-args }}
+          image-url: ${{ inputs.image-url }}
+          image-labels: ${{ inputs.image-labels }}
+          image-tags: ${{ inputs.image-tags }}
+          image-platforms: ${{ inputs.image-platforms }}
+          registry-username: ${{ secrets.DOCKERHUB_USERNAME }}
+          registry-username: ${{ secrets.DOCKERHUB_TOKEN }}
