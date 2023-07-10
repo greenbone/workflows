@@ -41,6 +41,8 @@ jobs:
   building:
     runs-on: "ubuntu-latest"
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - name: Container build and push docker.io
         uses: greenbone/actions/container-build-push-3rd-gen@v2
         with:
