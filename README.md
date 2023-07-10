@@ -501,9 +501,47 @@ Inputs:
 | image-labels | Image labels. | Required |
 | image-url | Image url/name without registry. | Required |
 | image-tags | Image tags. | Required |
-| image-platforms | Image platforms to build for. | Optional |
-| build-context | Path to image build context. | Optional |
-| build-docker-file | Path to the docker file. | Optional |
+| image-platforms | Image platforms to build for. Default "linux/amd64" | Optional |
+| build-context | Path to image build context. Default "." | Optional |
+| build-docker-file | Path to the docker file. Default "./Dockerfile" | Optional |
+| build-args | Use these build-args for the docker build process. | Optional |
+
+### Build and push container images 3rd gen
+
+A workflow to build and push container images to 3rd gen.
+
+```yml
+name: Build Container Image Builds
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  building:
+    name: Build Container Image
+    uses: greenbone/workflows/.github/workflows/container-build-push-3rd-gen.yml@main
+    with:
+      image-url: ${{ vars.IMAGE_REGISTRY }}/${{ github.repository }}
+      image-labels: |
+        org.opencontainers.image.vendor=Greenbone
+        org.opencontainers.image.base.name=alpine/latest
+    secrets: inherit
+```
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| image-labels | Image labels. | Required |
+| image-url | Image url/name without registry. | Required |
+| image-platforms | Image platforms to build for. Default "linux/amd64" | Optional |
+| build-context | Path to image build context. Default "." | Optional |
+| build-docker-file | Path to the docker file. Default "./Dockerfile" | Optional |
 | build-args | Use these build-args for the docker build process. | Optional |
 
 ## Support
