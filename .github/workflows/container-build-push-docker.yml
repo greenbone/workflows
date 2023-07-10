@@ -4,11 +4,11 @@ on:
   workflow_call:
     inputs:
       build-context:
-        description: "Path to image build context."
+        description: "Path to image build context. Default: ."
         type: string
         default: .
       build-docker-file:
-        description: "Path to the docker file."
+        description: "Path to the docker file. Default ./Dockerfile"
         type: string
         default: ./Dockerfile
       build-args:
@@ -28,7 +28,7 @@ on:
         type: string
         required: true
       image-platforms: 
-        description: "Image platforms to build for."
+        description: "Image platforms to build for. Default: linux/amd64"
         type: string
         default: linux/amd64
     secrets:
