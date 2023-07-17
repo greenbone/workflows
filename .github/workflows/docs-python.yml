@@ -39,7 +39,7 @@ jobs:
         run: |
           cd ${{ inputs.source }} && poetry run make html
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with:
           path: ${{ inputs.build }}
       - name: Deploy to GitHub Pages
