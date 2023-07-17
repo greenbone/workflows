@@ -13,6 +13,6 @@ jobs:
     name: Check versioning for consistency
     runs-on: "ubuntu-latest"
     steps:
-      - uses: greenbone/actions/check-version@v2
+      - uses: greenbone/actions/check-version@v3
         with:
           python-version: ${{ inputs.python-version }}

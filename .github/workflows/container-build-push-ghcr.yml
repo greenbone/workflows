@@ -39,7 +39,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Container build and push ghcr.io
-        uses: greenbone/actions/container-build-push-ghcr@v2
+        uses: greenbone/actions/container-build-push-ghcr@v3
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
