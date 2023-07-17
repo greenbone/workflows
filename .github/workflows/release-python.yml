@@ -41,7 +41,7 @@ jobs:
             echo "release_ref=${{ github.base_ref }}" >> $GITHUB_OUTPUT
           fi
       - name: Release with release action
-        uses: greenbone/actions/release@v2
+        uses: greenbone/actions/release@v3
         with:
           git-tag-prefix: ${{ inputs.git-tag-prefix }}
           github-user: ${{ secrets.GREENBONE_BOT }}

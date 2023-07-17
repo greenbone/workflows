@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install and check with black, pylint and pontos.version
-        uses: greenbone/actions/lint-python@v2
+        uses: greenbone/actions/lint-python@v3
         with:
           packages: ${{ inputs.lint-packages }}
           python-version: ${{ inputs.python-version }}

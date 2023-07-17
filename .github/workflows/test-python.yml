@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install python, poetry and dependencies
-        uses: greenbone/actions/poetry@v2
+        uses: greenbone/actions/poetry@v3
         with:
           python-version: ${{ inputs.python-version }}
           cache: "true"
