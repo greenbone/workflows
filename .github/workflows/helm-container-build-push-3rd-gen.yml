@@ -11,7 +11,6 @@ on:
         default: ./Dockerfile
       build-args:
         description: "Use these build-args for the docker build process. It is not possible to use secrets in here! Use the action."
-        type: string
         default: ""
       helm-chart:
         description: "The name of the helm chart to update. If not set, no chart update will be done. Default: empty"

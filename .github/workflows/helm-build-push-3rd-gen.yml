@@ -1,4 +1,4 @@
-name: Helm chart release on tag
+name: Helm chart release on tag 3rd gen
 
 on:
   workflow_call:
