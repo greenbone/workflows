@@ -1,0 +1,76 @@
+name: Container build and push 3rd gen
+
+on:
+  workflow_call:
+    inputs:
+      build-context:
+        description: "Path to image build context. Default: ."
+        default: .
+        type: string
+      build-docker-file:
+        description: "Path to the docker file. Default: ./Dockerfile"
+        default: ./Dockerfile
+        type: string
+      build-args:
+        description: "Use these build-args for the docker build process. It is not possible to use secrets in here! Use the action."
+        default: ""
+        type: string
+      helm-chart:
+        description: "The name of the helm chart to update. If not set, no chart update will be done. Default: empty"
+        default: ""
+        type: string
+      image-labels:
+        description: "Image labels."
+        required: true
+        type: string
+      image-url:
+        description: "Image url/name without registry."
+        required: true
+        type: string
+      image-platforms:
+        description: "Image platforms to build for. Default: linux/amd64"
+        default: linux/amd64
+        type: string
+    secrets:
+      COSIGN_KEY_OPENSIGHT:
+        required: true
+      COSIGN_KEY_PASSWORD_OPENSIGHT:
+        required: true
+      GREENBONE_BOT:
+        required: true
+      GREENBONE_BOT_PACKAGES_WRITE_TOKEN:
+        required: true
+      GREENBONE_BOT_TOKEN:
+        required: true
+
+jobs:
+  building-container:
+    runs-on: "ubuntu-latest"
+    outputs:
+      digest: ${{ steps.build-and-push.outputs.digest }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Container build and push 3rd gen
+        id: build-and-push
+        uses: greenbone/actions/container-build-push-3rd-gen@v3
+        with:
+          build-context: ${{ inputs.build-context }}
+          build-docker-file: ${{ inputs.build-docker-file }}
+          build-args: ${{ inputs.build-args }}
+          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
+          cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
+          image-url: ${{ inputs.image-url }}
+          image-labels: ${{ inputs.image-labels }}
+          image-platforms: ${{ inputs.image-platforms }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+
+  building-helm-chart:
+    if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
+    needs:
+      - building-container
+    uses: greenbone/workflows/.github/workflows/helm-build-push-3rd-gen.yml@main
+    with:
+      chart: ${{ inputs.helm-chart }}
+      container-digest: ${{ needs.building-container.outputs.digest }}
+    secrets: inherit
