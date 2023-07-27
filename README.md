@@ -544,6 +544,48 @@ Inputs:
 | build-docker-file | Path to the docker file. Default "./Dockerfile" | Optional |
 | build-args | Use these build-args for the docker build process. | Optional |
 
+### Build and push 3rd gen container images and related helm chart
+
+A workflow to build and push 3rd gen container images and the related helm chart.
+In order to have a reasonable container digest transfer to the helm chart release 
+we have to build the container and helm charts in the same workflow.
+
+```yml
+name: Build Container Image Builds
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  building:
+    name: Build Container Image
+    uses: greenbone/workflows/.github/workflows/container-build-push-3rd-gen.yml@main
+    with:
+      image-url: ${{ vars.IMAGE_REGISTRY }}/${{ github.repository }}
+      helm-chart: ${{ github.repository }}
+      image-labels: |
+        org.opencontainers.image.vendor=Greenbone
+        org.opencontainers.image.base.name=alpine/latest
+    secrets: inherit
+```
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| build-context | Path to image build context. Default "." | Optional |
+| build-docker-file | Path to the docker file. Default "./Dockerfile" | Optional |
+| build-args | Use these build-args for the docker build process. | Optional |
+| helm-chart | The name of the helm chart to update. If not set, no chart update will be done. Default: empty | Optional |
+| image-labels | Image labels. | Required |
+| image-url | Image url/name without registry. | Required |
+| image-platforms | Image platforms to build for. Default "linux/amd64" | Optional |
+
 ## Support
 
 For any question on the usage of the workflows please use the
