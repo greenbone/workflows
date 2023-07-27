@@ -65,5 +65,5 @@ jobs:
     uses: greenbone/workflows/.github/workflows/helm-build-push-3rd-gen.yml@main
     with:
       chart: ${{ inputs.helm-chart }}
-      container-digest: ${{ needs.build-and-push.outputs.digest }}
+      container-digest: ${{ needs.building-container.outputs.digest }}
     secrets: inherit
