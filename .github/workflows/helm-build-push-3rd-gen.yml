@@ -5,9 +5,11 @@ on:
     inputs:
       chart:
         description: "The name of the helm chart to update."
+        type: string
         required: true
       container-digest:
         description: "The container digest for the helm chart tag."
+        type: string
         required: true
     secrets:
       GREENBONE_BOT:
