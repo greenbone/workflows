@@ -430,7 +430,7 @@ on:
 jobs:
   release-helm-chart:
     name: Release helm chart
-    uses: greenbone/workflows/.github/workflows/helm-build-push.yml@main
+    uses: greenbone/workflows/.github/workflows/helm-build-push-3rd-gen.yml@main
     with:
       chart: myChart
       container-digest: containerDigest
@@ -600,7 +600,7 @@ permissions:
 jobs:
   building:
     name: Build Container Image
-    uses: greenbone/workflows/.github/workflows/container-build-push-3rd-gen.yml@main
+    uses: greenbone/workflows/.github/workflows/helm-container-build-push-3rd-gen.yml@main
     with:
       image-url: ${{ vars.IMAGE_REGISTRY }}/${{ github.repository }}
       helm-chart: ${{ github.repository }}
