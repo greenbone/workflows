@@ -6,24 +6,31 @@ on:
       build-context:
         description: "Path to image build context. Default: ."
         default: .
+        type: string
       build-docker-file:
         description: "Path to the docker file. Default: ./Dockerfile"
         default: ./Dockerfile
+        type: string
       build-args:
         description: "Use these build-args for the docker build process. It is not possible to use secrets in here! Use the action."
         default: ""
+        type: string
       helm-chart:
         description: "The name of the helm chart to update. If not set, no chart update will be done. Default: empty"
         default: ""
+        type: string
       image-labels:
         description: "Image labels."
         required: true
+        type: string
       image-url:
         description: "Image url/name without registry."
         required: true
+        type: string
       image-platforms:
         description: "Image platforms to build for. Default: linux/amd64"
         default: linux/amd64
+        type: string
     secrets:
       COSIGN_KEY_OPENSIGHT:
         required: true

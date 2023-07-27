@@ -6,9 +6,11 @@ on:
       chart:
         description: "The name of the helm chart to update."
         required: true
+        type: string
       container-digest:
         description: "The container digest for the helm chart tag."
         required: true
+        type: string
     secrets:
       GREENBONE_BOT:
         required: true
