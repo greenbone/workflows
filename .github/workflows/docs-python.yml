@@ -34,7 +34,6 @@ jobs:
         uses: greenbone/actions/poetry@v3
         with:
           python-version: ${{ inputs.python-version }}
-          cache: "true"
       - name: Build Documentation
         run: |
           cd ${{ inputs.source }} && poetry run make html

@@ -27,4 +27,3 @@ jobs:
           packages: ${{ inputs.lint-packages }}
           python-version: ${{ inputs.python-version }}
           linter: ${{ inputs.linter }}
-          cache: "true"

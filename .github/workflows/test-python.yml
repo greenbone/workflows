@@ -22,7 +22,6 @@ jobs:
         uses: greenbone/actions/poetry@v3
         with:
           python-version: ${{ inputs.python-version }}
-          cache: "true"
           cache-poetry-installation: "true"
       - name: Run unit tests
         run: poetry run ${{ inputs.test-command }}
