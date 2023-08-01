@@ -20,6 +20,5 @@ jobs:
         uses: greenbone/actions/coverage-python@v3
         with:
           python-version: ${{ inputs.python-version }}
-          cache: "true"
           token: ${{ secrets.CODECOV_TOKEN }}
 
