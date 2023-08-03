@@ -1,0 +1,35 @@
+name: Notify Mattermost Feed Deployment
+
+on:
+  workflow_call:
+    inputs:
+      commit:
+        description: "The commit used by the github checkout action."
+        type: string
+        required: true
+      highlight:
+        description: "Mattermost highlight. Default: devops"
+        type: string
+        default: "devops"
+    secrets:
+      MATTERMOST_FEED_BOT_WEBHOOK_URL:
+        required: true
+      MATTERMOST_FEED_CHANNEL:
+        required: true
+
+jobs:
+  notify-mattermost:
+    runs-on:
+      - self-hosted
+      - self-hosted-generic
+    steps:
+      - name: Notify Mattermost Feed Deployment
+        uses: greenbone/actions/mattermost-notify@v3
+        with:
+          url: ${{ secrets.MATTERMOST_FEED_BOT_WEBHOOK_URL }}
+          channel: ${{ secrets.MATTERMOST_FEED_CHANNEL }}
+          highlight: ${{ inputs.highlight }}
+          branch: ${{ github.ref_name }}
+          commit: ${{ inputs.commit }}
+          workflow: ${{ github.run_id }}
+          workflow-name: ${{ github.workflow }}
