@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       commit:
-        description: "The commit used by the github checkout action. Default: main branch"
+        description: "The commit used by the github checkout action. Default: github.sha"
         type: string
         default: ${{ github.sha }}
       exit-with-status:
