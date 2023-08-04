@@ -7,6 +7,10 @@ on:
         description: "The commit used by the github checkout action. Default: main branch"
         type: string
         default: "main"
+      exit-with-status:
+        description: "Exit this job/workflow with the monitored job status. Options: true or false. Default: true"
+        type: string
+        default: "true"
       highlight:
         description: "Mattermost highlight. Default: devops"
         type: string
@@ -39,3 +43,8 @@ jobs:
           workflow: ${{ github.run_id }}
           workflow-name: ${{ github.workflow }}
           status: ${{ inputs.status }}
+      - name: Exit with job status
+        if: inputs.exit-with-status == 'true' && inputs.status != 'success'
+        run: |
+          echo "Monitored job failed. Exit job/workflow with failure"
+          exit 1
