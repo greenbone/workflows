@@ -43,7 +43,7 @@ jobs:
           workflow: ${{ github.run_id }}
           workflow-name: ${{ github.workflow }}
           status: ${{ inputs.status }}
-      - name: Exit with job status
+      - name: Exit with monitored job status
         if: inputs.exit-with-status == 'true' && inputs.status != 'success'
         run: |
           echo "Monitored job failed. Exit job/workflow with failure"
