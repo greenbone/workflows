@@ -4,9 +4,9 @@ on:
   workflow_call:
     inputs:
       commit:
-        description: "The commit used by the github checkout action. Default: main branch"
+        description: "The commit used by the github checkout action. Default: github.sha"
         type: string
-        default: "main"
+        default: ${{ github.sha }}
       exit-with-status:
         description: "Exit this job/workflow with the monitored job status. Options: true or false. Default: true"
         type: string
