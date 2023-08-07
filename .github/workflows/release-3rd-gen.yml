@@ -30,6 +30,8 @@ on:
         required: false
       GPG_PASSPHRASE:
         required: false
+      MATTERMOST_WEBHOOK_URL:
+        required: true
 
 jobs:
   build-and-release:
@@ -47,3 +49,11 @@ jobs:
       GPG_KEY: ${{ secrets.GPG_KEY }}
       GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
       GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+  notify:
+    needs: build-and-release
+    if: ${{ !cancelled() }}
+    uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
+    with:
+      status: ${{ needs.build-and-release.result }}
+    secrets: inherit

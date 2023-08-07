@@ -42,6 +42,8 @@ on:
         required: true
       GREENBONE_BOT_TOKEN:
         required: true
+      MATTERMOST_WEBHOOK_URL:
+        required: true
 
 jobs:
   building-container:
@@ -73,4 +75,14 @@ jobs:
     with:
       chart: ${{ inputs.helm-chart }}
       container-digest: ${{ needs.building-container.outputs.digest }}
+    secrets: inherit
+
+  notify:
+    needs:
+      - building-container
+      - building-helm-chart
+    if: ${{ !cancelled() }} && startsWith(github.ref, 'refs/tags/v')
+    uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
+    with:
+      status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
     secrets: inherit
