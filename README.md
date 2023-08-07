@@ -622,6 +622,102 @@ Inputs:
 | image-url | Image url/name without registry. | Required |
 | image-platforms | Image platforms to build for. Default "linux/amd64" | Optional |
 
+### Notify Mattermost Feed Deployment
+
+Reusable workflow designed for the feed delivery pipeline.
+
+```yml
+name: Notify Mattermost Feed Deployment
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  building:
+    name: Build Container Image
+    uses: greenbone/workflows/.github/workflows/helm-container-build-push-3rd-gen.yml@main
+    ...
+
+  building2:
+    name: Build Container Image
+    uses: greenbone/workflows/.github/workflows/helm-container-build-push-3rd-gen.yml@main
+    ...
+
+  notify:
+    needs:
+      - building
+      - building2
+    # ignore cancelled workflows
+    if: ${{ !cancelled() }}
+    uses: greenbone/workflows/.github/workflows/notify-mattermost-feed-deployment.yml@main
+    with:
+      # We need to check several jobs for an failure status
+      status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
+    secrets: inherit
+```
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| commit | The commit used by the github checkout action. Default: github.sha | Optional |
+| exit-with-status | Exit this job/workflow with the monitored job status. Options: true or false. Default: true | Optional |
+| highlight | Mattermost highlight. Default: devops | Optional |
+| status | The monitored job, job status. | Required |
+
+### Notify Mattermost 3rd Gen deployment
+
+Reusable workflow designed for the 3rd gen deployment pipeline.
+
+```yml
+name: Notify Mattermost 3rd gen
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  building:
+    name: Build Container Image
+    uses: greenbone/workflows/.github/workflows/helm-container-build-push-3rd-gen.yml@main
+    ...
+
+  building2:
+    name: Build Container Image
+    uses: greenbone/workflows/.github/workflows/helm-container-build-push-3rd-gen.yml@main
+    ...
+
+  notify:
+    needs:
+      - building
+      - building2
+    # ignore cancelled workflows
+    if: ${{ !cancelled() }}
+    uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen@main
+    with:
+      # We need to check several jobs for an failure status
+      status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
+    secrets: inherit
+```
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| commit | The commit used by the github checkout action. Default: github.sha | Optional |
+| exit-with-status | Exit this job/workflow with the monitored job status. Options: true or false. Default: true | Optional |
+| highlight | Mattermost highlight. Default: channel | Optional |
+| status | The monitored job, job status. | Required |
+
 ## Support
 
 For any question on the usage of the workflows please use the
