@@ -21,7 +21,7 @@ on:
         required: true
     secrets:
       MATTERMOST_WEBHOOK_URL:
-        required: true
+        required: false
 
 jobs:
   notify-mattermost:
