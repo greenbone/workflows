@@ -33,17 +33,17 @@ on:
         type: string
     secrets:
       COSIGN_KEY_OPENSIGHT:
-        required: true
+        required: false
       COSIGN_KEY_PASSWORD_OPENSIGHT:
-        required: true
+        required: false
       GREENBONE_BOT:
-        required: true
+        required: false
       GREENBONE_BOT_PACKAGES_WRITE_TOKEN:
-        required: true
+        required: false
       GREENBONE_BOT_TOKEN:
-        required: true
+        required: false
       MATTERMOST_WEBHOOK_URL:
-        required: true
+        required: false
 
 jobs:
   building-container:

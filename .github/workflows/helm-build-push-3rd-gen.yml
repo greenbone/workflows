@@ -13,11 +13,11 @@ on:
         required: true
     secrets:
       GREENBONE_BOT:
-        required: true
+        required: false
       GREENBONE_BOT_PACKAGES_WRITE_TOKEN:
-        required: true
+        required: false
       GREENBONE_BOT_TOKEN:
-        required: true
+        required: false
 
 jobs:
   release-helm-chart:
