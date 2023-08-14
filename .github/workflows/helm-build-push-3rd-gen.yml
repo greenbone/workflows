@@ -11,6 +11,7 @@ on:
         description: "The container digest for the helm chart tag."
         type: string
         required: true
+    # Dependabot don't have this secrets and on PR's this secrets are not needed.
     secrets:
       GREENBONE_BOT:
         required: false
