@@ -30,7 +30,7 @@ jobs:
     runs-on:
       - self-hosted
       - self-hosted-generic
-    if: ${{ !cancelled() }} && ( inputs.status == 'failure' || inputs.status == 'success' )
+    if: ${{ !cancelled() && (inputs.status == 'failure' || inputs.status == 'success') }}
     steps:
       - name: Notify Mattermost Feed Deployment
         uses: greenbone/actions/mattermost-notify@v3
