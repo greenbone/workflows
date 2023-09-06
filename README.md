@@ -718,8 +718,44 @@ Inputs:
 | highlight | Mattermost highlight. Default: channel | Optional |
 | status | The monitored job, job status. | Required |
 
-## Support
+### Notify Mattermost QM
 
+Reusable workflow designed for QM.
+
+```yml
+name: Notify Mattermost QM
+
+on:
+  workflow_dispatch
+
+jobs:
+  building: 
+    ...
+  building2:
+    ...
+  notify:
+    needs:
+      - building
+      - building2
+    # ignore cancelled workflows
+    if: ${{ !cancelled() }}
+    uses: greenbone/workflows/.github/workflows/notify-mattermost-qm@main
+    with:
+      # We need to check several jobs for an failure status
+      status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
+    secrets: inherit
+```
+
+Inputs:
+
+| Name | Description | |
+|------|-------------|-|
+| commit | The commit used by the github checkout action. Default: github.sha | Optional |
+| exit-with-status | Exit this job/workflow with the monitored job status. Options: true or false. Default: true | Optional |
+| highlight | Mattermost highlight. Default: channel | Optional |
+| status | The monitored job, job status. | Required |
+
+## Support
 For any question on the usage of the workflows please use the
 [Greenbone Community Forum](https://forum.greenbone.net/). If you
 found a problem with the software, please
