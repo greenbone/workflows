@@ -20,7 +20,7 @@ on:
         type: string
         required: true
     secrets:
-      MATTERMOST_FEED_BOT_WEBHOOK_URL:
+      MATTERMOST_WEBHOOK_URL:
         required: true
       MATTERMOST_FEED_CHANNEL:
         required: true
