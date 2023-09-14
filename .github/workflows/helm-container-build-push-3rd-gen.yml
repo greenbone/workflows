@@ -31,6 +31,11 @@ on:
         description: "Image platforms to build for. Default: linux/amd64"
         default: linux/amd64
         type: string
+      use-greenbonebot:
+        description: "Use the greenbonebot token as registry login. Default: false"
+        default: "false"
+        type: string
+
     secrets:
       COSIGN_KEY_OPENSIGHT:
         required: false
@@ -65,7 +70,7 @@ jobs:
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-platforms: ${{ inputs.image-platforms }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          registry-password: ${{ contains(inputs.use-greenbonebot, 'true') && secrets.GREENBONE_BOT_TOKEN || secrets.GITHUB_TOKEN }}
 
   building-helm-chart:
     if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
