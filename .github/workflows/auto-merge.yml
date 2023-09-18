@@ -1,8 +1,11 @@
 name: Activate Auto-Merge (Squash) on a PR
 
 on: 
-  - pull_request_target:
-  - workflow_call:
+  pull_request_target:
+  workflow_call:
+    secrets:
+      GREENBONE_BOT_TOKEN:
+        required: true
 
 
 permissions:
