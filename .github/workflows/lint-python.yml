@@ -20,7 +20,7 @@ jobs:
     name: Linting
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install and check with black, pylint and pontos.version
         uses: greenbone/actions/lint-python@v3
         with:
