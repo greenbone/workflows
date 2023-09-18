@@ -1,6 +1,10 @@
 name: Activate Auto-Merge (Squash) on a PR
-on: pull_request_target
-    
+
+on: 
+  - pull_request_target:
+  - workflow_call:
+
+
 permissions:
   contents: write
   pull-requests: write
