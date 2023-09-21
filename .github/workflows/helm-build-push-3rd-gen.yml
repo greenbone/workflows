@@ -15,6 +15,10 @@ on:
         description: "Update the tag from an init container. Set the parent key from the values.yaml. Default: empty"
         type: string
         required: false
+      init-container-digest:
+        description: "The init container digest for the helm chart tag."
+        type: string
+        required: false
     # Dependabot don't have this secrets and on PR's this secrets are not needed.
     secrets:
       GREENBONE_BOT:
@@ -43,12 +47,12 @@ jobs:
           chart-version: ${{ steps.version.outputs.tag }}
           image-tag: "${{ steps.version.outputs.tag }}@${{ inputs.container-digest }}"
       - name: Upgrade init container tag
-        if: inputs.init-container
+        if: inputs.init-container && inputs.init-container-digest
         uses: greenbone/actions/helm-version-upgrade@v3
         with:
           chart-path: ${{ github.workspace }}/charts/${{ inputs.chart }}
           chart-version: ${{ steps.version.outputs.tag }}
-          image-tag: "${{ steps.version.outputs.tag }}@${{ inputs.container-digest }}"
+          image-tag: "${{ steps.version.outputs.tag }}@${{ inputs.init-container-digest }}"
           overwrite-parent-key-image-tag: "${{ inputs.init-container }}"
       - name: Print Chart.yaml
         run: |
