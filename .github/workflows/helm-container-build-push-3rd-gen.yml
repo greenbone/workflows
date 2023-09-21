@@ -58,6 +58,11 @@ on:
       MATTERMOST_WEBHOOK_URL:
         required: false
 
+    outputs:
+      digest:
+        description: "The container digest"
+        value: ${{ jobs.building-container.outputs.digest }}
+
 jobs:
   building-container:
     runs-on: "ubuntu-latest"
