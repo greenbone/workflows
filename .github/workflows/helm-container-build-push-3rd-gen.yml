@@ -19,6 +19,10 @@ on:
         description: "The name of the helm chart to update. If not set, no chart update will be done. Default: empty"
         default: ""
         type: string
+      init-container:
+        description: "Update the tag from an init container. Set the parent key from the values.yaml. Default: empty"
+        type: string
+        required: false
       image-labels:
         description: "Image labels."
         required: true
@@ -80,6 +84,7 @@ jobs:
     with:
       chart: ${{ inputs.helm-chart }}
       container-digest: ${{ needs.building-container.outputs.digest }}
+      init-container: ${{ inputs.init-container }}
     secrets: inherit
 
   notify:
