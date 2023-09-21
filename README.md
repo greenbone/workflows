@@ -618,10 +618,18 @@ Inputs:
 | build-docker-file | Path to the docker file. Default "./Dockerfile" | Optional |
 | build-args | Use these build-args for the docker build process. | Optional |
 | helm-chart | The name of the helm chart to update. If not set, no chart update will be done. Default: empty | Optional |
+| init-container | Update the tag from an init container. Set the parent key from the values.yaml. Default: empty | Optional |
+| init-container-digest| The init container digest for the helm chart tag. Default: empty | Optional |
 | image-labels | Image labels. | Required |
 | image-url | Image url/name without registry. | Required |
 | image-platforms | Image platforms to build for. Default "linux/amd64" | Optional |
 | use-greenbonebot | Use the greenbonebot token as registry login. Default "false" | Optional |
+
+Outputs:
+
+| Name | Description |
+|------|-------------|
+| digest | The container digest. |
 
 ### Notify Mattermost Feed Deployment
 
