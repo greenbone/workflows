@@ -23,6 +23,10 @@ on:
         description: "Update the tag from an init container. Set the parent key from the values.yaml. Default: empty"
         type: string
         required: false
+      init-container-digest:
+        description: "The init container digest for the helm chart tag."
+        type: string
+        required: false
       image-labels:
         description: "Image labels."
         required: true
@@ -85,6 +89,7 @@ jobs:
       chart: ${{ inputs.helm-chart }}
       container-digest: ${{ needs.building-container.outputs.digest }}
       init-container: ${{ inputs.init-container }}
+      init-container-digest: ${{ inputs.init-container-digest }}
     secrets: inherit
 
   notify:
