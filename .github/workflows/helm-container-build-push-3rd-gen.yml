@@ -85,7 +85,7 @@ jobs:
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
-          build-args: ${{ contains(inputs.build-arg-greenbonebot, 'true') && GREENBONE_BOT_TOKEN=secrets.GREENBONE_BOT_TOKEN || inputs.build-args }}
+          build-args: ${{ inputs.build-args }}
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
           image-url: ${{ inputs.image-url }}
