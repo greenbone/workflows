@@ -43,7 +43,11 @@ on:
         description: "Use the greenbonebot token as registry login. Default: false"
         default: "false"
         type: string
-
+      build-arg-greenbonebot:
+        description: "Set the greenbonebot token as image build arg. Default: false"
+        default: "false"
+        type: string
+        
     secrets:
       COSIGN_KEY_OPENSIGHT:
         required: false
@@ -77,7 +81,7 @@ jobs:
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
-          build-args: ${{ inputs.build-args }}
+          build-args: ${{ contains(inputs.use-greenbonebot, 'true') && GREENBONE_BOT_TOKEN=${{ secrets.GREENBONE_BOT_TOKEN }} || inputs.build-args }}
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
           image-url: ${{ inputs.image-url }}
