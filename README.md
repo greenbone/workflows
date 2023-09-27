@@ -617,6 +617,7 @@ Inputs:
 | build-context | Path to image build context. Default "." | Optional |
 | build-docker-file | Path to the docker file. Default "./Dockerfile" | Optional |
 | build-args | Use these build-args for the docker build process. | Optional |
+| build-arg-greenbonebot | Set the greenbonebot token as image build arg. Default: false | Optional |
 | helm-chart | The name of the helm chart to update. If not set, no chart update will be done. Default: empty | Optional |
 | init-container | Update the tag from an init container. Set the parent key from the values.yaml. Default: empty | Optional |
 | init-container-digest| The init container digest for the helm chart tag. Default: empty | Optional |
