@@ -614,18 +614,20 @@ Inputs:
 
 | Name | Description | |
 |------|-------------|-|
-| build-context | Path to image build context. Default "." | Optional |
-| build-docker-file | Path to the docker file. Default "./Dockerfile" | Optional |
-| build-args | Use these build-args for the docker build process. | Optional |
-| build-arg-greenbonebot | Set the greenbonebot token as image build arg. Default: false | Optional |
-| helm-chart | The name of the helm chart to update. If not set, no chart update will be done. Default: empty | Optional |
-| init-container | Update the tag from an init container. Set the parent key from the values.yaml. Default: empty | Optional |
-| init-container-digest| The init container digest for the helm chart tag. Default: empty | Optional |
+| build-context | Path to image build context. Default is "." | Optional |
+| build-docker-file | Path to the docker file. Default is "./Dockerfile" | Optional |
+| build-args | Use these build-args for the docker build process. Default is empty | Optional |
+| build-secrets | Use these build-secrets for the docker build process. Default is empty | Optional |
+| build-arg-greenbonebot | Set the greenbonebot token as image build arg. Default is false | Optional |
+| build-secret-greenbonebot | Set the greenbonebot token as image build secret. Default is false | Optional |
+| helm-chart | The name of the helm chart to update. If not set, no chart update will be done. Default is empty | Optional |
+| init-container | Update the tag from an init container. Set the parent key from the values.yaml. Default is empty | Optional |
+| init-container-digest| The init container digest for the helm chart tag. Default is empty | Optional |
 | image-labels | Image labels. | Required |
 | image-url | Image url/name without registry. | Required |
-| image-platforms | Image platforms to build for. Default "linux/amd64" | Optional |
-| use-greenbonebot | Use the greenbonebot token as registry login. Default false | Optional |
-| notify | Enable mattermost notify. Default: true  | Optional |
+| image-platforms | Image platforms to build for. Default is "linux/amd64" | Optional |
+| use-greenbonebot | Use the greenbonebot token as registry login. Default is false | Optional |
+| notify | Enable mattermost notify. Default is true  | Optional |
 
 Outputs:
 
