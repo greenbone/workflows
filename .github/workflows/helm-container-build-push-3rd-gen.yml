@@ -15,6 +15,10 @@ on:
         description: "Use these build-args for the docker build process. It is not possible to use secrets in here! Use the action."
         default: ""
         type: string
+      build-arg-greenbonebot:
+        description: "Set the greenbonebot token as image build arg. Default: false"
+        default: "false"
+        type: string
       helm-chart:
         description: "The name of the helm chart to update. If not set, no chart update will be done. Default: empty"
         default: ""
@@ -43,9 +47,9 @@ on:
         description: "Use the greenbonebot token as registry login. Default: false"
         default: "false"
         type: string
-      build-arg-greenbonebot:
-        description: "Set the greenbonebot token as image build arg. Default: false"
-        default: "false"
+      notify:
+        description: "Enable mattermost notify. Default: true"
+        default: "true"
         type: string
         
     secrets:
@@ -105,7 +109,7 @@ jobs:
     needs:
       - building-container
       - building-helm-chart
-    if: ${{ !cancelled() && startsWith(github.ref, 'refs/tags/v') }}
+    if: ${{ !cancelled() && startsWith(github.ref, 'refs/tags/v')  && startsWith(inputs.notify, 'true') }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
     with:
       status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
