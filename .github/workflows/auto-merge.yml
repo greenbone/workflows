@@ -1,4 +1,4 @@
-name: Activate Auto-Merge (Squash) on a PR
+name: Activate Auto-Merge on a PR
 
 on: 
   pull_request_target:
@@ -6,6 +6,12 @@ on:
     secrets:
       GREENBONE_BOT_TOKEN:
         required: true
+    inputs:
+      merge-type:
+        description: "What type of merge, do you want to do? [squash, rebase] default: squash"
+        default: "sqash"
+        required: false
+        type: string
 
 
 permissions:
@@ -17,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Enable auto-merge for open PRs
-        run: gh pr merge --auto --squash "$PR_URL"
+        run: gh pr merge --auto ${{ inputs.merge-type }} "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GREENBONE_BOT_TOKEN}}
