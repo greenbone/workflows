@@ -624,7 +624,8 @@ Inputs:
 | image-labels | Image labels. | Required |
 | image-url | Image url/name without registry. | Required |
 | image-platforms | Image platforms to build for. Default "linux/amd64" | Optional |
-| use-greenbonebot | Use the greenbonebot token as registry login. Default "false" | Optional |
+| use-greenbonebot | Use the greenbonebot token as registry login. Default false | Optional |
+| notify | Enable mattermost notify. Default: true  | Optional |
 
 Outputs:
 
