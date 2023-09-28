@@ -24,7 +24,7 @@ on:
         default: "false"
         type: string
       build-secret-greenbonebot:
-        description: "Set the greenbonebot token as image build secret. Default is false"
+        description: "Set the GREENBONE_BOT_PACKAGES_READ_TOKEN as image build secret. Default is false"
         default: "false"
         type: string
       helm-chart:
@@ -67,6 +67,8 @@ on:
         required: false
       GREENBONE_BOT:
         required: false
+      GREENBONE_BOT_PACKAGES_READ_TOKEN:
+        required: false
       GREENBONE_BOT_PACKAGES_WRITE_TOKEN:
         required: false
       GREENBONE_BOT_TOKEN:
@@ -94,7 +96,7 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ contains(inputs.build-arg-greenbonebot, 'true') && format('GREENBONE_BOT_TOKEN={0}', secrets.GREENBONE_BOT_TOKEN) || inputs.build-args }}
-          build-secrets: ${{ contains(inputs.build-secret-greenbonebot, 'true') && format('GREENBONE_BOT_TOKEN={0}', secrets.GREENBONE_BOT_TOKEN) || inputs.build-secrets }}
+          build-secrets: ${{ contains(inputs.build-secret-greenbonebot, 'true') && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN) || inputs.build-secrets }}
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
           image-url: ${{ inputs.image-url }}
