@@ -4,27 +4,35 @@ on:
   workflow_call:
     inputs:
       build-context:
-        description: "Path to image build context. Default: ."
+        description: "Path to image build context. Default is ."
         default: .
         type: string
       build-docker-file:
-        description: "Path to the docker file. Default: ./Dockerfile"
+        description: "Path to the docker file. Default is ./Dockerfile"
         default: ./Dockerfile
         type: string
       build-args:
-        description: "Use these build-args for the docker build process. It is not possible to use secrets in here! Use the action."
+        description: "Use these build-args for the docker build process. It is not possible to use github secrets in here! Use the action."
+        default: ""
+        type: string
+      build-secrets:
+        description: "Use these build-secrets for the docker build process. It is not possible to use github secrets in here! Use the action."
         default: ""
         type: string
       build-arg-greenbonebot:
-        description: "Set the greenbonebot token as image build arg. Default: false"
+        description: "Set the greenbonebot token as image build arg. Default is false"
+        default: "false"
+        type: string
+      build-secret-greenbonebot:
+        description: "Set the greenbonebot token as image build secret. Default is false"
         default: "false"
         type: string
       helm-chart:
-        description: "The name of the helm chart to update. If not set, no chart update will be done. Default: empty"
+        description: "The name of the helm chart to update. If not set, no chart update will be done. Default is empty"
         default: ""
         type: string
       init-container:
-        description: "Update the tag from an init container. Set the parent key from the values.yaml. Default: empty"
+        description: "Update the tag from an init container. Set the parent key from the values.yaml. Default is empty"
         type: string
         required: false
       init-container-digest:
@@ -40,15 +48,15 @@ on:
         required: true
         type: string
       image-platforms:
-        description: "Image platforms to build for. Default: linux/amd64"
+        description: "Image platforms to build for. Default is linux/amd64"
         default: linux/amd64
         type: string
       use-greenbonebot:
-        description: "Use the greenbonebot token as registry login. Default: false"
+        description: "Use the greenbonebot token as registry login. Default is false"
         default: "false"
         type: string
       notify:
-        description: "Enable mattermost notify. Default: true"
+        description: "Enable mattermost notify. Default is true"
         default: "true"
         type: string
         
@@ -86,6 +94,7 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ contains(inputs.build-arg-greenbonebot, 'true') && format('GREENBONE_BOT_TOKEN={0}', secrets.GREENBONE_BOT_TOKEN) || inputs.build-args }}
+          build-secrets: ${{ contains(inputs.build-secret-greenbonebot, 'true') && format('GREENBONE_BOT_TOKEN={0}', secrets.GREENBONE_BOT_TOKEN) || inputs.build-secrets }}
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
           image-url: ${{ inputs.image-url }}
