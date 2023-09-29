@@ -9,7 +9,7 @@ on:
     inputs:
       merge-type:
         description: "What type of merge, do you want to do? [squash, rebase] default: squash"
-        default: "sqash"
+        default: "squash"
         required: false
         type: string
 
