@@ -49,6 +49,7 @@ jobs:
           contains(github.event.pull_request.labels.*.name, 'rc release') ||
           contains(github.event.pull_request.labels.*.name, 'patch release') ||
           contains(github.event.pull_request.labels.*.name, 'minor release') ||
+          contains(github.event.pull_request.labels.*.name, 'calendar release') ||
           contains(github.event.pull_request.labels.*.name, 'major release')) &&
           github.event.pull_request.merged == true )
     runs-on: 'ubuntu-latest'
@@ -69,6 +70,9 @@ jobs:
       - if: contains(github.event.pull_request.labels.*.name, 'alpha release')
         run: |
           echo "RELEASE_TYPE=alpha" >> $GITHUB_ENV
+      - if: contains(github.event.pull_request.labels.*.name, 'calendar release')
+        run: |
+          echo "RELEASE_TYPE=calendar" >> $GITHUB_ENV
       - name: Workflow_dispatch RELEASE_TYPE
         if: github.event_name == 'workflow_dispatch'
         run: |
