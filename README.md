@@ -596,6 +596,7 @@ permissions:
   contents: read
   packages: write
   id-token: write
+  pull-requests: write
 
 jobs:
   building:
