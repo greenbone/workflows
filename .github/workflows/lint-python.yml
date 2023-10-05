@@ -21,7 +21,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
-      - name: Install and check with black, pylint and pontos.version
+      - name: Check and lint python packages
         uses: greenbone/actions/lint-python@v3
         with:
           packages: ${{ inputs.lint-packages }}
