@@ -71,6 +71,10 @@ on:
         required: false
       MATTERMOST_WEBHOOK_URL:
         required: false
+      DOCKERHUB_USERNAME:
+        required: false
+      DOCKERHUB_TOKEN:
+        required: false
 
     outputs:
       digest:
@@ -99,7 +103,9 @@ jobs:
           image-labels: ${{ inputs.image-labels }}
           image-platforms: ${{ inputs.image-platforms }}
           registry-password: ${{ contains(inputs.use-greenbonebot, 'true') && secrets.GREENBONE_BOT_TOKEN || secrets.GITHUB_TOKEN }}
-
+          scout-user: ${{ secrets.DOCKERHUB_USERNAME }}
+          scout-password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
   building-helm-chart:
     if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
     needs:
