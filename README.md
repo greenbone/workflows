@@ -627,6 +627,7 @@ Inputs:
 | image-platforms | Image platforms to build for. Default is "linux/amd64" | Optional |
 | use-greenbonebot | Use the greenbonebot token as registry login. Default is false | Optional |
 | notify | Enable mattermost notify. Default is true  | Optional |
+| scout | Enable docker scout sbom. Default is false  | Optional |
 
 Outputs:
 
