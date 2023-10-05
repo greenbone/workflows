@@ -23,7 +23,7 @@ on:
         description: "Image url/name without registry."
         type: string
         required: true
-      image-platforms: 
+      image-platforms:
         description: "Image platforms to build for. Default: linux/amd64"
         type: string
         default: linux/amd64
@@ -39,7 +39,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Container build and push 3rd gen
-        uses: greenbone/actions/container-build-push-3rd-gen@v3
+        uses: greenbone/actions/container-build-push-3rd-gen@pholthaus/docker-scout
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
