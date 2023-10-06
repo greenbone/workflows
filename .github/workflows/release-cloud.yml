@@ -4,11 +4,10 @@ on:
   workflow_call:
     inputs:
       git-tag-prefix:
-        description: "Set git tag prefix to the passed input. Default: ''"
-        default: ""
+        description: "Ignored. Always `''`"
         type: string
       release-type:
-        description: "Release type. One of alpha, patch, minor, major, release-candidate"
+        description: "Ignored. Always calendar."
         type: string
       release-version:
         description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
@@ -32,10 +31,12 @@ jobs:
     name: Create a new release
     uses: ./.github/workflows/release-generic.yml
     with:
-      git-tag-prefix: ${{ inputs.git-tag-prefix }}
-      release-type: ${{ inputs.release-type }}
+      git-tag-prefix: ""
+      release-type: "calendar"
       release-version: ${{ inputs.release-version }}
       versioning-scheme: "pep440"
+      github-pre-release: "true"
+      next-version: "false"
     secrets:
       GREENBONE_BOT: ${{ secrets.GREENBONE_BOT }}
       GREENBONE_BOT_MAIL: ${{ secrets.GREENBONE_BOT_MAIL }}
