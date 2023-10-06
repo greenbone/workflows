@@ -23,7 +23,7 @@ on:
         description: "Image url/name without registry."
         type: string
         required: true
-      image-platforms: 
+      image-platforms:
         description: "Image platforms to build for. Default: linux/amd64"
         type: string
         default: linux/amd64
