@@ -21,6 +21,12 @@ on:
         description: "Update version in project files like `pyproject.toml`. Default is 'true'."
         default: "true"
         type: string
+      next-version:
+        description: "Set an explicit version that should be used after the release. Leave empty for determining the next version automatically. Set to 'false' for not updating the version after a release."
+        type: string
+      github-pre-release:
+        description: "Set to `'true'` to enforce uploading the release to GitHub as a pre-release"
+        type: string
     secrets:
       GREENBONE_BOT:
         required: true
@@ -103,3 +109,5 @@ jobs:
           ref: ${{ steps.ref.outputs.release_ref }}
           versioning-scheme: ${{ inputs.versioning-scheme }}
           update-project: ${{ inputs.update-project }}
+          next-version: ${{ inputs.next-version }}
+          github-pre-release: ${{ inputs.github-pre-release }}
