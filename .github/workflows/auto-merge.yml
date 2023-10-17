@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       mode:
-        description: "Select merge mode, default is squash"
+        description: "Select merge mode. Options are squash and rebase. Default is squash"
         default: "squash"
         type: string
     secrets:
