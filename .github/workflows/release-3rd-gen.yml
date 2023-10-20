@@ -36,6 +36,7 @@ on:
 jobs:
   build-and-release:
     name: Create a new release
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.ref == 'refs/heads/main')
     uses: ./.github/workflows/release-generic.yml
     with:
       release-type: ${{ inputs.release-type }}
@@ -52,7 +53,13 @@ jobs:
 
   notify:
     needs: build-and-release
-    if: ${{ !cancelled() }}
+    if: > 
+      ${{ !cancelled() && (
+        github.event_name == 'workflow_dispatch' || 
+        (github.event_name == 'pull_request' && 
+        github.event.pull_request.merged == true && 
+        github.ref == 'refs/heads/main')
+      )}}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
     with:
       status: ${{ needs.build-and-release.result }}
