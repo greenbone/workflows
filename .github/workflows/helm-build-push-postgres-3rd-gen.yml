@@ -1,0 +1,60 @@
+name: Release 3rd gen Postgres Helm Chart
+
+on:
+  workflow_call:
+    inputs:
+      chart:
+        description: "The name of the helm chart to release."
+        type: string
+        required: true
+      chart-version:
+        description: "The version of the helm chart to release."
+        type: string
+        required: true
+      image-tag:
+        description: "The image tag with digest of the container image to use in release."
+        type: string
+        required: true
+    # Dependabot don't have this secrets and on PR's this secrets are not needed.
+    secrets:
+      GREENBONE_BOT:
+        required: false
+      GREENBONE_BOT_PACKAGES_WRITE_TOKEN:
+        required: false
+      GREENBONE_BOT_TOKEN:
+        required: false
+
+jobs:
+  release-helm-chart:
+    name: Release Postgres Helm Chart
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run helm version upgrade
+        uses: greenbone/actions/helm-version-upgrade@v3
+        with:
+          chart-path: ${{ github.workspace }}/charts/${{ inputs.chart }}
+          chart-version: ${{ inputs.chart-version }}
+          image-tag: ${{ inputs.image-tag }}
+      - name: Print Chart.yaml
+        run: |
+          cat '${{ github.workspace }}/charts/${{ inputs.chart }}/Chart.yaml'
+      - name: Print values.yaml
+        run: |
+          cat '${{ github.workspace }}/charts/${{ inputs.chart }}/values.yaml'
+      - name: Upload to github registry
+        uses: greenbone/actions/helm-build-push@v3
+        with:
+          chart-name: ${{ inputs.chart }}
+          registry: ${{ vars.IMAGE_REGISTRY }}
+          registry-subpath: "helm-charts/"
+          registry-user: ${{ secrets.GREENBONE_BOT }}
+          registry-token: ${{ secrets.GREENBONE_BOT_PACKAGES_WRITE_TOKEN }}
+      - name: Trigger product helm chart upgrade
+        uses: greenbone/actions/trigger-workflow@v3
+        with:
+          token: ${{ secrets.GREENBONE_BOT_TOKEN }}
+          repository: "greenbone/product-helm-chart"
+          workflow: product-chart-upgrade.yml
+          inputs: '{"chart": "${{ inputs.chart }}", "tag": "v${{ inputs.chart-version }}"}'
