@@ -1,12 +1,12 @@
 name: Activate Auto-Merge (Squash) on a PR
 
-on: 
+on:
   pull_request_target:
   workflow_call:
     inputs:
       mode:
-        description: "Select merge mode. Options are squash and rebase. Default is squash"
-        default: "squash"
+        description: "Select merge mode. Options are squash and rebase. Default is rebase"
+        default: "rebase"
         type: string
     secrets:
       GREENBONE_BOT_TOKEN:
@@ -24,11 +24,11 @@ jobs:
     steps:
       - name: Enable auto-merge for open PRs
         run: |
-          if [ "${{ inputs.mode }}" == "squash" ]; then
-            gh pr merge --auto --squash "$PR_URL"
-          else
+          if [ "${{ inputs.mode }}" == "rebase" ]; then
             gh pr merge --auto --rebase "$PR_URL"
-          fi  
+          else
+            gh pr merge --auto --squash "$PR_URL"
+          fi
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GREENBONE_BOT_TOKEN}}
