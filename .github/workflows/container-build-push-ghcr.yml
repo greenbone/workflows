@@ -48,5 +48,5 @@ jobs:
           image-labels: ${{ inputs.image-labels }}
           image-tags: ${{ inputs.image-tags }}
           image-platforms: ${{ inputs.image-platforms }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          registry-username: ${{ secrets.AZURE_USER }}
+          registry-password: ${{ secrets.AZURE_TOKEN }}
