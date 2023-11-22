@@ -27,6 +27,10 @@ on:
         required: false
       GREENBONE_BOT_TOKEN:
         required: false
+      AZURE_TOKEN:
+        required: false
+      AZURE_USER:
+        required: false
 
 jobs:
   release-helm-chart:
@@ -66,8 +70,8 @@ jobs:
           chart-name: ${{ inputs.chart }}
           registry: ${{ vars.IMAGE_REGISTRY }}
           registry-subpath: helm-charts/
-          registry-user: ${{ secrets.GREENBONE_BOT }}
-          registry-token: ${{ secrets.GREENBONE_BOT_PACKAGES_WRITE_TOKEN }}
+          registry-user: ${{ secrets.AZURE_USER }}
+          registry-token: ${{ secrets.AZURE_TOKEN }}
       - name: Trigger product helm chart upgrade
         uses: greenbone/actions/trigger-workflow@v3
         with:
