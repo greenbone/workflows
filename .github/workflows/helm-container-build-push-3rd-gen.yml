@@ -61,7 +61,28 @@ on:
         type: string
         
     secrets:
-      inherit
+      COSIGN_KEY_OPENSIGHT:
+        required: false
+      COSIGN_KEY_PASSWORD_OPENSIGHT:
+        required: false
+      GREENBONE_BOT:
+        required: false
+      GREENBONE_BOT_PACKAGES_READ_TOKEN:
+        required: false
+      GREENBONE_BOT_PACKAGES_WRITE_TOKEN:
+        required: false
+      GREENBONE_BOT_TOKEN:
+        required: false
+      MATTERMOST_WEBHOOK_URL:
+        required: false
+      DOCKERHUB_USERNAME:
+        required: false
+      DOCKERHUB_TOKEN:
+        required: false
+      AZURE_TOKEN:
+        required: false
+      AZURE_USER:
+        required: false
 
     outputs:
       digest:
