@@ -39,7 +39,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Container build and push 3rd gen
-        uses: greenbone/actions/container-build-push-3rd-gen@v3
+        uses: greenbone/actions/container-build-push-3rd-gen@y0urself/adjust-docker-build-push
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
@@ -49,4 +49,5 @@ jobs:
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-platforms: ${{ inputs.image-platforms }}
+          image-registry: ${{ vars.IMAGE_REGISTRY}}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
