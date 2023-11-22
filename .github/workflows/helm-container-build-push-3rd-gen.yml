@@ -111,6 +111,7 @@ jobs:
           image-labels: ${{ inputs.image-labels }}
           image-platforms: ${{ inputs.image-platforms }}
           image-registry: ${{ vars.IMAGE_REGISTRY}}
+          image-registry-user: ${{ secrets.AZURE_USER }}
           registry-password: ${{ secrets.AZURE_TOKEN }}
           scout-user: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_USERNAME || '' }}
           scout-password: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_TOKEN || '' }}
