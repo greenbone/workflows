@@ -378,44 +378,6 @@ Inputs:
 | release-version | An explicit release version. If not set the release version will be determined from the current tag and the release type | Optional |
 | versioning-scheme | Versioning scheme to use. | Optional (default: `"semver"`) |
 
-### Helm Build/Push
-
-```yaml
-name: Helm chart release on tag
-
-on:
-  push:
-    tags: ["v*"]
-
-jobs:
-  release-helm-chart:
-    name: Release helm chart
-    strategy:
-      fail-fast: false
-      matrix:
-        chart:
-          - foo
-          - bar
-    uses: greenbone/workflows/.github/workflows/helm-build-push.yml@main
-    with:
-      chart: ${{ matrix.chart }}
-    secrets: inherit
-```
-
-Secrets:
-
-| Name | Description | |
-|------|-------------|-|
-| GREENBONE_BOT | Username of the Greenbone Bot Account | Required |
-| GREENBONE_BOT_PACKAGES_WRITE_TOKEN | Token to upload packages to ghcr.io | Required |
-| GREENBONE_BOT_TOKEN | Token to trigger product helm chart updates | Required |
-
-Inputs:
-
-| Name | Description | |
-|------|-------------|-|
-| chart | Helm Chart to update | Required |
-
 ### Helm Build/Push 3rd gen
 
 Helm build push workflow that add's the container digest after the container tag.
@@ -492,93 +454,6 @@ Inputs:
 | source | Directory containing the sources for the documentation | Optional (default: `"docs"`) |
 | build | Directory containing the build of the documentation | Optional (default: `"docs/build/html"`) |
 | environment-name | Name of the deployment environment | Optional (default: `"github-pages"`) |
-
-### Build and push container images to ghcr.io or docker.io
-
-A workflow to build and push container images to ghcr.io or docker.io.
-
-```yml
-name: Build Container Image Builds
-
-on:
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  packages: write
-  id-token: write
-
-jobs:
-  building:
-    name: Build Container Image
-    # ghcr.io
-    uses: greenbone/workflows/.github/workflows/container-build-push-ghcr.yml@main
-    # docker.io
-    #uses: greenbone/workflows/.github/workflows/container-build-push-docker.yml@main
-    with:
-      image-url: ${{ vars.IMAGE_REGISTRY }}/${{ github.repository }}
-      image-labels: |
-        org.opencontainers.image.vendor=Greenbone
-        org.opencontainers.image.base.name=alpine/latest
-      image-tags: |
-        # create container tag for git tags
-        type=ref,event=tag,value=latest
-        type=match,pattern=v(.*),group=1
-        type=ref,event=pr
-        # use unstable for main branch
-        type=raw,value=unstable,enable={{is_default_branch}}
-    secrets: inherit
-```
-
-Inputs:
-
-| Name | Description | |
-|------|-------------|-|
-| image-labels | Image labels. | Required |
-| image-url | Image url/name without registry. | Required |
-| image-tags | Image tags. | Required |
-| image-platforms | Image platforms to build for. Default "linux/amd64" | Optional |
-| build-context | Path to image build context. Default "." | Optional |
-| build-docker-file | Path to the docker file. Default "./Dockerfile" | Optional |
-| build-args | Use these build-args for the docker build process. | Optional |
-
-### Build and push container images 3rd gen
-
-A workflow to build and push container images to 3rd gen.
-
-```yml
-name: Build Container Image Builds
-
-on:
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  packages: write
-  id-token: write
-
-jobs:
-  building:
-    name: Build Container Image
-    uses: greenbone/workflows/.github/workflows/container-build-push-3rd-gen.yml@main
-    with:
-      image-url: ${{ vars.IMAGE_REGISTRY }}/${{ github.repository }}
-      image-labels: |
-        org.opencontainers.image.vendor=Greenbone
-        org.opencontainers.image.base.name=alpine/latest
-    secrets: inherit
-```
-
-Inputs:
-
-| Name | Description | |
-|------|-------------|-|
-| image-labels | Image labels. | Required |
-| image-url | Image url/name without registry. | Required |
-| image-platforms | Image platforms to build for. Default "linux/amd64" | Optional |
-| build-context | Path to image build context. Default "." | Optional |
-| build-docker-file | Path to the docker file. Default "./Dockerfile" | Optional |
-| build-args | Use these build-args for the docker build process. | Optional |
 
 ### Build and push 3rd gen container images and related helm chart
 
@@ -743,7 +618,7 @@ on:
   workflow_dispatch
 
 jobs:
-  building: 
+  building:
     ...
   building2:
     ...
