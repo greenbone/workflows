@@ -7,6 +7,10 @@ on:
         description: "The name of the helm chart to update."
         type: string
         required: true
+      chart-version:
+        description: "The service chart version to set."
+        type: string
+        required: false
       container-digest:
         description: "The container digest for the helm chart tag."
         type: string
@@ -38,7 +42,7 @@ jobs:
       - name: Get version from tag
         id: version
         run: |
-          vtag='${{ github.ref_name }}'
+          vtag='${{ inputs.chart-version }}'
           echo "tag=${vtag:1}" >> $GITHUB_OUTPUT
       - name: Run helm version upgrade
         uses: greenbone/actions/helm-version-upgrade@v3

@@ -117,7 +117,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/product-helm-chart"
           workflow: "service-chart-upgrade.yml"
-          inputs: '{"chart": "${{ inputs.helm-chart }}", "container-digest": "${{ steps.build-and-push.outputs.digest }}", "init-container": "${{ inputs.init-container }}", "init-container-digest": "${{ inputs.init-container-digest }}"}'
+          inputs: '{"chart": "${{ inputs.helm-chart }}", "chart-version": "${{ github.ref_name }}", "container-digest": "${{ steps.build-and-push.outputs.digest }}", "init-container": "${{ inputs.init-container }}", "init-container-digest": "${{ inputs.init-container-digest }}"}'
 
   notify:
     needs:
