@@ -110,7 +110,7 @@ jobs:
           scout-user: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_USERNAME || '' }}
           scout-password: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_TOKEN || '' }}
 
-      - name: Trigger product helm chart upgrade
+      - name: Trigger service helm chart upgrade
         if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
         uses: greenbone/actions/trigger-workflow@v3
         with:
