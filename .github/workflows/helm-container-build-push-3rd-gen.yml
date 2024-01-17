@@ -59,7 +59,7 @@ on:
         description: "Enable docker scout sbom. Default is false"
         default: "false"
         type: string
-        
+
     secrets:
       COSIGN_KEY_OPENSIGHT:
         required: false
@@ -109,18 +109,15 @@ jobs:
           registry-password: ${{ contains(inputs.use-greenbonebot, 'true') && secrets.GREENBONE_BOT_TOKEN || secrets.GITHUB_TOKEN }}
           scout-user: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_USERNAME || '' }}
           scout-password: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_TOKEN || '' }}
-          
-  building-helm-chart:
-    if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
-    needs:
-      - building-container
-    uses: greenbone/workflows/.github/workflows/helm-build-push-3rd-gen.yml@main
-    with:
-      chart: ${{ inputs.helm-chart }}
-      container-digest: ${{ needs.building-container.outputs.digest }}
-      init-container: ${{ inputs.init-container }}
-      init-container-digest: ${{ inputs.init-container-digest }}
-    secrets: inherit
+
+      - name: Trigger product helm chart upgrade
+        if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
+        uses: greenbone/actions/trigger-workflow@v3
+        with:
+          token: ${{ secrets.GREENBONE_BOT_TOKEN }}
+          repository: "greenbone/product-helm-chart"
+          workflow: service-chart-upgrade.yml
+          inputs: '{"chart": "${{ inputs.helm-chart }}", "container-digest": "${{ needs.building-container.outputs.diges }}", "init-container": "${{ inputs.init-container }}", "init-container-digest": "${{ inputs.init-container-digest }}"}'
 
   notify:
     needs:
