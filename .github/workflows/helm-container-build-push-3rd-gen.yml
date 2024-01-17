@@ -133,7 +133,7 @@ jobs:
           workflow: "product-chart-upgrade.yml"
           inputs: '{"chart": "${{ inputs.helm-chart }}", "tag": "${{ github.ref_name }}"}'
 
-notify:
+  notify:
     needs:
       - building-container
       - building-chart
