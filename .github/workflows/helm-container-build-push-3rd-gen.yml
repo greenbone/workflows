@@ -118,7 +118,7 @@ jobs:
           ref: "pholthaus/all-for-one-helm"
           repository: "greenbone/product-helm-chart"
           workflow: service-chart-upgrade.yml
-          inputs: '{"chart": "${{ inputs.helm-chart }}", "container-digest": "${{ needs.building-container.outputs.diges }}", "init-container": "${{ inputs.init-container }}", "init-container-digest": "${{ inputs.init-container-digest }}"}'
+          inputs: '{"chart": "${{ inputs.helm-chart }}", "container-digest": "${{ steps.build-and-push.outputs.digest }}", "init-container": "${{ inputs.init-container }}", "init-container-digest": "${{ inputs.init-container-digest }}"}'
 
   notify:
     needs:
