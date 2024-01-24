@@ -378,42 +378,6 @@ Inputs:
 | release-version | An explicit release version. If not set the release version will be determined from the current tag and the release type | Optional |
 | versioning-scheme | Versioning scheme to use. | Optional (default: `"semver"`) |
 
-### Helm Build/Push 3rd gen
-
-Helm build push workflow that add's the container digest after the container tag.
-
-```yaml
-name: Helm chart release on tag
-
-on:
-  push:
-    tags: ["v*"]
-
-jobs:
-  release-helm-chart:
-    name: Release helm chart
-    uses: greenbone/workflows/.github/workflows/helm-build-push-3rd-gen.yml@main
-    with:
-      chart: myChart
-      container-digest: containerDigest
-    secrets: inherit
-```
-
-Secrets:
-
-| Name | Description | |
-|------|-------------|-|
-| GREENBONE_BOT | Username of the Greenbone Bot Account | Required |
-| GREENBONE_BOT_PACKAGES_WRITE_TOKEN | Token to upload packages to ghcr.io | Required |
-| GREENBONE_BOT_TOKEN | Token to trigger product helm chart updates | Required |
-
-Inputs:
-
-| Name | Description | |
-|------|-------------|-|
-| chart | Helm Chart to update | Required |
-| container-digest | The container digest for the helm chart tag. | Required |
-
 ### Deploy docs on GitHub Pages
 
 A workflow to generate a Python documentation and deploy it on GitHub Pages.
