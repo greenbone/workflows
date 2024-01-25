@@ -4,10 +4,18 @@ on:
   workflow_call:
     secrets:
       PYPI_TOKEN:
+    inputs:
+      pypi-url:
+        description: 'URL to the project on PyPI.org'
+        required: false
+        type: string
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: ${{ inputs.pypi-url }}
     steps:
       - name: Build and publish to PyPI
         uses: greenbone/actions/pypi-upload@v3

@@ -186,7 +186,10 @@ Inputs:
 
 ### Deploy on PyPI
 
-A workflow to deploy a Python package on [PyPI](https://www.pypi.org).
+A workflow to deploy a Python package on [PyPI](https://www.pypi.org). It
+requires a `pypi` [GitHub Environment](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
+
+Example using `secrets.PYPI_TOKEN`:
 
 ```yml
 name: Deploy on PyPI
@@ -201,11 +204,28 @@ jobs:
     secrets: inherit
 ```
 
+Example using [trusted publisher](https://docs.pypi.org/trusted-publishers/):
+
+```yml
+name: Deploy on PyPI
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    permissions:
+      id-token: write
+    uses: greenbone/workflows/.github/workflows/deploy-pypi.yml@main
+```
+
 Secrets:
 
 | Name       | Description                                          |          |
 | ---------- | ---------------------------------------------------- | -------- |
 | PYPI_TOKEN | Token with permissions to upload the package to PyPI | Optional |
+| pypi-url   | URL to the project on PyPI.org                       | Optional |
 
 ### Codecov Python
 
