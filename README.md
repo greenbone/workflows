@@ -203,9 +203,9 @@ jobs:
 
 Secrets:
 
-| Name | Description | |
-|------|-------------|-|
-| PYPI_TOKEN | Token with permissions to upload the package to PyPI | Required |
+| Name       | Description                                          |          |
+| ---------- | ---------------------------------------------------- | -------- |
+| PYPI_TOKEN | Token with permissions to upload the package to PyPI | Optional |
 
 ### Codecov Python
 
