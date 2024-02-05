@@ -472,27 +472,27 @@ jobs:
 
 Inputs:
 
-| Name | Description | |
-|------|-------------|-|
-| build-context | Path to image build context. Default is "." | Optional |
-| build-docker-file | Path to the docker file. Default is "./Dockerfile" | Optional |
-| build-args | Use these build-args for the docker build process. Default is empty | Optional |
-| build-secrets | Use these build-secrets for the docker build process. Default is empty | Optional |
-| build-secret-greenbonebot | Set the GREENBONE_BOT_PACKAGES_READ_TOKEN as image build secret. Default is false | Optional |
-| helm-chart | The name of the helm chart to update. If not set, no chart update will be done. Default is empty | Optional |
-| init-container | Update the tag from an init container. Set the parent key from the values.yaml. Default is empty | Optional |
-| init-container-digest| The init container digest for the helm chart tag. Default is empty | Optional |
-| image-labels | Image labels. | Required |
-| image-url | Image url/name without registry. | Required |
-| image-platforms | Image platforms to build for. Default is "linux/amd64" | Optional |
-| use-greenbonebot | Use the greenbonebot token as registry login. Default is false | Optional |
-| notify | Enable mattermost notify. Default is true  | Optional |
-| scout | Enable docker scout sbom. Default is false  | Optional |
+| Name                      | Description                                                                                      |          |
+|---------------------------|--------------------------------------------------------------------------------------------------|----------|
+| build-context             | Path to image build context. Default is "."                                                      | Optional |
+| build-docker-file         | Path to the docker file. Default is "./Dockerfile"                                               | Optional |
+| build-args                | Use these build-args for the docker build process. Default is empty                              | Optional |
+| build-secrets             | Use these build-secrets for the docker build process. Default is empty                           | Optional |
+| build-secret-greenbonebot | Set the GREENBONE_BOT_PACKAGES_READ_TOKEN as image build secret. Default is false                | Optional |
+| helm-chart                | The name of the helm chart to update. If not set, no chart update will be done. Default is empty | Optional |
+| init-container            | Update the tag from an init container. Set the parent key from the values.yaml. Default is empty | Optional |
+| init-container-digest     | The init container digest for the helm chart tag. Default is empty                               | Optional |
+| image-labels              | Image labels.                                                                                    | Required |
+| image-url                 | Image url/name without registry. Default is github.repository                                    | Optional |
+| image-platforms           | Image platforms to build for. Default is "linux/amd64"                                           | Optional |
+| use-greenbonebot          | Use the greenbonebot token as registry login. Default is false                                   | Optional |
+| notify                    | Enable mattermost notify. Default is true                                                        | Optional |
+| scout                     | Enable docker scout sbom. Default is false                                                       | Optional |
 
 Outputs:
 
-| Name | Description |
-|------|-------------|
+| Name   | Description           |
+|--------|-----------------------|
 | digest | The container digest. |
 
 ### Notify Mattermost Feed Deployment
