@@ -95,7 +95,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Container build and push 3rd gen
         id: build-and-push
-        uses: greenbone/actions/container-build-push-3rd-gen@v3
+        uses: greenbone/actions/container-build-push-generic@v3
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
