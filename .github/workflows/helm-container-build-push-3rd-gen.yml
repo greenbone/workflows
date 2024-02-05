@@ -40,7 +40,7 @@ on:
         required: true
         type: string
       image-url:
-        description: "Image url/name without registry."
+        description: "Image url/name without registry. Default is github.repository"
         default: "${{ github.repository }}"
         type: string
       image-platforms:
