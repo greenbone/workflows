@@ -103,9 +103,20 @@ jobs:
           build-secrets: ${{ contains(inputs.build-secret-greenbonebot, 'true') && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN) || inputs.build-secrets }}
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
+          # The tlog function does not currently support an ed25519 key.
+          cosign-tlog-upload: "false"
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
+          image-tags: |
+            # create container tag for git tags
+            type=ref,event=tag,value=latest
+            type=match,pattern=v(.*),group=1
+            type=ref,event=pr
+            # use unstable for main branch
+            type=raw,value=unstable,enable={{is_default_branch}}
           image-platforms: ${{ inputs.image-platforms }}
+          registry: "ghcr.io"
+          registry-username: ${{ github.actor }}
           registry-password: ${{ contains(inputs.use-greenbonebot, 'true') && secrets.GREENBONE_BOT_TOKEN || secrets.GITHUB_TOKEN }}
           scout-user: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_USERNAME || '' }}
           scout-password: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_TOKEN || '' }}
