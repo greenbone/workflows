@@ -8,7 +8,11 @@ on:
         default: "v"
         type: string
       release-type:
+        description: "Release type. One of alpha, patch, minor, major, release-candidate and calendar. Default is calendar."
         default: "calendar"
+        type: string
+      release-version:
+        description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
         type: string
     secrets:
       GREENBONE_BOT:
@@ -28,18 +32,28 @@ on:
 jobs:
   build-and-release:
     name: Create a new release
-    # If the event is a workflow_dispatch or the label 'make release' is set and PR is closed because of a merge
-    if: (github.event_name == 'workflow_dispatch') || (contains( github.event.pull_request.labels.*.name, 'make release') && github.event.pull_request.merged == true)
+    # If the event is a workflow_dispatch or on of the labels 'pre release',
+    # 'patch release', 'minor release' or 'major release' is set and PR is
+    # closed because of a merge
+    # NOTE: priority of set labes will be alpha > release-candidate > patch > minor > major,
+    #       so if 'major' and 'patch' labes are set, it will create a patch release.
+    # make relase is supported for creating calendar releases
+    if: |
+      ( github.event_name == 'workflow_dispatch') || (
+        ( contains(github.event.pull_request.labels.*.name, 'alpha release') ||
+          contains(github.event.pull_request.labels.*.name, 'rc release') ||
+          contains(github.event.pull_request.labels.*.name, 'patch release') ||
+          contains(github.event.pull_request.labels.*.name, 'make release') ||
+          contains(github.event.pull_request.labels.*.name, 'minor release') ||
+          contains(github.event.pull_request.labels.*.name, 'major release')) &&
+          github.event.pull_request.merged == true )
     runs-on: "ubuntu-latest"
     steps:
-      - name: Setting the Reference
+      - name: Setting the reference and release type
         id: ref
-        run: |
-          if [[ "${{ github.event_name }}" = "workflow_dispatch" ]]; then
-            echo "release_ref=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          else
-            echo "release_ref=${{ github.base_ref }}" >> $GITHUB_OUTPUT
-          fi
+        uses: greenbone/actions/release-type@v3
+        with:
+          release-type-input: ${{ inputs.release-type }}
       - name: Release with release action
         uses: greenbone/actions/release@v3
         with:
@@ -50,5 +64,6 @@ jobs:
           gpg-key: ${{ secrets.GPG_KEY }}
           gpg-fingerprint: ${{ secrets.GPG_FINGERPRINT }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          release-type: ${{ inputs.release-type }}
-          ref: ${{ steps.ref.outputs.release_ref }}
+          release-type: ${{ steps.ref.outputs.release-type }}
+          release-version: ${{ inputs.release-version }}
+          ref: ${{ steps.ref.outputs.release-ref }}

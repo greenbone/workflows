@@ -8,7 +8,7 @@ on:
         default: "v"
         type: string
       release-type:
-        description: "Release type. One of alpha, patch, minor, major, release-candidate"
+        description: "Release type. One of alpha, patch, minor, major, release-candidate and calendar"
         type: string
       release-version:
         description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
@@ -49,51 +49,22 @@ jobs:
     # closed because of a merge
     # NOTE: priority of set labes will be alpha > release-candidate > patch > minor > major,
     #       so if 'major' and 'patch' labes are set, it will create a patch release.
+    # make relase is supported for creating calendar releases
     if: |
       ( github.event_name == 'workflow_dispatch') || (
         ( contains(github.event.pull_request.labels.*.name, 'alpha release') ||
           contains(github.event.pull_request.labels.*.name, 'rc release') ||
           contains(github.event.pull_request.labels.*.name, 'patch release') ||
+          contains(github.event.pull_request.labels.*.name, 'make release') ||
           contains(github.event.pull_request.labels.*.name, 'minor release') ||
-          contains(github.event.pull_request.labels.*.name, 'calendar release') ||
           contains(github.event.pull_request.labels.*.name, 'major release')) &&
           github.event.pull_request.merged == true )
     runs-on: 'ubuntu-latest'
     steps:
-      - name: Selecting the Release type
-        if: contains(github.event.pull_request.labels.*.name, 'major release')
-        run: |
-          echo "RELEASE_TYPE=major" >> $GITHUB_ENV
-      - if: contains(github.event.pull_request.labels.*.name, 'minor release')
-        run: |
-          echo "RELEASE_TYPE=minor" >> $GITHUB_ENV
-      - if: contains(github.event.pull_request.labels.*.name, 'patch release')
-        run: |
-          echo "RELEASE_TYPE=patch" >> $GITHUB_ENV
-      - if: contains(github.event.pull_request.labels.*.name, 'rc release')
-        run: |
-          echo "RELEASE_TYPE=release-candidate" >> $GITHUB_ENV
-      - if: contains(github.event.pull_request.labels.*.name, 'alpha release')
-        run: |
-          echo "RELEASE_TYPE=alpha" >> $GITHUB_ENV
-      - if: contains(github.event.pull_request.labels.*.name, 'calendar release')
-        run: |
-          echo "RELEASE_TYPE=calendar" >> $GITHUB_ENV
-      - name: Workflow_dispatch RELEASE_TYPE
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          echo "RELEASE_TYPE=${{ inputs.release-type }}" >> $GITHUB_ENV
-      - name: Echoing the release type
-        run: |
-          echo $RELEASE_TYPE
-      - name: Setting the Reference
-        id: ref
-        run: |
-          if [[ "${{ github.event_name }}" = "workflow_dispatch" ]]; then
-            echo "release_ref=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          else
-            echo "release_ref=${{ github.base_ref }}" >> $GITHUB_OUTPUT
-          fi
+      - uses: greenbone/actions/release-type@v3
+        id: release-type
+        with:
+          release-type-input: ${{ inputs.release-type }}
       - name: Release with release action
         uses: greenbone/actions/release@v3
         with:
@@ -104,9 +75,9 @@ jobs:
           gpg-key: ${{ secrets.GPG_KEY }}
           gpg-fingerprint: ${{ secrets.GPG_FINGERPRINT }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          release-type: ${{ env.RELEASE_TYPE }}
+          release-type: ${{ steps.release-type.outputs.release-type }}
           release-version: ${{ inputs.release-version }}
-          ref: ${{ steps.ref.outputs.release_ref }}
+          ref: ${{ steps.release-type.outputs.release-ref }}
           versioning-scheme: ${{ inputs.versioning-scheme }}
           update-project: ${{ inputs.update-project }}
           next-version: ${{ inputs.next-version }}
