@@ -56,6 +56,7 @@ jobs:
           contains(github.event.pull_request.labels.*.name, 'rc release') ||
           contains(github.event.pull_request.labels.*.name, 'patch release') ||
           contains(github.event.pull_request.labels.*.name, 'make release') ||
+          contains(github.event.pull_request.labels.*.name, 'calendar release') ||
           contains(github.event.pull_request.labels.*.name, 'minor release') ||
           contains(github.event.pull_request.labels.*.name, 'major release')) &&
           github.event.pull_request.merged == true )
