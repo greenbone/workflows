@@ -27,6 +27,12 @@ on:
         description: "The name of the helm chart to update. If not set, no chart update will be done. Default is empty"
         default: ""
         type: string
+      container-tag-parent:
+        description: |
+          "The parent dict name to update the image tag in."
+          "Set the parent key from the values.yaml. Default: empty"
+        type: string
+        required: false
       init-container:
         description: "Update the tag from an init container. Set the parent key from the values.yaml. Default is empty"
         type: string
@@ -133,7 +139,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/product-helm-chart"
           workflow: "service-chart-upgrade.yml"
-          inputs: '{"chart": "${{ inputs.helm-chart }}", "chart-version": "${{ github.ref_name }}", "container-digest": "${{ needs.building-container.outputs.digest }}", "init-container": "${{ inputs.init-container }}", "init-container-digest": "${{ inputs.init-container-digest }}"}'
+          inputs: '{"chart": "${{ inputs.helm-chart }}", "chart-version": "${{ github.ref_name }}", "container-digest": "${{ needs.building-container.outputs.digest }}", "container-tag-parent": "${{ inputs.container-tag-parent }}", "init-container": "${{ inputs.init-container }}", "init-container-digest": "${{ inputs.init-container-digest }}"}'
 
   building-product-chart:
     if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
