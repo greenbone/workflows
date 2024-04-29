@@ -44,8 +44,8 @@ on:
         default: "${{ github.repository }}"
         type: string
       image-platforms:
-        description: "Image platforms to build for. Default is linux/amd64,linux/arm64"
-        default: linux/amd64,linux/arm64
+        description: "Image platforms to build for. Default is linux/amd64"
+        default: linux/amd64
         type: string
       use-greenbonebot:
         description: "Use the greenbonebot token as registry login. Default is false"
