@@ -46,6 +46,12 @@ on:
       MATTERMOST_WEBHOOK_URL:
         required: false
 
+# INFO
+# We need to run the multi-platform builds in a matrix
+# because the Docker build process does not return
+# the image digest for multi-platform builds.
+# We need this digest for cosign.
+
 jobs:
   build:
     runs-on: self-hosted-generic
