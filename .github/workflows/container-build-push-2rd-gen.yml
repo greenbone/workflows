@@ -116,6 +116,7 @@ jobs:
           scout-user: ${{ secrets.DOCKERHUB_USERNAME }}
           scout-password: ${{ secrets.DOCKERHUB_TOKEN }}
           scout-command: cves
+          qemu: true
 
   notify:
     needs:
