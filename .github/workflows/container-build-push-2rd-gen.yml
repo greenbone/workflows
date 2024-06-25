@@ -54,14 +54,15 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted-generic
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
-
+        include:
+          - platform: linux/amd64
+            runner: self-hosted-generic
+          - platform: linux/arm64
+            runner: self-hosted-generic-arm64
+    runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
