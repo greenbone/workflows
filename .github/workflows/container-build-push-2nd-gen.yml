@@ -101,6 +101,7 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
             type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
+            type=raw,value=edge,enable=${{ inputs.ref-name == 'main' }}
           image-platforms: ${{ matrix.platform }}
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
@@ -161,6 +162,7 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
             type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
+            type=raw,value=edge,enable=${{ inputs.ref-name == 'main' }}
           image-platforms: ${{ matrix.platform }}
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
