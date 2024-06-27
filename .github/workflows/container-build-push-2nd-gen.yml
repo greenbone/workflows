@@ -179,7 +179,7 @@ jobs:
       - build-arm64
     steps:
       - name: Create multi arch manifest
-        uses: greenbone/actions/container-build-push-generic@pholthaus/container_manifest
+        uses: greenbone/actions/container-multi-arch-manifest@pholthaus/container_manifest
         with:
           tags: |
             ${{ needs.build-amd64.outputs.tags }}
