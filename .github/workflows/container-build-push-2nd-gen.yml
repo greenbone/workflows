@@ -27,6 +27,14 @@ on:
         description: "Enable mattermost notify. Default is true"
         default: "true"
         type: string
+      artifact-name:
+        description: "The artifact name to download."
+        required: false
+        type: string
+      artifact-path:
+        description: "The artifact path to extract the artifact into."
+        required: false
+        type: string
 
     secrets:
       COSIGN_KEY_OPENSIGHT:
@@ -64,6 +72,12 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           ref: ${{ inputs.ref-name }}
+
+      - uses: actions/download-artifact@v4
+        if: inputs.artifact-name
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-path }}
 
       - uses: greenbone/actions/is-latest-tag@v3
         id: latest
@@ -125,6 +139,12 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           ref: ${{ inputs.ref-name }}
+
+      - uses: actions/download-artifact@v4
+        if: inputs.artifact-name
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-path }}
 
       - uses: greenbone/actions/is-latest-tag@v3
         id: latest
