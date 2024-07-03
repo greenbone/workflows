@@ -65,6 +65,7 @@ jobs:
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
       tags: ${{ steps.build-and-push.outputs.tags }}
+      annotations: ${{ steps.build-and-push.outputs.annotations }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -105,9 +106,6 @@ jobs:
             VERSION=${{ steps.container-opts.outputs.version }}
             GVM_LIBS_VERSION=${{ steps.container-opts.outputs.gvm-libs-version }}
             IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
-          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
-          cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
-          cosign-tlog-upload: "false"
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: |
@@ -132,6 +130,7 @@ jobs:
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
       tags: ${{ steps.build-and-push.outputs.tags }}
+      annotations: ${{ steps.build-and-push.outputs.annotations }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -172,9 +171,6 @@ jobs:
             VERSION=${{ steps.container-opts.outputs.version }}
             GVM_LIBS_VERSION=${{ steps.container-opts.outputs.gvm-libs-version }}
             IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
-          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
-          cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
-          cosign-tlog-upload: "false"
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: |
@@ -204,6 +200,12 @@ jobs:
       - name: Create multi arch manifest
         uses: greenbone/actions/container-multi-arch-manifest@v3
         with:
+          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
+          cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
+          cosign-tlog-upload: "false"
+          annotations: |
+            ${{ needs.build-amd64.outputs.annotations }}
+            ${{ needs.build-arm64.outputs.annotations }}
           tags: |
             ${{ needs.build-amd64.outputs.tags }}
             ${{ needs.build-arm64.outputs.tags }}
