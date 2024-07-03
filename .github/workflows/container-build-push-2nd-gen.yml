@@ -126,6 +126,8 @@ jobs:
           scout-command: cves
 
   build-arm64:
+    # At the moment we don't have enough arm runners to provide a run for every PR!
+    if: github.event_name != 'pull_request'
     runs-on: self-hosted-generic-arm64
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
