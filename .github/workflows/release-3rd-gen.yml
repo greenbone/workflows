@@ -31,7 +31,7 @@ on:
       GPG_PASSPHRASE:
         required: false
       MATTERMOST_WEBHOOK_URL:
-        required: true
+        required: false
 
 jobs:
   build-and-release:
@@ -52,7 +52,7 @@ jobs:
 
   notify:
     needs: build-and-release
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && inputs.MATTERMOST_WEBHOOK_URL }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
     with:
       status: ${{ needs.build-and-release.result }}
