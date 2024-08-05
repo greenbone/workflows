@@ -150,6 +150,20 @@ jobs:
           workflow: "product-chart-upgrade.yml"
           inputs: '{"chart": "${{ inputs.helm-chart }}", "tag": "${{ github.ref_name }}"}'
 
+  building-product-compose:
+    if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
+    needs:
+      - building-container
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Trigger product helm chart upgrade
+        uses: greenbone/actions/trigger-workflow@v3
+        with:
+          token: ${{ secrets.GREENBONE_BOT_TOKEN }}
+          repository: "greenbone/product-helm-chart"
+          workflow: "product-chart-upgrade.yml"
+          inputs: '{"service": "${{ inputs.helm-chart }}", "version": "${{ github.ref_name }}"}'
+
   notify:
     needs:
       - building-container
