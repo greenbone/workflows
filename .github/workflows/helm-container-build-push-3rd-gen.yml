@@ -156,12 +156,12 @@ jobs:
       - building-container
     runs-on: "ubuntu-latest"
     steps:
-      - name: Trigger product helm chart upgrade
+      - name: Trigger product compose upgrade
         uses: greenbone/actions/trigger-workflow@v3
         with:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
-          repository: "greenbone/product-helm-chart"
-          workflow: "product-chart-upgrade.yml"
+          repository: "greenbone/automatix"
+          workflow: "push.yml"
           inputs: '{"service": "${{ inputs.helm-chart }}", "version": "${{ github.ref_name }}"}'
 
   notify:
