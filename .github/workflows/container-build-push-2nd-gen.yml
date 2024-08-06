@@ -96,7 +96,7 @@ jobs:
             echo "gvm-libs-version=oldstable-edge" >> $GITHUB_OUTPUT
           fi
 
-      - name: Container build and push 3rd gen
+      - name: Container build and push 2nd gen
         id: build-and-push
         uses: greenbone/actions/container-build-push-generic@v3
         with:
