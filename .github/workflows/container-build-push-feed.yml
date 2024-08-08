@@ -1,0 +1,20 @@
+name: Community Container Build and Push
+
+on: push
+
+jobs:
+  build-scap-data:
+    runs-on: self-hosted-generic
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - uses: actions/download-artifact@v4
+        if: inputs.artifact-name
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-path }}
+
+        
