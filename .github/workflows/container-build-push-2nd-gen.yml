@@ -35,7 +35,11 @@ on:
         description: "The artifact path to extract the artifact into."
         required: false
         type: string
-
+      data-container:
+        description: is this a data container? 
+        default: "false"
+        type: string
+        
     secrets:
       COSIGN_KEY_OPENSIGHT:
         required: false
@@ -91,6 +95,8 @@ jobs:
           if [[ "${{ github.ref_type }}" = 'tag' ]]; then
             echo "version=stable" >> $GITHUB_OUTPUT
             echo "gvm-libs-version=oldstable" >> $GITHUB_OUTPUT
+          elif [[ ${{ inputs.data-container }} = 'true' ]]; then
+            echo "version=latest" >> $GITHUB_OUTPUT
           else
             echo "version=edge" >> $GITHUB_OUTPUT
             echo "gvm-libs-version=oldstable-edge" >> $GITHUB_OUTPUT
@@ -158,6 +164,8 @@ jobs:
           if [[ "${{ github.ref_type }}" = 'tag' ]]; then
             echo "version=stable" >> $GITHUB_OUTPUT
             echo "gvm-libs-version=oldstable" >> $GITHUB_OUTPUT
+          elif [[ ${{ inputs.data-container }} = 'true' ]]; then
+            echo "version=latest" >> $GITHUB_OUTPUT
           else
             echo "version=edge" >> $GITHUB_OUTPUT
             echo "gvm-libs-version=oldstable-edge" >> $GITHUB_OUTPUT
