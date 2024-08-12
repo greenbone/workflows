@@ -95,7 +95,7 @@ jobs:
           if [[ "${{ github.ref_type }}" = 'tag' ]]; then
             echo "version=stable" >> $GITHUB_OUTPUT
             echo "gvm-libs-version=oldstable" >> $GITHUB_OUTPUT
-          elif [[ ${{ inputs.data-container }} = 'true' ]]; then
+          elif [[ "${{ inputs.data-container }}" = 'true' ]]; then
             echo "version=latest" >> $GITHUB_OUTPUT
           else
             echo "version=edge" >> $GITHUB_OUTPUT
@@ -164,7 +164,7 @@ jobs:
           if [[ "${{ github.ref_type }}" = 'tag' ]]; then
             echo "version=stable" >> $GITHUB_OUTPUT
             echo "gvm-libs-version=oldstable" >> $GITHUB_OUTPUT
-          elif [[ ${{ inputs.data-container }} = 'true' ]]; then
+          elif [[ "${{ inputs.data-container }}" = 'true' ]]; then
             echo "version=latest" >> $GITHUB_OUTPUT
           else
             echo "version=edge" >> $GITHUB_OUTPUT
