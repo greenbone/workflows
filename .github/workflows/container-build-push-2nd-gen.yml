@@ -122,7 +122,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=edge
-            type=raw,value=${{ github.ref | replace('refs/heads/', '\/') }},enable=${{ github.event_name == 'pull_request' }}
+            type=raw,value=${{ github.ref_name }},,enable=${{ github.event_name == 'pull_request' }}
             type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
             type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
             type=raw,value=edge,enable=${{ inputs.ref-name == 'main' }}
