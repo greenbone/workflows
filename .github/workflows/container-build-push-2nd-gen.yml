@@ -39,6 +39,9 @@ on:
         description: is this a data container? 
         default: "false"
         type: string
+      image-tags:
+        description: tag of the image
+        type: string
         
     secrets:
       COSIGN_KEY_OPENSIGHT:
@@ -114,14 +117,7 @@ jobs:
             IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
-          image-tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=edge
-            type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=edge,enable=${{ inputs.ref-name == 'main' }}
+          image-tags: ${{ inputs.image-tags }}
           image-platforms: ${{ matrix.platform }}
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
@@ -182,14 +178,7 @@ jobs:
             IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
-          image-tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=edge
-            type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=edge,enable=${{ inputs.ref-name == 'main' }}
+          image-tags: ${{ inputs.image-tags }}
           image-platforms: ${{ matrix.platform }}
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
