@@ -110,7 +110,7 @@ jobs:
       - name: Set data container tags
         id: set-data-container-tags
         uses: docker-metadata-action@v5
-        if: ${{ inputs.data-container }} == "true"
+        if: ${{ inputs.data-container == "true" }}
         with:
           images: |
             name=${{ inputs.image-url }}
