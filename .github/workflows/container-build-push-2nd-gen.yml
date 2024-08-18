@@ -107,17 +107,17 @@ jobs:
             echo "gvm-libs-version=oldstable-edge" >> $GITHUB_OUTPUT
           fi
 
-      - name: Set data container tags
-        id: set-data-container-tags
-        uses: docker-metadata-action@v5
-        if: ${{ inputs.data-container == "true" }}
-        with:
-          images: |
-            name=${{ inputs.image-url }}
-          tags: |
-            type=raw,value=community
-            type=raw,value=latest
-            type=raw,value=${{ inputs.feed-info }}           
+      # - name: Set data container tags
+      #   id: set-data-container-tags
+      #   uses: docker-metadata-action@v5
+      #   if: ${{ inputs.data-container == "true" }}
+      #   with:
+      #     images: |
+      #       name=${{ inputs.image-url }}
+      #     tags: |
+      #       type=raw,value=community
+      #       type=raw,value=latest
+      #       type=raw,value=${{ inputs.feed-info }}           
 
       - name: Container build and push 2nd gen
         id: build-and-push
