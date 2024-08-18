@@ -36,13 +36,11 @@ on:
         required: false
         type: string
       data-container:
-        description: "true or false string, indicating whether the given image is a data container."
-        required: false
+        description: is this a data container? 
         default: "false"
         type: string
-      feed-info:
-        description: "Timestamp of the data container build (required if data-container is true)"
-        required: false
+      image-tags:
+        description: tag of the image
         type: string
         
     secrets:
@@ -106,18 +104,6 @@ jobs:
             echo "version=edge" >> $GITHUB_OUTPUT
             echo "gvm-libs-version=oldstable-edge" >> $GITHUB_OUTPUT
           fi
-
-      # - name: Set data container tags
-      #   id: set-data-container-tags
-      #   uses: docker-metadata-action@v5
-      #   if: ${{ inputs.data-container == "true" }}
-      #   with:
-      #     images: |
-      #       name=${{ inputs.image-url }}
-      #     tags: |
-      #       type=raw,value=community
-      #       type=raw,value=latest
-      #       type=raw,value=${{ inputs.feed-info }}           
 
       - name: Container build and push 2nd gen
         id: build-and-push
