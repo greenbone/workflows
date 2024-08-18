@@ -132,7 +132,6 @@ jobs:
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: |
-            ${{ (steps.set-data-container-tags.outputs.tags || '') }}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
