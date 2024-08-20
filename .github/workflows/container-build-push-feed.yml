@@ -45,10 +45,6 @@ on:
         required: false
       COSIGN_KEY_PASSWORD_OPENSIGHT:
         required: false
-      DOCKERHUB_USERNAME:
-        required: false
-      DOCKERHUB_TOKEN:
-        required: false
       GREENBONE_REGISTRY:
         required: false
       GREENBONE_REGISTRY_USER:
@@ -96,9 +92,6 @@ jobs:
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
-          scout-user: ${{ secrets.DOCKERHUB_USERNAME }}
-          scout-password: ${{ secrets.DOCKERHUB_TOKEN }}
-          scout-command: cves
 
   build-arm64:
     # At the moment we don't have enough arm runners to provide a run for every PR!
@@ -134,9 +127,6 @@ jobs:
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
-          scout-user: ${{ secrets.DOCKERHUB_USERNAME }}
-          scout-password: ${{ secrets.DOCKERHUB_TOKEN }}
-          scout-command: cves
 
   create-multi-arch-manifest:
     if: github.event_name != 'pull_request'
