@@ -12,8 +12,12 @@ on:
         default: .
         type: string
       build-docker-file:
-        description: "Path to the docker file. Default is .docker/prod.Dockerfile"
-        default: .docker/prod.Dockerfile
+        description: "Path to the docker file. Default is .docker/Dockerfile"
+        default: .docker/Dockerfile
+        type: string
+      image-tags:
+        description: "Image tags."
+        required: true
         type: string
       image-labels:
         description: "Image labels."
@@ -40,10 +44,6 @@ on:
       COSIGN_KEY_OPENSIGHT:
         required: false
       COSIGN_KEY_PASSWORD_OPENSIGHT:
-        required: false
-      DOCKERHUB_USERNAME:
-        required: false
-      DOCKERHUB_TOKEN:
         required: false
       GREENBONE_REGISTRY:
         required: false
@@ -77,23 +77,7 @@ jobs:
         if: inputs.artifact-name
         with:
           name: ${{ inputs.artifact-name }}
-          path: ${{ inputs.artifact-path }}
-
-      - uses: greenbone/actions/is-latest-tag@v3
-        id: latest
-        with:
-          tag-name: ${{ inputs.ref-name }}
-
-      - name: Set container build options
-        id: container-opts
-        run: |
-          if [[ "${{ github.ref_type }}" = 'tag' ]]; then
-            echo "version=stable" >> $GITHUB_OUTPUT
-            echo "gvm-libs-version=oldstable" >> $GITHUB_OUTPUT
-          else
-            echo "version=edge" >> $GITHUB_OUTPUT
-            echo "gvm-libs-version=oldstable-edge" >> $GITHUB_OUTPUT
-          fi
+          path: ${{ inputs.artifact-path }}        
 
       - name: Container build and push 2nd gen
         id: build-and-push
@@ -101,27 +85,13 @@ jobs:
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
-          build-args: |
-            VERSION=${{ steps.container-opts.outputs.version }}
-            GVM_LIBS_VERSION=${{ steps.container-opts.outputs.gvm-libs-version }}
-            IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
-          image-tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=edge
-            type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=edge,enable=${{ inputs.ref-name == 'main' }}
+          image-tags: ${{ inputs.image-tags }}
           image-platforms: linux/amd64
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
-          scout-user: ${{ secrets.DOCKERHUB_USERNAME }}
-          scout-password: ${{ secrets.DOCKERHUB_TOKEN }}
-          scout-command: cves
 
   build-arm64:
     # At the moment we don't have enough arm runners to provide a run for every PR!
@@ -135,7 +105,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           fetch-tags: true
           ref: ${{ inputs.ref-name }}
 
@@ -145,50 +114,19 @@ jobs:
           name: ${{ inputs.artifact-name }}
           path: ${{ inputs.artifact-path }}
 
-      - uses: greenbone/actions/is-latest-tag@v3
-        id: latest
-        with:
-          tag-name: ${{ inputs.ref-name }}
-
-      - name: Set container build options
-        id: container-opts
-        run: |
-          if [[ "${{ github.ref_type }}" = 'tag' ]]; then
-            echo "version=stable" >> $GITHUB_OUTPUT
-            echo "gvm-libs-version=oldstable" >> $GITHUB_OUTPUT
-          else
-            echo "version=edge" >> $GITHUB_OUTPUT
-            echo "gvm-libs-version=oldstable-edge" >> $GITHUB_OUTPUT
-          fi
-
       - name: Container build and push 3rd gen
         id: build-and-push
         uses: greenbone/actions/container-build-push-generic@v3
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
-          build-args: |
-            VERSION=${{ steps.container-opts.outputs.version }}
-            GVM_LIBS_VERSION=${{ steps.container-opts.outputs.gvm-libs-version }}
-            IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
-          image-tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=edge
-            type=ref,event=pr
-            type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=edge,enable=${{ inputs.ref-name == 'main' }}
+          image-tags: ${{ inputs.image-tags }}
           image-platforms: linux/arm64
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
-          scout-user: ${{ secrets.DOCKERHUB_USERNAME }}
-          scout-password: ${{ secrets.DOCKERHUB_TOKEN }}
-          scout-command: cves
 
   create-multi-arch-manifest:
     if: github.event_name != 'pull_request'
