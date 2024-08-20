@@ -12,8 +12,8 @@ on:
         default: .
         type: string
       build-docker-file:
-        description: "Path to the docker file. Default is .docker/prod.Dockerfile"
-        default: .docker/prod.Dockerfile
+        description: "Path to the docker file. Default is .docker/Dockerfile"
+        default: .docker/Dockerfile
         type: string
       image-tags:
         description: "Image tags."
