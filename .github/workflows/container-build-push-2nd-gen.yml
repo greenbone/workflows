@@ -5,7 +5,6 @@ on:
     inputs:
       ref-name:
         description: "The ref to build a container image from. For example a tag v23.0.0."
-        default: ${{ github.ref }}
         type: string
       build-context:
         description: "Path to image build context. Default is ."
@@ -136,7 +135,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           fetch-tags: true
           ref: ${{ inputs.ref-name }}
 
