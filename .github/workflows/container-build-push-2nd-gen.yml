@@ -83,7 +83,7 @@ jobs:
       - uses: greenbone/actions/is-latest-tag@v3
         id: latest
         with:
-          tag-name: ${{ inputs.ref-name || github.ref-name }}
+          tag-name: ${{ inputs.ref-name }}
 
       - name: Set container build options
         id: container-opts
@@ -151,7 +151,7 @@ jobs:
       - uses: greenbone/actions/is-latest-tag@v3
         id: latest
         with:
-          tag-name: ${{ inputs.ref-name || github.ref-name }}
+          tag-name: ${{ inputs.ref-name }}
 
       - name: Set container build options
         id: container-opts
