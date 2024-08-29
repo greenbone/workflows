@@ -78,7 +78,7 @@ jobs:
           path: ${{ inputs.artifact-path }}
 
       - name: Fetch tags
-        run: git fetch --tags
+        run: git fetch --tags --force
 
       - uses: greenbone/actions/is-latest-tag@v3
         id: latest
@@ -146,7 +146,7 @@ jobs:
           path: ${{ inputs.artifact-path }}
 
       - name: Fetch tags
-        run: git fetch --tags
+        run: git fetch --tags --force
 
       - uses: greenbone/actions/is-latest-tag@v3
         id: latest
