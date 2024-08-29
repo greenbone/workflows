@@ -116,7 +116,7 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
             type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=edge,enable=${{ (inputs.ref-name || github.ref-name) == 'main' }}
+            type=raw,value=edge,enable=${{ (inputs.ref-name || github.ref_name) == 'main' }}
           image-platforms: linux/amd64
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
@@ -184,7 +184,7 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
             type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=edge,enable=${{ (inputs.ref-name || github.ref-name) == 'main' }}
+            type=raw,value=edge,enable=${{ (inputs.ref-name || github.ref_name) == 'main' }}
           image-platforms: linux/arm64
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
