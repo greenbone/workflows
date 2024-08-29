@@ -181,11 +181,11 @@ jobs:
           image-labels: ${{ inputs.image-labels }}
           image-tags: |
             type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{version}},enable=${{ github.event_name == 'push' }}
+            type=semver,pattern={{version}},enable=${{ github.event_name != 'workflow_dispatch' }}
             type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name == 'push' }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name != 'workflow_dispatch' }}
             type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}},enable=${{ github.event_name == 'push' }}
+            type=semver,pattern={{major}},enable=${{ github.event_name != 'workflow_dispatch' }}
             type=edge
             type=ref,event=pr
             type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
