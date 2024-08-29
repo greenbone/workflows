@@ -69,7 +69,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-tags: true
           ref: ${{ inputs.ref-name }}
 
       - uses: actions/download-artifact@v4
@@ -77,6 +76,9 @@ jobs:
         with:
           name: ${{ inputs.artifact-name }}
           path: ${{ inputs.artifact-path }}
+
+      - name: Fetch tags
+        run: git fetch --tags
 
       - uses: greenbone/actions/is-latest-tag@v3
         id: latest
@@ -114,7 +116,7 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
             type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=edge,enable=${{ inputs.ref-name == 'main' }}
+            type=raw,value=edge,enable=${{ (inputs.ref-name || github.ref_name) == 'main' }}
           image-platforms: linux/amd64
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
@@ -135,7 +137,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-tags: true
           ref: ${{ inputs.ref-name }}
 
       - uses: actions/download-artifact@v4
@@ -143,6 +144,9 @@ jobs:
         with:
           name: ${{ inputs.artifact-name }}
           path: ${{ inputs.artifact-path }}
+
+      - name: Fetch tags
+        run: git fetch --tags
 
       - uses: greenbone/actions/is-latest-tag@v3
         id: latest
@@ -160,7 +164,7 @@ jobs:
             echo "gvm-libs-version=oldstable-edge" >> $GITHUB_OUTPUT
           fi
 
-      - name: Container build and push 3rd gen
+      - name: Container build and push 2nd gen
         id: build-and-push
         uses: greenbone/actions/container-build-push-generic@v3
         with:
@@ -180,7 +184,7 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
             type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=edge,enable=${{ inputs.ref-name == 'main' }}
+            type=raw,value=edge,enable=${{ (inputs.ref-name || github.ref_name) == 'main' }}
           image-platforms: linux/arm64
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
