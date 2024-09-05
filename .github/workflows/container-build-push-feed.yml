@@ -38,6 +38,10 @@ on:
         description: "The artifact path to extract the artifact into."
         required: false
         type: string
+      vts:
+        description: "Is this the vts image?"
+        default: false
+        type: string
 
     secrets:
       COSIGN_KEY_OPENSIGHT:
@@ -76,6 +80,12 @@ jobs:
         with:
           name: ${{ inputs.artifact-name }}
           path: ${{ inputs.artifact-path }}        
+
+      - name: Unpack vulnerability-tests feed content
+        if: inputs.vts == 'true'
+        run: |
+          cd ${{ inputs.artifact-path }}
+          tar -xJf vulnerability-tests.tar.xz
 
       - name: Container build and push 2nd gen
         id: build-and-push
