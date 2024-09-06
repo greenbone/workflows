@@ -80,7 +80,10 @@ jobs:
         if: inputs.artifact-name
         with:
           name: ${{ inputs.artifact-name }}
-          path: ${{ inputs.artifact-path }}        
+          path: ${{ inputs.artifact-path }}    
+
+      - name: Print Tree of Build-Context
+        run: tree ${{ inputs.build-context }}
 
       - name: Unpack vulnerability-tests feed content
         if: inputs.vts == 'true'
