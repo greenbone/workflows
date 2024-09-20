@@ -40,7 +40,7 @@ on:
         type: string
       vts:
         description: "Is this the vts image?"
-        default: false
+        default: "false"
         type: string
 
     secrets:
@@ -173,11 +173,29 @@ jobs:
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
+  test-pull-arm64:
+    name: Test pulling the image on arm64
+    needs: [build-arm64, create-multi-arch-manifest]
+    runs-on: self-hosted-generic-arm64
+    steps:
+      - name: Pull
+        run: docker pull registry.community.greenbone.net/${{ inputs.image-url }}:latest
+
+  test-pull-amd64:
+    name: Test pulling the image on amd64
+    needs: [build-amd64, create-multi-arch-manifest]
+    runs-on: self-hosted-generic
+    steps:
+      - name: Pull
+        run: docker pull registry.community.greenbone.net/${{ inputs.image-url }}:latest
+
   notify:
     needs:
       - build-amd64
       - build-arm64
       - create-multi-arch-manifest
+      - test-pull-amd64
+      - test-pull-arm64
     if: ${{ always() && startsWith(github.ref, 'refs/tags/v')  && startsWith(inputs.notify, 'true') }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
     with:
