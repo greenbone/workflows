@@ -19,7 +19,7 @@ on:
         required: true
         type: string
       image-type:
-        description: "Image type."
+        description: "Base image tag (Debian)."
         required: true
         default: "stable"
         options:
