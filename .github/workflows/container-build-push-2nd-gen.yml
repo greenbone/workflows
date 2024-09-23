@@ -18,7 +18,7 @@ on:
         description: "Image labels."
         required: true
         type: string
-      image-type:
+      base-image-label:
         description: "Base image tag (Debian)."
         required: true
         default: "stable"
