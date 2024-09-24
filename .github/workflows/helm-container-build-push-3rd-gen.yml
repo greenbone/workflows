@@ -135,6 +135,7 @@ jobs:
       # Later we can also use this step to distribute the images into different OCI projects
       - name: Create image url
         id: image-url
+        shell: bash
         run: |
           if ${{ github.ref_name }} | grep -Eq "alpha|rc"; then
             url="opensight-dev/$(basename ${{ inputs.image-url }})"
