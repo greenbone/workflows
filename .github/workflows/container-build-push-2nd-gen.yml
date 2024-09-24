@@ -19,12 +19,10 @@ on:
         required: true
         type: string
       base-image-label:
-        description: "Base image tag (Debian)."
+        description: "Base image tag (Debian). Possible options: stable, oldstable, testing"
         required: true
-        options:
-          - stable
-          - oldstable
-          - testing
+        default: "stable"
+        type: string
       image-url:
         description: "Image url/name without registry."
         required: true
