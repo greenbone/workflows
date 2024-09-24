@@ -120,22 +120,7 @@ jobs:
             IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
-          image-tags: |
-            type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{version}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=edge
-            type=ref,event=pr
-            type=raw,value=latest,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
-            type=raw,value=stable,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
-            type=raw,value=edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'stable') }}
-            type=raw,value=oldstable,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'oldstable') }}
-            type=raw,value=oldstable-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'oldstable') }}
-            type=raw,value=testing,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'testing') }}
-            type=raw,value=testing-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'testing') }}
+          image-tags: type=raw,value=${{ inputs.ref_name }} # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/amd64
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
@@ -196,22 +181,7 @@ jobs:
             IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
-          image-tags: |
-            type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{version}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=edge
-            type=ref,event=pr
-            type=raw,value=latest,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
-            type=raw,value=stable,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
-            type=raw,value=edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'stable') }}
-            type=raw,value=oldstable,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'oldstable') }}
-            type=raw,value=oldstable-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'oldstable') }}
-            type=raw,value=testing,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'testing') }}
-            type=raw,value=testing-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'testing') }}
+          image-tags: type=raw,value=${{ inputs.ref_name }} # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/arm64
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
@@ -227,6 +197,28 @@ jobs:
       - build-amd64
       - build-arm64
     steps:
+      - name: Generate Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ inputs.image-url }}
+          tags: |
+            type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=semver,pattern={{version}},enable=${{ github.event_name != 'workflow_dispatch' }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name != 'workflow_dispatch' }}
+            type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=semver,pattern={{major}},enable=${{ github.event_name != 'workflow_dispatch' }}
+            type=edge
+            type=ref,event=pr
+            type=raw,value=latest,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
+            type=raw,value=stable,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
+            type=raw,value=edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'stable') }}
+            type=raw,value=oldstable,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'oldstable') }}
+            type=raw,value=oldstable-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'oldstable') }}
+            type=raw,value=testing,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'testing') }}
+            type=raw,value=testing-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'testing') }}
+
       - name: Create multi arch manifest
         uses: greenbone/actions/container-multi-arch-manifest@v3
         with:
@@ -236,9 +228,7 @@ jobs:
           annotations: |
             ${{ needs.build-amd64.outputs.annotations }}
             ${{ needs.build-arm64.outputs.annotations }}
-          tags: |
-            ${{ needs.build-amd64.outputs.tags }}
-            ${{ needs.build-arm64.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           digests: |
             ${{ needs.build-amd64.outputs.digest }}
             ${{ needs.build-arm64.outputs.digest }}
