@@ -135,7 +135,7 @@ jobs:
       - name: Create image url
         id: image-url
         run: |
-          if ${{ github.ref_name }} | grep -q "alpha"; then
+          if ${{ github.ref_name }} | grep -Eq "alpha|rc"; then
             url="opensight-dev/$(basename ${{ inputs.image-url }})"
           else
             case "${{ inputs.image-url }}" in
@@ -164,7 +164,8 @@ jobs:
                 url="opensight/$(basename ${{ inputs.image-url }})"
                 ;;
               *)
-                url=''
+                url= echo "no supported service in inputs.image-url"
+                exit 1
                 ;;
               # Follow pattern for all 3rd gen products
             esac
@@ -172,7 +173,6 @@ jobs:
           echo "url=$url" >> $GITHUB_OUTPUT
 
       - name: Container build and push 3rd gen to additional url
-        if: steps.image-url.outputs.url != ''
         id: build-and-push-additional
         uses: greenbone/actions/container-build-push-generic@v3
         with:
