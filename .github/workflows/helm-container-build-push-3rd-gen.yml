@@ -164,7 +164,7 @@ jobs:
                 url="opensight/$(basename ${{ inputs.image-url }})"
                 ;;
               *)
-                url= echo "no supported service in inputs.image-url"
+                echo "no supported service in ${{ inputs.image-url }}"
                 exit 1
                 ;;
               # Follow pattern for all 3rd gen products
