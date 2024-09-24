@@ -20,7 +20,6 @@ on:
         type: string
       base-image-label:
         description: "Base image tag (Debian). Possible options: stable, oldstable, testing"
-        required: true
         default: "stable"
         type: string
       image-url:
