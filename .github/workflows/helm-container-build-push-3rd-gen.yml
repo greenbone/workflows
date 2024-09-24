@@ -135,7 +135,7 @@ jobs:
       - name: Create image url
         id: image-url
         run: |
-          if github.ref | grep -q "alpha"; then
+          if ${{ github.ref }} | grep -q "alpha"; then
             url="opensight-dev/$(basename ${{ inputs.image-url }})"
           else
             case "${{ inputs.image-url }}" in
