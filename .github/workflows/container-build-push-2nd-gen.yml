@@ -21,7 +21,6 @@ on:
       base-image-label:
         description: "Base image tag (Debian)."
         required: true
-        default: "stable"
         options:
           - stable
           - oldstable
