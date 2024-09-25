@@ -18,6 +18,10 @@ on:
         description: "Image labels."
         required: true
         type: string
+      base-image-label:
+        description: "Base image tag (Debian). Possible options: stable, oldstable, testing"
+        default: "stable"
+        type: string
       image-url:
         description: "Image url/name without registry."
         required: true
@@ -65,6 +69,7 @@ jobs:
       digest: ${{ steps.build-and-push.outputs.digest }}
       tags: ${{ steps.build-and-push.outputs.tags }}
       annotations: ${{ steps.build-and-push.outputs.annotations }}
+      is-latest-tag: ${{ steps.latest.outputs.is-latest-tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -112,19 +117,9 @@ jobs:
             IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
-          image-tags: |
-            type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{version}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=edge
-            type=ref,event=pr
-            type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=edge,enable=${{ (inputs.ref-name || github.ref_name) == 'main' }}
+          image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-amd64 # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/amd64
+          image-flavor: latest=false
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
@@ -140,6 +135,7 @@ jobs:
       digest: ${{ steps.build-and-push.outputs.digest }}
       tags: ${{ steps.build-and-push.outputs.tags }}
       annotations: ${{ steps.build-and-push.outputs.annotations }}
+      is-latest-tag: ${{ steps.latest.outputs.is-latest-tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -184,19 +180,9 @@ jobs:
             IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
-          image-tags: |
-            type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{version}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=edge
-            type=ref,event=pr
-            type=raw,value=latest,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=stable,enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}
-            type=raw,value=edge,enable=${{ (inputs.ref-name || github.ref_name) == 'main' }}
+          image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-arm64 # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/arm64
+          image-flavor: latest=false
           registry: ${{ secrets.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
@@ -211,6 +197,29 @@ jobs:
       - build-amd64
       - build-arm64
     steps:
+      - name: Generate Docker metadata
+        id: meta
+        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
+        with:
+          images: ${{ secrets.GREENBONE_REGISTRY }}/${{ inputs.image-url }}
+          flavor: latest=false
+          tags: |
+            type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=semver,pattern={{version}},enable=${{ github.event_name != 'workflow_dispatch' }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name != 'workflow_dispatch' }}
+            type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=semver,pattern={{major}},enable=${{ github.event_name != 'workflow_dispatch' }}
+            type=edge
+            type=ref,event=pr
+            type=raw,value=latest,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
+            type=raw,value=stable,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
+            type=raw,value=edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'stable') }}
+            type=raw,value=oldstable,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'oldstable') }}
+            type=raw,value=oldstable-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'oldstable') }}
+            type=raw,value=testing,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'testing') }}
+            type=raw,value=testing-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'testing') }}
+
       - name: Create multi arch manifest
         uses: greenbone/actions/container-multi-arch-manifest@v3
         with:
@@ -220,9 +229,7 @@ jobs:
           annotations: |
             ${{ needs.build-amd64.outputs.annotations }}
             ${{ needs.build-arm64.outputs.annotations }}
-          tags: |
-            ${{ needs.build-amd64.outputs.tags }}
-            ${{ needs.build-arm64.outputs.tags }}
+          meta-tags: ${{ steps.meta.outputs.tags }}
           digests: |
             ${{ needs.build-amd64.outputs.digest }}
             ${{ needs.build-arm64.outputs.digest }}
@@ -232,6 +239,7 @@ jobs:
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
   test-pull-arm64:
+    if: ${{ (needs.build-arm64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
     name: Test pulling the image on arm64
     needs: [build-arm64, create-multi-arch-manifest]
     runs-on: self-hosted-generic-arm64
@@ -240,6 +248,7 @@ jobs:
         run: docker pull registry.community.greenbone.net/${{ inputs.image-url }}:latest
 
   test-pull-amd64:
+    if: ${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
     name: Test pulling the image on amd64
     needs: [build-amd64, create-multi-arch-manifest]
     runs-on: self-hosted-generic
@@ -254,7 +263,7 @@ jobs:
       - create-multi-arch-manifest
       - test-pull-amd64
       - test-pull-arm64
-    if: ${{ !cancelled()  && startsWith(inputs.notify, 'true') }}
+    if: ${{ !cancelled()  && startsWith(inputs.notify, 'true') && github.event_name != 'pull_request' }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
     with:
       status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
