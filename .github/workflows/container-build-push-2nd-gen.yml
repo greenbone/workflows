@@ -197,7 +197,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
-          images: ${{ inputs.image-url }}
+          images: ${{ secrets.GREENBONE_REGISTRY }}/${{ inputs.image-url }}
           tags: |
             type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
             type=semver,pattern={{version}},enable=${{ github.event_name != 'workflow_dispatch' }}
