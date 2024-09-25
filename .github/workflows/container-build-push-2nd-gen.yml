@@ -69,6 +69,7 @@ jobs:
       digest: ${{ steps.build-and-push.outputs.digest }}
       tags: ${{ steps.build-and-push.outputs.tags }}
       annotations: ${{ steps.build-and-push.outputs.annotations }}
+      is-latest-tag: ${{ steps.latest.outputs.is-latest-tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -134,6 +135,7 @@ jobs:
       digest: ${{ steps.build-and-push.outputs.digest }}
       tags: ${{ steps.build-and-push.outputs.tags }}
       annotations: ${{ steps.build-and-push.outputs.annotations }}
+      is-latest-tag: ${{ steps.latest.outputs.is-latest-tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -237,7 +239,7 @@ jobs:
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
   test-pull-arm64:
-    if: ${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs. inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
+    if: ${{ (jobs.build-arm64.outputs.is-latest-tag == 'true') && (inputs. inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
     name: Test pulling the image on arm64
     needs: [build-arm64, create-multi-arch-manifest]
     runs-on: self-hosted-generic-arm64
@@ -246,7 +248,7 @@ jobs:
         run: docker pull registry.community.greenbone.net/${{ inputs.image-url }}:latest
 
   test-pull-amd64:
-    if: ${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs. inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
+    if: ${{ (jobs.build-amd64.outputs.is-latest-tag == 'true') && (inputs. inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
     name: Test pulling the image on amd64
     needs: [build-amd64, create-multi-arch-manifest]
     runs-on: self-hosted-generic
