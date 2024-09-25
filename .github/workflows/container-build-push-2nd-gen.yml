@@ -218,7 +218,7 @@ jobs:
             type=raw,value=testing-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'testing') }}
 
       - name: Create multi arch manifest
-        uses: greenbone/actions/container-multi-arch-manifest@pholthaus/meta_tags_manifest
+        uses: greenbone/actions/container-multi-arch-manifest@v3
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
