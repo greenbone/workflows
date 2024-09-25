@@ -239,7 +239,7 @@ jobs:
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
   test-pull-arm64:
-    if: ${{ (jobs.build-arm64.outputs.is-latest-tag == 'true') && (inputs. inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
+    if: ${{ (needs.build-arm64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
     name: Test pulling the image on arm64
     needs: [build-arm64, create-multi-arch-manifest]
     runs-on: self-hosted-generic-arm64
@@ -248,7 +248,7 @@ jobs:
         run: docker pull registry.community.greenbone.net/${{ inputs.image-url }}:latest
 
   test-pull-amd64:
-    if: ${{ (jobs.build-amd64.outputs.is-latest-tag == 'true') && (inputs. inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
+    if: ${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
     name: Test pulling the image on amd64
     needs: [build-amd64, create-multi-arch-manifest]
     runs-on: self-hosted-generic
