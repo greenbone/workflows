@@ -260,7 +260,7 @@ jobs:
       - create-multi-arch-manifest
       - test-pull-amd64
       - test-pull-arm64
-    if: ${{ !cancelled()  && startsWith(inputs.notify, 'true') }}
+    if: ${{ !cancelled()  && startsWith(inputs.notify, 'true') && github.event_name != 'pull_request' }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
     with:
       status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
