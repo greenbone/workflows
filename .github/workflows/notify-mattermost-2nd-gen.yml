@@ -1,0 +1,47 @@
+name: Notify Mattermost 2nd gen
+
+on:
+  workflow_call:
+    inputs:
+      commit:
+        description: "The commit used by the github checkout action. Default: github.sha"
+        type: string
+        default: ${{ github.sha }}
+      exit-with-status:
+        description: "Exit this job/workflow with the monitored job status. Options: true or false. Default: true"
+        type: string
+        default: "true"
+      highlight:
+        description: "Mattermost highlight. Default: channel"
+        type: string
+        default: "channel"
+      status:
+        description: "The monitored job, job status."
+        type: string
+        required: true
+    # Dependabot don't have this secrets and on PR's this secrets are not needed.
+    secrets:
+      MATTERMOST_WEBHOOK_URL:
+        required: false
+
+jobs:
+  notify-mattermost:
+    runs-on: self-hosted-generic
+    if: ${{ !cancelled() }}
+    steps:
+      - name: Notify Mattermost 2nd gen
+        uses: greenbone/actions/mattermost-notify@v3
+        with:
+          url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
+          channel: "pd2ndgendeployment"
+          highlight: ${{ inputs.highlight }}
+          branch: ${{ github.ref_name }}
+          commit: ${{ inputs.commit }}
+          workflow: ${{ github.run_id }}
+          workflow-name: ${{ github.workflow }}
+          status: ${{ inputs.status }}
+      - name: Exit with monitored job status
+        if: inputs.exit-with-status == 'true' && inputs.status != 'success'
+        run: |
+          echo "Monitored job failed. Exit job/workflow with failure"
+          exit 1
