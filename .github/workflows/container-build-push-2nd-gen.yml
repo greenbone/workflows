@@ -135,7 +135,6 @@ jobs:
       digest: ${{ steps.build-and-push.outputs.digest }}
       tags: ${{ steps.build-and-push.outputs.tags }}
       annotations: ${{ steps.build-and-push.outputs.annotations }}
-      is-latest-tag: ${{ steps.latest.outputs.is-latest-tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -147,15 +146,6 @@ jobs:
         with:
           name: ${{ inputs.artifact-name }}
           path: ${{ inputs.artifact-path }}
-
-      - name: Fetch tags
-        run: git fetch --tags --force
-
-      - uses: greenbone/actions/is-latest-tag@v3
-        id: latest
-        with:
-          # It looks like the action doesn't use its default value even when an empty input is set.
-          tag-name: ${{ inputs.ref-name || github.ref_name }}
 
       - name: Set container build options
         id: container-opts
