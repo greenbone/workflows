@@ -212,12 +212,12 @@ jobs:
             type=semver,pattern={{major}},enable=${{ github.event_name != 'workflow_dispatch' }}
             type=edge
             type=ref,event=pr
-            type=raw,value=latest,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
-            type=raw,value=stable,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
+            type=raw,value=latest,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
+            type=raw,value=stable,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
             type=raw,value=edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'stable') }}
-            type=raw,value=oldstable,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'oldstable') }}
+            type=raw,value=oldstable,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'oldstable') }}
             type=raw,value=oldstable-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'oldstable') }}
-            type=raw,value=testing,enable=${{ (steps.latest.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'testing') }}
+            type=raw,value=testing,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'testing') }}
             type=raw,value=testing-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'testing') }}
 
       - name: Create multi arch manifest
