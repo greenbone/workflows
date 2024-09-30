@@ -203,7 +203,7 @@ jobs:
       - create-multi-arch-manifest
       - test-pull-amd64
       - test-pull-arm64
-    if: ${{ always() && startsWith(github.ref, 'refs/tags/v')  && startsWith(inputs.notify, 'true') }}
+    if: ${{ always() && startsWith(inputs.notify, 'true') }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-2nd-gen.yml@main
     with:
       status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
