@@ -19,6 +19,10 @@ on:
         description: "The monitored job, job status."
         type: string
         required: true
+      channel:
+        description: "The name of the channel where the notification happens."
+        type: string
+        default: "pd2ndgendeployment"
     # Dependabot don't have this secrets and on PR's this secrets are not needed.
     secrets:
       MATTERMOST_WEBHOOK_URL:
@@ -33,7 +37,7 @@ jobs:
         uses: greenbone/actions/mattermost-notify@v3
         with:
           url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-          channel: "todfeeddeploymentnotification"
+          channel: ${{ inputs.channel }}
           highlight: ${{ inputs.highlight }}
           branch: ${{ github.ref_name }}
           commit: ${{ inputs.commit }}
