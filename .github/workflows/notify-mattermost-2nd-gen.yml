@@ -22,7 +22,7 @@ on:
       channel:
         description: "The name of the channel where the notification happens."
         type: string
-        default: "pd2ndgendeployment"
+        required: true
     # Dependabot don't have this secrets and on PR's this secrets are not needed.
     secrets:
       MATTERMOST_WEBHOOK_URL:

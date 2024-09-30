@@ -38,6 +38,10 @@ on:
         description: "The artifact path to extract the artifact into."
         required: false
         type: string
+      notification-channel:
+        description: "The name of the channel where the notification happens."
+        type: string
+        default: "pd2ndgendeployment"
 
     secrets:
       COSIGN_KEY_OPENSIGHT:
@@ -257,4 +261,5 @@ jobs:
     uses: greenbone/workflows/.github/workflows/notify-mattermost-2nd-gen.yml@main
     with:
       status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
+      channel: ${{ inputs.notification-channel }}
     secrets: inherit
