@@ -240,7 +240,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.helm-chart }}", "image-url": "${{ inputs.image-url }}", "digest": "${{ needs.building-container.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.helm-chart }}", "image-url": "${{ vars.IMAGE_REGISTRY }}/${{ inputs.image-url }}", "digest": "${{ needs.building-container.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
