@@ -41,7 +41,7 @@ on:
       notification-channel:
         description: "The name of the channel where the notification happens."
         type: string
-        default: "todfeeddeploymentnotification"
+        default: "pd2ndgendeployment"
 
     secrets:
       COSIGN_KEY_OPENSIGHT:
