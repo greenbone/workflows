@@ -199,3 +199,17 @@ jobs:
     steps:
       - name: Pull
         run: docker pull registry.community.greenbone.net/${{ inputs.image-url }}:latest
+
+  notify:
+    needs:
+      - build-amd64
+      - build-arm64
+      - create-multi-arch-manifest
+      - test-pull-amd64
+      - test-pull-arm64
+    if: ${{ always() && startsWith(inputs.notify, 'true') }}
+    uses: greenbone/workflows/.github/workflows/notify-mattermost-2nd-gen.yml@main
+    with:
+      status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
+      channel: ${{ inputs.notification-channel }}
+    secrets: inherit
