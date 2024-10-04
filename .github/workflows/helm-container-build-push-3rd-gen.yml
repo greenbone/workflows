@@ -127,6 +127,7 @@ jobs:
     runs-on: self-hosted-generic
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
+      image-url: ${{ steps.image-url.outputs.url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -174,7 +175,7 @@ jobs:
           fi
           echo "url=$url" >> $GITHUB_OUTPUT
 
-      - name: Container build and push 3rd gen to additional url
+      - name: Container build and push 3rd gen
         id: build-and-push-additional
         uses: greenbone/actions/container-build-push-generic@v3
         with:
@@ -231,7 +232,7 @@ jobs:
   building-product-compose:
     if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
     needs:
-      - building-container
+      - building-container-greenbone-reg
     runs-on: "ubuntu-latest"
     steps:
       - name: Trigger product compose upgrade
@@ -240,7 +241,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.helm-chart }}", "image-url": "${{ vars.IMAGE_REGISTRY }}/${{ inputs.image-url }}", "digest": "${{ needs.building-container.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.helm-chart }}", "image-url": "${{ needs.building-container-greenbone-reg.outputs.image-url }}", "digest": "${{ needs.building-container-greenbone-reg.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
