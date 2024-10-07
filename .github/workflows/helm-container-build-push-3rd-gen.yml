@@ -170,8 +170,7 @@ jobs:
               echo "No supported service in ${{ inputs.image-url }}"
               exit 1
               ;;
-            esac
-          fi
+          esac
           echo "url=$url" >> $GITHUB_OUTPUT
 
       - name: Container build and push 3rd gen
