@@ -139,38 +139,37 @@ jobs:
         shell: bash
         run: |
           if echo ${{ github.ref_name }} | grep -Eq "alpha|rc"; then
-            url="opensight-dev/$(basename ${{ inputs.image-url }})"
-          else
-            case "${{ inputs.image-url }}" in
-              *"asset-management"*)
-                url="opensight-asset/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"vulnerability-intelligence"*)
-                url="opensight-lookout/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"scan-management"*)
-                url="opensight-appliance/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"opensight-postgres"*)
-                url="opensight/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"opensight-keycloak"*)
-                url="opensight/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"opensight-ingress"*)
-                url="opensight/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"opensight-opensearch"*)
-                url="opensight/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"opensight-notification-service"*)
-                url="opensight/$(basename ${{ inputs.image-url }})"
-                ;;
-              *)
-                echo "no supported service in ${{ inputs.image-url }}"
-                exit 1
-                ;;
-              # Follow pattern for all 3rd gen products
+            prefix="-dev"
+          fi
+          case "${{ inputs.image-url }}" in
+            *"asset-management"*)
+              url="opensight-asset$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"vulnerability-intelligence"*)
+              url="opensight-lookout$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"scan-management"*)
+              url="opensight-appliance$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-postgres"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-keycloak"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-ingress"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-opensearch"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-notification-service"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *)
+              echo "No supported service in ${{ inputs.image-url }}"
+              exit 1
+              ;;
             esac
           fi
           echo "url=$url" >> $GITHUB_OUTPUT
