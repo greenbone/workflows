@@ -199,6 +199,7 @@ jobs:
         id: conditions
         run: |
           echo "ENABLE_STABLE=${{ github.event_name != 'workflow_dispatch' && (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable')}}" >> $GITHUB_OUTPUT 
+          echo "branch=${{ steps.branch.outputs.branch }}"
 
       - name: Generate Docker metadata
         id: meta
@@ -212,11 +213,11 @@ jobs:
             type=semver,pattern={{version}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{major}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{major}}.{{minor}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
-            type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable')  }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable')  }}
-            type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable')  }}
+            type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
+            type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
 
-            type=raw,value=edge,enable=${{ (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'stable') }}
+            type=raw,value=edge,enable=${{(github.event_name != 'workflow_dispatch') && (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'stable') }}
 
             type=raw,value=oldstable,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'oldstable') }}
             type=raw,value=oldstable-edge,enable=${{ (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'oldstable') }}
