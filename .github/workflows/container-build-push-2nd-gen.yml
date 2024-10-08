@@ -191,6 +191,20 @@ jobs:
       - build-amd64
       - build-arm64
     steps:
+      - name: Get branch
+        id: branch
+        run: |
+          if [ -z "${{ github.event_name == 'workflow_dispatch' }}" ]; then
+              echo "branch=${{ inputs.ref-name }}" >> $GITHUB_OUTPUT
+          else
+              echo "branch=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+      - name: prepare conditions
+        id: conditions
+        run: |
+          echo "ENABLE_STABLE=${{ github.event_name != 'workflow_dispatch' && (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable')}}" >> $GITHUB_OUTPUT 
+          echo "branch=${{ steps.branch.outputs.branch }}"
+
       - name: Generate Docker metadata
         id: meta
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
@@ -198,21 +212,22 @@ jobs:
           images: ${{ secrets.GREENBONE_REGISTRY }}/${{ inputs.image-url }}
           flavor: latest=false
           tags: |
-            type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{version}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=semver,pattern={{major}},enable=${{ github.event_name != 'workflow_dispatch' }}
-            type=edge
-            type=ref,event=pr
             type=raw,value=latest,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
             type=raw,value=stable,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
-            type=raw,value=edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'stable') }}
+            type=semver,pattern={{version}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
+            type=semver,pattern={{major}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
+            type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
+            type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
+
+            type=raw,value=edge,enable=${{(github.event_name != 'workflow_dispatch') && (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'stable') }}
+
             type=raw,value=oldstable,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'oldstable') }}
-            type=raw,value=oldstable-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'oldstable') }}
+            type=raw,value=oldstable-edge,enable=${{ (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'oldstable') }}
+
             type=raw,value=testing,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'testing') }}
-            type=raw,value=testing-edge,enable=${{ ((inputs.ref-name || github.ref_name) == 'main') && (inputs.base-image-label == 'testing') }}
+            type=raw,value=testing-edge,enable=${{ (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'testing') }}
 
       - name: Create multi arch manifest
         uses: greenbone/actions/container-multi-arch-manifest@v3
