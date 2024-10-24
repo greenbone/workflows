@@ -151,6 +151,9 @@ jobs:
             *"scan-management"*)
               url="opensight-appliance$prefix/$(basename ${{ inputs.image-url }})"
               ;;
+            *"management-console"*)
+              url="opensight-management-console$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
             *"opensight-postgres"*)
               url="opensight$prefix/$(basename ${{ inputs.image-url }})"
               ;;
@@ -239,7 +242,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.helm-chart }}", "image-url": "${{ needs.building-container-greenbone-reg.outputs.image-url }}", "digest": "${{ needs.building-container-greenbone-reg.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.helm-chart }}", "image-url": "${{ inputs.image-url }}", "digest": "${{ needs.building-container.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
