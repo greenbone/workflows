@@ -247,6 +247,7 @@ jobs:
   notify:
     needs:
       - building-container
+      - building-container-greenbone-reg
       - building-service-chart
       - building-product-chart
       - building-product-compose
