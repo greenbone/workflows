@@ -127,6 +127,7 @@ jobs:
     runs-on: self-hosted-generic
     outputs:
       digest: ${{ steps.build-and-push.outputs.digest }}
+      image-url: ${{ steps.image-url.outputs.url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -138,43 +139,44 @@ jobs:
         shell: bash
         run: |
           if echo ${{ github.ref_name }} | grep -Eq "alpha|rc"; then
-            url="opensight-dev/$(basename ${{ inputs.image-url }})"
-          else
-            case "${{ inputs.image-url }}" in
-              *"asset-management"*)
-                url="opensight-asset/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"vulnerability-intelligence"*)
-                url="opensight-lookout/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"scan-management"*)
-                url="opensight-appliance/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"opensight-postgres"*)
-                url="opensight/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"opensight-keycloak"*)
-                url="opensight/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"opensight-ingress"*)
-                url="opensight/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"opensight-opensearch"*)
-                url="opensight/$(basename ${{ inputs.image-url }})"
-                ;;
-              *"opensight-notification-service"*)
-                url="opensight/$(basename ${{ inputs.image-url }})"
-                ;;
-              *)
-                echo "no supported service in ${{ inputs.image-url }}"
-                exit 1
-                ;;
-              # Follow pattern for all 3rd gen products
-            esac
+            prefix="-dev"
           fi
+          case "${{ inputs.image-url }}" in
+            *"asset-management"*)
+              url="opensight-asset$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"vulnerability-intelligence"*)
+              url="opensight-lookout$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"scan-management"*)
+              url="opensight-appliance$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"management-console"*)
+              url="opensight-management-console$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-postgres"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-keycloak"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-ingress"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-opensearch"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-notification-service"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *)
+              echo "No supported service in ${{ inputs.image-url }}"
+              exit 1
+              ;;
+          esac
           echo "url=$url" >> $GITHUB_OUTPUT
 
-      - name: Container build and push 3rd gen to additional url
+      - name: Container build and push 3rd gen
         id: build-and-push-additional
         uses: greenbone/actions/container-build-push-generic@v3
         with:
@@ -231,7 +233,7 @@ jobs:
   building-product-compose:
     if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
     needs:
-      - building-container
+      - building-container-greenbone-reg
     runs-on: "ubuntu-latest"
     steps:
       - name: Trigger product compose upgrade
@@ -240,11 +242,12 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.helm-chart }}", "image-url": "${{ vars.IMAGE_REGISTRY }}/${{ inputs.image-url }}", "digest": "${{ needs.building-container.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.helm-chart }}", "image-url": "${{ inputs.image-url }}", "digest": "${{ needs.building-container.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
       - building-container
+      - building-container-greenbone-reg
       - building-service-chart
       - building-product-chart
       - building-product-compose
