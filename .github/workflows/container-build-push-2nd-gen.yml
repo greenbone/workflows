@@ -124,7 +124,7 @@ jobs:
           image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-amd64 # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/amd64
           image-flavor: latest=false
-          registry: ${{ secrets.GREENBONE_REGISTRY }}
+          registry: ${{ vars.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
           scout-user: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -177,7 +177,7 @@ jobs:
           image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-arm64 # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/arm64
           image-flavor: latest=false
-          registry: ${{ secrets.GREENBONE_REGISTRY }}
+          registry: ${{ vars.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
           scout-user: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -209,7 +209,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
-          images: ${{ secrets.GREENBONE_REGISTRY }}/${{ inputs.image-url }}
+          images: ${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}
           flavor: latest=false
           tags: |
             type=raw,value=latest,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
@@ -243,7 +243,7 @@ jobs:
             ${{ needs.build-amd64.outputs.digest }}
             ${{ needs.build-arm64.outputs.digest }}
           url: ${{ inputs.image-url }}
-          registry: ${{ secrets.GREENBONE_REGISTRY }}
+          registry: ${{ vars.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
