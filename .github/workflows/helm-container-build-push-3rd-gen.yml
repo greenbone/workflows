@@ -201,35 +201,6 @@ jobs:
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
-  building-service-chart:
-    if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
-    needs:
-      - building-container
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: Trigger service helm chart upgrade
-        uses: greenbone/actions/trigger-workflow@v3
-        with:
-          token: ${{ secrets.GREENBONE_BOT_TOKEN }}
-          repository: "greenbone/product-helm-chart"
-          workflow: "service-chart-upgrade.yml"
-          inputs: '{"chart": "${{ inputs.helm-chart }}", "chart-version": "${{ github.ref_name }}", "container-digest": "${{ needs.building-container.outputs.digest }}", "init-container": "${{ inputs.init-container }}", "init-container-digest": "${{ inputs.init-container-digest }}"}'
-
-  building-product-chart:
-    if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
-    needs:
-      - building-container
-      - building-service-chart
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: Trigger product helm chart upgrade
-        uses: greenbone/actions/trigger-workflow@v3
-        with:
-          token: ${{ secrets.GREENBONE_BOT_TOKEN }}
-          repository: "greenbone/product-helm-chart"
-          workflow: "product-chart-upgrade.yml"
-          inputs: '{"chart": "${{ inputs.helm-chart }}", "tag": "${{ github.ref_name }}"}'
-
   building-product-compose:
     if: (inputs.helm-chart) && (startsWith(github.ref, 'refs/tags/v'))
     needs:
@@ -249,8 +220,6 @@ jobs:
     needs:
       - building-container
       - building-container-greenbone-reg
-      - building-service-chart
-      - building-product-chart
       - building-product-compose
     if: ${{ !cancelled() && startsWith(github.ref, 'refs/tags/v') && startsWith(inputs.notify, 'true') }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
