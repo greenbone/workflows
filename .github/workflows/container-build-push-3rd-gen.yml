@@ -201,8 +201,8 @@ jobs:
   building-product-compose:
     if: (inputs.service) && (startsWith(github.ref, 'refs/tags/v'))
     needs:
-      - building-container
-      - building-container-greenbone-reg
+      - building-container-ghcr
+      - building-container-greenbone
     runs-on: "ubuntu-latest"
     steps:
       - name: Trigger product compose upgrade
@@ -216,7 +216,7 @@ jobs:
   notify:
     needs:
       - building-container-ghcr
-      - building-container-greenbone-reg
+      - building-container-greenbone
       - building-product-compose
     if: ${{ !cancelled() && startsWith(github.ref, 'refs/tags/v') && startsWith(inputs.notify, 'true') }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
