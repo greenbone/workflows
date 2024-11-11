@@ -1,0 +1,225 @@
+name: Container build push 3rd gen
+
+on:
+  workflow_call:
+    inputs:
+      build-context:
+        description: "Path to image build context. Default is ."
+        default: .
+        type: string
+      build-docker-file:
+        description: "Path to the docker file. Default is ./Dockerfile"
+        default: ./Dockerfile
+        type: string
+      build-args:
+        description: "Use these build-args for the docker build process. It is not possible to use github secrets in here! Use the action."
+        default: ""
+        type: string
+      build-secrets:
+        description: "Use these build-secrets for the docker build process. It is not possible to use github secrets in here! Use the action."
+        default: ""
+        type: string
+      build-secret-greenbonebot:
+        description: "Set the GREENBONE_BOT_PACKAGES_READ_TOKEN as image build secret. Default is false"
+        default: "false"
+        type: string
+      service:
+        description: "The name of the service to update. If not set, no service update will be done in the product compose files. Default is empty"
+        default: ""
+        type: string
+      image-labels:
+        description: "Image labels."
+        required: true
+        type: string
+      image-url:
+        description: "Image url/name without registry. Default is github.repository"
+        default: "${{ github.repository }}"
+        type: string
+      image-platforms:
+        description: "Image platforms to build for. Default is linux/amd64"
+        default: linux/amd64
+        type: string
+      use-greenbonebot:
+        description: "Use the greenbonebot token as registry login. Default is false"
+        default: "false"
+        type: string
+      notify:
+        description: "Enable mattermost notify. Default is true"
+        default: "true"
+        type: string
+      scout:
+        description: "Enable docker scout sbom. Default is false"
+        default: "false"
+        type: string
+
+    secrets:
+      COSIGN_KEY_OPENSIGHT:
+        required: false
+      COSIGN_KEY_PASSWORD_OPENSIGHT:
+        required: false
+      GREENBONE_BOT:
+        required: false
+      GREENBONE_BOT_PACKAGES_READ_TOKEN:
+        required: false
+      GREENBONE_BOT_PACKAGES_WRITE_TOKEN:
+        required: false
+      GREENBONE_BOT_TOKEN:
+        required: false
+      MATTERMOST_WEBHOOK_URL:
+        required: false
+      DOCKERHUB_USERNAME:
+        required: false
+      DOCKERHUB_TOKEN:
+        required: false
+
+    outputs:
+      digest:
+        description: "The container digest"
+        value: ${{ jobs.building-container.outputs.digest }}
+
+jobs:
+  # We have to look, if our self hosted runner are be able to have this in hand.
+  # Otherwise we need to keep this for PR builds.
+  building-container-ghcr:
+    runs-on: "ubuntu-latest"
+    outputs:
+      digest: ${{ steps.build-and-push.outputs.digest }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Container build push 3rd gen
+        id: build-and-push
+        uses: greenbone/actions/container-build-push-generic@v3
+        with:
+          build-context: ${{ inputs.build-context }}
+          build-docker-file: ${{ inputs.build-docker-file }}
+          build-args: ${{ inputs.build-args }}
+          build-secrets: ${{ contains(inputs.build-secret-greenbonebot, 'true') && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN) || inputs.build-secrets }}
+          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
+          cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
+          # The tlog function does not currently support an ed25519 key.
+          cosign-tlog-upload: "false"
+          image-url: ${{ inputs.image-url }}
+          image-labels: ${{ inputs.image-labels }}
+          image-tags: |
+            # create container tag for git tags
+            type=ref,event=tag,value=latest
+            type=match,pattern=v(.*),group=1
+            type=ref,event=pr
+            # use unstable for main branch
+            type=raw,value=unstable,enable={{is_default_branch}}
+          image-platforms: ${{ inputs.image-platforms }}
+          registry: ${{ vars.IMAGE_REGISTRY }}
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ contains(inputs.use-greenbonebot, 'true') && secrets.GREENBONE_BOT_TOKEN || secrets.GITHUB_TOKEN }}
+          scout-user: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_USERNAME || '' }}
+          scout-password: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_TOKEN || '' }}
+
+  building-container-greenbone:
+    # At the moment, we use this job only to build tagged releases and not for every PR build.
+    # Once we have enough capacity, we can change this and remove the GHCR build job.
+    if: (inputs.service) && (startsWith(github.ref, 'refs/tags/v'))
+    runs-on: self-hosted-generic
+    outputs:
+      digest: ${{ steps.build-and-push.outputs.digest }}
+      image-url: ${{ steps.image-url.outputs.url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Since we derive all image URLs from the GitHub repository URL, we need to reformat them here to obtain our product OCI URLs.
+      # As soon as we no longer need to do this,
+      # we could remove this step and include everything in the respective workflow calls in the service repositories.
+      - name: Create image url
+        id: image-url
+        shell: bash
+        run: |
+          if echo ${{ github.ref_name }} | grep -Eq "alpha|rc"; then
+            prefix="-dev"
+          fi
+          case "${{ inputs.image-url }}" in
+            *"asset-management"*)
+              url="opensight-asset$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"vulnerability-intelligence"*)
+              url="opensight-lookout$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"scan-management"*)
+              url="opensight-appliance$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"management-console"*)
+              url="opensight-management-console$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-postgres"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-keycloak"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-ingress"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-opensearch"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *"opensight-notification-service"*)
+              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              ;;
+            *)
+              echo "No supported service in ${{ inputs.image-url }}"
+              exit 1
+              ;;
+          esac
+          echo "url=$url" >> $GITHUB_OUTPUT
+
+      - name: Container build push 3rd gen
+        id: build-and-push-additional
+        uses: greenbone/actions/container-build-push-generic@v3
+        with:
+          build-context: ${{ inputs.build-context }}
+          build-docker-file: ${{ inputs.build-docker-file }}
+          build-args: ${{ inputs.build-args }}
+          build-secrets: ${{ contains(inputs.build-secret-greenbonebot, 'true') && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN) || inputs.build-secrets }}
+          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
+          cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
+          # The tlog function does not currently support an ed25519 key.
+          cosign-tlog-upload: "false"
+          image-url: ${{ steps.image-url.outputs.url }}
+          image-labels: ${{ inputs.image-labels }}
+          image-tags: |
+            # create container tag for git tags
+            type=ref,event=tag,value=latest
+            type=match,pattern=v(.*),group=1
+            type=ref,event=pr
+            # use unstable for main branch
+            type=raw,value=unstable,enable={{is_default_branch}}
+          registry: ${{ vars.GREENBONE_REGISTRY }}
+          registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
+          registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
+
+  building-product-compose:
+    if: (inputs.service) && (startsWith(github.ref, 'refs/tags/v'))
+    needs:
+      - building-container
+      - building-container-greenbone-reg
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Trigger product compose upgrade
+        uses: greenbone/actions/trigger-workflow@v3
+        with:
+          token: ${{ secrets.GREENBONE_BOT_TOKEN }}
+          repository: "greenbone/automatix"
+          workflow: "push.yml"
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ inputs.image-url }}", "digest": "${{ needs.building-container.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+
+  notify:
+    needs:
+      - building-container-ghcr
+      - building-container-greenbone-reg
+      - building-product-compose
+    if: ${{ !cancelled() && startsWith(github.ref, 'refs/tags/v') && startsWith(inputs.notify, 'true') }}
+    uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
+    with:
+      status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
+    secrets: inherit
