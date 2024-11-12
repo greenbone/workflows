@@ -40,9 +40,9 @@ jobs:
         id: fetch_prs
         env:
           GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
+          DAYS_AGO: ${{ inputs.days }}
         run: |
-          DAYS_AGO=${{ inputs.days }} days ago
-          DAYS_AGO_TIMESTAMP=$(date -d "$DAYS_AGO" +%s)
+          DAYS_AGO_TIMESTAMP=$(date -d "$DAYS_AGO days ago" +%s)
           REPO_NAME=${{ github.repository }}
           gh pr list --label "dependencies" --state "open" --json url,createdAt,title > all_dependabot_prs.json
           
