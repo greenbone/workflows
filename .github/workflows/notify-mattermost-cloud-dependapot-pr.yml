@@ -11,8 +11,8 @@ on:
         description: "Exit this job/workflow with the monitored job status. Options: true or false. Default: true"
         type: string
         default: "true"
-      highlight:
-        description: "Mattermost highlight. Default: pdcloudtestalerts"
+      channel:
+        description: "Mattermost channel. Default: pdcloudtestalerts"
         type: string
         default: "pdcloudtestalerts"
       status:
@@ -38,6 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
         run: |
           SEVEN_DAYS_AGO=$(date -d '7 days ago' +%s)
+          REPO_NAME=${{ github.repository }}
           gh pr list --label "dependencies" --state "open" --json url,createdAt,title > all_dependabot_prs.json
           
           OLD_PRS=$(cat all_dependabot_prs.json | jq --argjson cutoff "$SEVEN_DAYS_AGO" \
@@ -48,7 +49,11 @@ jobs:
           else
             echo "$OLD_PRS" | jq -r '. | "- **\(.title)**: [View PR](\(.url))"' > old_pr_list.txt
             echo "OLD_PRS_FOUND=true" >> $GITHUB_OUTPUT
-            MESSAGE_TEXT=$(<old_pr_list.txt)
+            {
+              echo "[DEPENDABOT ALERT] :warning: Overdue Dependabot PRs in Repository: $REPO_NAME"
+              cat old_pr_list.txt
+            } > message_with_header.txt
+            MESSAGE_TEXT=$(<message_with_header.txt)
             echo "MESSAGE_TEXT<<EOF" >> $GITHUB_OUTPUT
             echo "$MESSAGE_TEXT" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
@@ -59,7 +64,7 @@ jobs:
         uses: greenbone/actions/mattermost-notify@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
         with:
           url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-          channel: "pdcloudtestalerts"
+          channel: ${{ inputs.channel }}
           message: ${{ steps.fetch_prs.outputs.MESSAGE_TEXT }}
           repository: ${{ github.repository }}
           commit: ${{ github.sha }}
