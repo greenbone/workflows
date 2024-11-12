@@ -19,6 +19,10 @@ on:
         description: "The monitored job, job status."
         type: string
         default: "warning"
+      days:
+        description: "Specifies the number of days to check for outdated PRs. Defaults to 7 days."
+        type: string
+        default: "7"
     # Dependabot don't have this secrets and on PR's this secrets are not needed.
     secrets:
       MATTERMOST_WEBHOOK_URL:
@@ -37,11 +41,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
         run: |
-          SEVEN_DAYS_AGO=$(date -d '7 days ago' +%s)
+          DAYS_AGO=${{ inputs.days }} days ago
+          DAYS_AGO_TIMESTAMP=$(date -d "$DAYS_AGO" +%s)
           REPO_NAME=${{ github.repository }}
           gh pr list --label "dependencies" --state "open" --json url,createdAt,title > all_dependabot_prs.json
           
-          OLD_PRS=$(cat all_dependabot_prs.json | jq --argjson cutoff "$SEVEN_DAYS_AGO" \
+          OLD_PRS=$(cat all_dependabot_prs.json | jq --argjson cutoff "$DAYS_AGO_TIMESTAMP" \
             '.[] | select((.createdAt | fromdateiso8601) < $cutoff)')
 
           if [[ -z "$OLD_PRS" ]]; then
