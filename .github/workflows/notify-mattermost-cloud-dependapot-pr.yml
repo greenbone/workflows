@@ -60,6 +60,6 @@ jobs:
           repository: ${{ github.repository }}
           commit: ${{ github.sha }}
           branch: ${{ github.ref_name }}
-          status: "failure"
+          status: ":warning:"
           workflow: ${{ github.run_id }}
           workflow-name: ${{ github.workflow }}
