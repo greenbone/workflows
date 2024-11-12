@@ -18,7 +18,7 @@ on:
       status:
         description: "The monitored job, job status."
         type: string
-        required: true
+        default: "warning"
     # Dependabot don't have this secrets and on PR's this secrets are not needed.
     secrets:
       MATTERMOST_WEBHOOK_URL:
