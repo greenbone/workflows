@@ -49,6 +49,7 @@ jobs:
             echo "$OLD_PRS" | jq -r '. | "- **\(.title)**: [View PR](\(.url))"' > old_pr_list.txt
             echo "OLD_PRS_FOUND=true" >> $GITHUB_OUTPUT
             echo "MESSAGE_TEXT=$(<old_pr_list.txt)" >> $GITHUB_OUTPUT
+          fi
 
       - name: Notify Mattermost
         if: steps.fetch_prs.outputs.OLD_PRS_FOUND == 'true'
