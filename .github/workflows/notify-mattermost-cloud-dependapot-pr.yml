@@ -44,19 +44,19 @@ jobs:
             '.[] | select((.createdAt | fromdateiso8601) < $cutoff)')
 
           if [[ -z "$OLD_PRS" ]]; then
-            echo "OLD_PRS_FOUND=false" >> $GITHUB_ENV
+            echo "OLD_PRS_FOUND=false" >> $GITHUB_OUTPUT
           else
             echo "$OLD_PRS" | jq -r '. | "- **\(.title)**: [View PR](\(.url))"' > old_pr_list.txt
-            echo "OLD_PRS_FOUND=true" >> $GITHUB_ENV
-            echo "MESSAGE_TEXT=$(<old_pr_list.txt)" >> $GITHUB_ENV
+            echo "OLD_PRS_FOUND=true" >> $GITHUB_OUTPUT
+            echo "MESSAGE_TEXT=$(<old_pr_list.txt)" >> $GITHUB_OUTPUT
 
       - name: Notify Mattermost
-        if: env.OLD_PRS_FOUND == 'true'
+        if: steps.fetch_prs.outputs.OLD_PRS_FOUND == 'true'
         uses: greenbone/actions/mattermost-notify@v3
         with:
           url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: "pdcloudtestalerts"
-          message: ${{ env.MESSAGE_TEXT }}
+          message: ${{ steps.fetch_prs.outputs.MESSAGE_TEXT }}
           repository: ${{ github.repository }}
           commit: ${{ github.sha }}
           branch: ${{ github.ref_name }}
