@@ -50,7 +50,7 @@ jobs:
             echo "$OLD_PRS" | jq -r '. | "- **\(.title)**: [View PR](\(.url))"' > old_pr_list.txt
             echo "OLD_PRS_FOUND=true" >> $GITHUB_OUTPUT
             {
-              echo "[DEPENDABOT ALERT] :warning: Overdue Dependabot PRs in Repository: $REPO_NAME"
+              echo "**[DEPENDABOT ALERT] :warning: Overdue Dependabot PRs in Repository: $REPO_NAME**"
               cat old_pr_list.txt
             } > message_with_header.txt
             MESSAGE_TEXT=$(<message_with_header.txt)
