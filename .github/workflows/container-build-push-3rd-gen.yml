@@ -211,7 +211,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ inputs.image-url }}", "digest": "${{ needs.building-container-ghcr.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.building-container-greenbone.outputs.image-url }}", "digest": "${{ needs.building-container-greenbone.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
