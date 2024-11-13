@@ -174,7 +174,7 @@ jobs:
           echo "url=$url" >> $GITHUB_OUTPUT
 
       - name: Container build push 3rd gen
-        id: build-and-push-additional
+        id: build-and-push
         uses: greenbone/actions/container-build-push-generic@v3
         with:
           build-context: ${{ inputs.build-context }}
