@@ -76,11 +76,11 @@ jobs:
       is-latest-tag: ${{ steps.latest.outputs.is-latest-tag }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ inputs.ref-name }}
 
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         if: inputs.artifact-name
         with:
           name: ${{ inputs.artifact-name }}
@@ -92,7 +92,7 @@ jobs:
           git status
           echo ${{ inputs.ref-name }}
 
-      - uses: greenbone/actions/is-latest-tag@a1883bd24d2d921426b3f06413e84606ecd43bdd
+      - uses: greenbone/actions/is-latest-tag@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
         id: latest
         with:
           # It looks like the action doesn't use its default value even when an empty input is set.
@@ -111,7 +111,7 @@ jobs:
 
       - name: Container build and push 2nd gen
         id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@a1883bd24d2d921426b3f06413e84606ecd43bdd
+        uses: greenbone/actions/container-build-push-generic@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
@@ -141,11 +141,11 @@ jobs:
       annotations: ${{ steps.build-and-push.outputs.annotations }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ inputs.ref-name }}
 
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         if: inputs.artifact-name
         with:
           name: ${{ inputs.artifact-name }}
@@ -164,7 +164,7 @@ jobs:
 
       - name: Container build and push 2nd gen
         id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@a1883bd24d2d921426b3f06413e84606ecd43bdd
+        uses: greenbone/actions/container-build-push-generic@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
@@ -230,7 +230,7 @@ jobs:
             type=raw,value=testing-edge,enable=${{ (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'testing') }}
 
       - name: Create multi arch manifest
-        uses: greenbone/actions/container-multi-arch-manifest@a1883bd24d2d921426b3f06413e84606ecd43bdd
+        uses: greenbone/actions/container-multi-arch-manifest@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}

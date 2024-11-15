@@ -52,11 +52,11 @@ jobs:
     steps:
       - name: Setting the reference and release type
         id: ref
-        uses: greenbone/actions/release-type@a1883bd24d2d921426b3f06413e84606ecd43bdd
+        uses: greenbone/actions/release-type@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
         with:
           release-type-input: ${{ inputs.release-type }}
       - name: Release with release action
-        uses: greenbone/actions/release@a1883bd24d2d921426b3f06413e84606ecd43bdd
+        uses: greenbone/actions/release@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
         with:
           git-tag-prefix: ${{ inputs.git-tag-prefix }}
           github-user: ${{ secrets.GREENBONE_BOT }}
