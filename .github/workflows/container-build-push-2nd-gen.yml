@@ -7,7 +7,7 @@ on:
         description: "The ref to build a container image from. For example a tag v23.0.0."
         type: string
       service:
-        description: "The compose service name where the image belongs too."
+        description: "The image related compose service name."
         type: string
       build-context:
         description: "Path to image build context. Default is ."
