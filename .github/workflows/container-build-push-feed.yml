@@ -93,7 +93,7 @@ jobs:
         if: inputs.vts == 'true'
         run: |
           cd ${{ inputs.artifact-path }}
-          tar -xJf vulnerability-tests.tar.xz
+          tar -xJf vulnerability-tests.tar.xz && rm vulnerability-tests.tar.xz
 
       - name: Container build and push 2nd gen
         id: build-and-push
