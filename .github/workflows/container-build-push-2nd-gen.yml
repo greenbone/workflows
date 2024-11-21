@@ -6,6 +6,9 @@ on:
       ref-name:
         description: "The ref to build a container image from. For example a tag v23.0.0."
         type: string
+      service:
+        description: "The image related compose service name."
+        type: string
       build-context:
         description: "Path to image build context. Default is ."
         default: .
@@ -190,6 +193,8 @@ jobs:
     needs:
       - build-amd64
       - build-arm64
+    outputs:
+      digest: ${{ steps.manifest.outputs.digest }}
     steps:
       - name: Get branch
         id: branch
@@ -230,6 +235,7 @@ jobs:
             type=raw,value=testing-edge,enable=${{ (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'testing') }}
 
       - name: Create multi arch manifest
+        id: manifest
         uses: greenbone/actions/container-multi-arch-manifest@v3
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
@@ -247,31 +253,26 @@ jobs:
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
-  test-pull-arm64:
-    if: ${{ (needs.build-arm64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
-    name: Test pulling the image on arm64
-    needs: [build-arm64, create-multi-arch-manifest]
-    runs-on: self-hosted-generic-arm64
+  # This job updates the Compose files for our products when a service name is provided by the workflow caller.
+  building-product-compose:
+    if: startsWith(github.ref, 'refs/tags/v') && inputs.service
+    needs:
+      - create-multi-arch-manifest
+    runs-on: "ubuntu-latest"
     steps:
-      - name: Pull
-        run: docker pull registry.community.greenbone.net/${{ inputs.image-url }}:latest
-
-  test-pull-amd64:
-    if: ${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') && (github.event_name != 'pull_request') }}
-    name: Test pulling the image on amd64
-    needs: [build-amd64, create-multi-arch-manifest]
-    runs-on: self-hosted-generic
-    steps:
-      - name: Pull
-        run: docker pull registry.community.greenbone.net/${{ inputs.image-url }}:latest
+      - name: Trigger product compose upgrade
+        uses: greenbone/actions/trigger-workflow@v3
+        with:
+          token: ${{ secrets.GREENBONE_BOT_TOKEN }}
+          repository: "greenbone/automatix"
+          workflow: "push.yml"
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ inputs.image-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
       - build-amd64
       - build-arm64
       - create-multi-arch-manifest
-      - test-pull-amd64
-      - test-pull-arm64
     if: ${{ !cancelled()  && startsWith(inputs.notify, 'true') && github.event_name != 'pull_request' }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-2nd-gen.yml@main
     with:
