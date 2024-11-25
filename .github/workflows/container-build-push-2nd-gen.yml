@@ -235,6 +235,7 @@ jobs:
             type=raw,value=testing-edge,enable=${{ (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'testing') }}
 
       - name: Create multi arch manifest
+        id: manifest
         uses: greenbone/actions/container-multi-arch-manifest@f0c8b8268b98d09237774489fefc2c0ab77703aa # v3.27.13
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
