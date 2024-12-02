@@ -198,11 +198,26 @@ jobs:
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
+  harbor-replication:
+    if: inputs.service && startsWith(github.ref, 'refs/tags/v')
+    needs: building-container-greenbone
+    runs-on: self-hosted-generic
+    steps:
+      - name: Trigger harbor replication
+        shell: bash
+        run: |
+          curl -X POST \
+            https://${{ vars.GREENBONE_REGISTRY }}/api/v2.0/replication/executions \
+            -u '${{ secrets.GREENBONE_REGISTRY_USER }}:${{ secrets.GREENBONE_REGISTRY_TOKEN }}' \
+            -H "Content-Type: application/json" \
+            -d '{"policy_id": 1}'
+
   building-product-compose:
-    if: (inputs.service) && (startsWith(github.ref, 'refs/tags/v'))
+    if: inputs.service && startsWith(github.ref, 'refs/tags/v')
     needs:
       - building-container-ghcr
       - building-container-greenbone
+      - harbor-replication
     runs-on: "ubuntu-latest"
     steps:
       - name: Trigger product compose upgrade
