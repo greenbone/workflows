@@ -61,6 +61,10 @@ on:
         required: false
       GREENBONE_REGISTRY_TOKEN:
         required: false
+      GREENBONE_REGISTRY_REPLICATION_USER:
+        required: false
+      GREENBONE_REGISTRY_REPLICATION_TOKEN:
+        required: false
       MATTERMOST_WEBHOOK_URL:
         required: false
 
@@ -254,7 +258,7 @@ jobs:
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
   harbor-replication:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN
     needs: create-multi-arch-manifest
     runs-on: self-hosted-generic
     steps:
@@ -263,7 +267,7 @@ jobs:
         run: |
           curl -X POST \
             https://${{ vars.GREENBONE_REGISTRY }}/api/v2.0/replication/executions \
-            -u '${{ secrets.GREENBONE_REGISTRY_USER }}:${{ secrets.GREENBONE_REGISTRY_TOKEN }}' \
+            -u '${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}:${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}' \
             -H "Content-Type: application/json" \
             -d '{"policy_id": 1}'
 
