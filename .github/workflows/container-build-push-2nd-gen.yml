@@ -230,7 +230,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
             type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
 
-            type=raw,value=edge,enable=${{(github.event_name != 'workflow_dispatch') && (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'stable') }}
+            type=raw,value=edge,enable=${{(steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'stable') }}
 
             type=raw,value=oldstable,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'oldstable') }}
             type=raw,value=oldstable-edge,enable=${{ (steps.branch.outputs.branch == 'main') && (inputs.base-image-label == 'oldstable') }}
