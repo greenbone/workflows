@@ -61,6 +61,8 @@ on:
         required: false
       GREENBONE_REGISTRY_TOKEN:
         required: false
+      GREENBONE_BOT_TOKEN:
+        required: false
       GREENBONE_REGISTRY_REPLICATION_USER:
         required: false
       GREENBONE_REGISTRY_REPLICATION_TOKEN:
