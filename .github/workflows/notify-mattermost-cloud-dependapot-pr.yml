@@ -66,7 +66,7 @@ jobs:
 
       - name: Notify Mattermost
         if: steps.fetch_prs.outputs.OLD_PRS_FOUND == 'true'
-        uses: greenbone/actions/mattermost-notify@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
+        uses: greenbone/actions/mattermost-notify@v3
         with:
           url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: ${{ inputs.channel }}

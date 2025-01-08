@@ -101,7 +101,7 @@ jobs:
           git status
           echo ${{ inputs.ref-name }}
 
-      - uses: greenbone/actions/is-latest-tag@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
+      - uses: greenbone/actions/is-latest-tag@v3
         id: latest
         with:
           # It looks like the action doesn't use its default value even when an empty input is set.
@@ -120,7 +120,7 @@ jobs:
 
       - name: Container build and push 2nd gen
         id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
+        uses: greenbone/actions/container-build-push-generic@v3
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
@@ -173,7 +173,7 @@ jobs:
 
       - name: Container build and push 2nd gen
         id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
+        uses: greenbone/actions/container-build-push-generic@v3
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
