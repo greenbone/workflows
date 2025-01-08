@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Run mypy
-        uses: greenbone/actions/mypy-python@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
+        uses: greenbone/actions/mypy-python@v3
         with:
           mypy-arguments: ${{ inputs.mypy-arguments }}
           python-version: ${{ inputs.python-version }}

@@ -101,7 +101,7 @@ jobs:
 
       - name: Container build and push 2nd gen
         id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
+        uses: greenbone/actions/container-build-push-generic@v3
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
@@ -143,7 +143,7 @@ jobs:
 
       - name: Container build and push 3rd gen
         id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
+        uses: greenbone/actions/container-build-push-generic@v3
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
@@ -171,7 +171,7 @@ jobs:
           tags: ${{ inputs.image-tags }}
 
       - name: Create multi arch manifest
-        uses: greenbone/actions/container-multi-arch-manifest@a1883bd24d2d921426b3f06413e84606ecd43bdd # v3.27.11
+        uses: greenbone/actions/container-multi-arch-manifest@v3
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
