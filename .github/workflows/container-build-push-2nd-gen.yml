@@ -188,7 +188,7 @@ jobs:
               echo 'EOF' >> $GITHUB_OUTPUT
             fi
           else:
-            echo "build-args=${{ inputs.build-args }}"" >> $GITHUB_OUTPUT
+            echo "build-args=${{ inputs.build-args }}" >> $GITHUB_OUTPUT
           fi
 
       - name: Container build and push 2nd gen
