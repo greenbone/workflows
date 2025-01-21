@@ -9,6 +9,9 @@ on:
       service:
         description: "The image related compose service name."
         type: string
+      build-args:
+        description: "Additional build arguments for the container image."
+        type: string
       build-context:
         description: "Path to image build context. Default is ."
         default: .
@@ -107,15 +110,25 @@ jobs:
           # It looks like the action doesn't use its default value even when an empty input is set.
           tag-name: ${{ inputs.ref-name || github.ref_name }}
 
-      - name: Set container build options
+      - name: Set container build args
         id: container-opts
         run: |
-          if [[ "${{ github.ref_type }}" = 'tag' ]]; then
-            echo "version=stable" >> $GITHUB_OUTPUT
-            echo "gvm-libs-version=oldstable" >> $GITHUB_OUTPUT
-          else
-            echo "version=edge" >> $GITHUB_OUTPUT
-            echo "gvm-libs-version=oldstable-edge" >> $GITHUB_OUTPUT
+          if [[ -z "${{ inputs.build-args}}" ]]; then
+            if [[ "${{ github.ref_type }}" = 'tag' ]]; then
+              echo 'build-args<<EOF' >> $GITHUB_OUTPUT
+              echo "VERSION=stable" >> $GITHUB_OUTPUT
+              echo "GVM_LIBS_VERSION=oldstable" >> $GITHUB_OUTPUT
+              echo "IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}" >> $GITHUB_OUTPUT
+              echo 'EOF' >> $GITHUB_OUTPUT
+            else
+              echo 'build-args<<EOF' >> $GITHUB_OUTPUT
+              echo "VERSION=edge" >> $GITHUB_OUTPUT
+              echo "GVM_LIBS_VERSION=oldstable-edge" >> $GITHUB_OUTPUT
+              echo "IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}" >> $GITHUB_OUTPUT
+              echo 'EOF' >> $GITHUB_OUTPUT
+            fi
+          else:
+            echo "build-args=${{ inputs.build-args }}" >> $GITHUB_OUTPUT
           fi
 
       - name: Container build and push 2nd gen
@@ -124,10 +137,7 @@ jobs:
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
-          build-args: |
-            VERSION=${{ steps.container-opts.outputs.version }}
-            GVM_LIBS_VERSION=${{ steps.container-opts.outputs.gvm-libs-version }}
-            IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
+          build-args: ${{ steps.container-opts.outputs.build-args }}
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-amd64 # temporary tag that will be overwritten with the manifest upload
@@ -160,15 +170,25 @@ jobs:
           name: ${{ inputs.artifact-name }}
           path: ${{ inputs.artifact-path }}
 
-      - name: Set container build options
+      - name: Set container build args
         id: container-opts
         run: |
-          if [[ "${{ github.ref_type }}" = 'tag' ]]; then
-            echo "version=stable" >> $GITHUB_OUTPUT
-            echo "gvm-libs-version=oldstable" >> $GITHUB_OUTPUT
-          else
-            echo "version=edge" >> $GITHUB_OUTPUT
-            echo "gvm-libs-version=oldstable-edge" >> $GITHUB_OUTPUT
+          if [[ -z "${{ inputs.build-args}}" ]]; then
+            if [[ "${{ github.ref_type }}" = 'tag' ]]; then
+              echo 'build-args<<EOF' >> $GITHUB_OUTPUT
+              echo "VERSION=stable" >> $GITHUB_OUTPUT
+              echo "GVM_LIBS_VERSION=oldstable" >> $GITHUB_OUTPUT
+              echo "IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}" >> $GITHUB_OUTPUT
+              echo 'EOF' >> $GITHUB_OUTPUT
+            else
+              echo 'build-args<<EOF' >> $GITHUB_OUTPUT
+              echo "VERSION=edge" >> $GITHUB_OUTPUT
+              echo "GVM_LIBS_VERSION=oldstable-edge" >> $GITHUB_OUTPUT
+              echo "IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}" >> $GITHUB_OUTPUT
+              echo 'EOF' >> $GITHUB_OUTPUT
+            fi
+          else:
+            echo "build-args=${{ inputs.build-args }}"" >> $GITHUB_OUTPUT
           fi
 
       - name: Container build and push 2nd gen
@@ -177,10 +197,7 @@ jobs:
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
-          build-args: |
-            VERSION=${{ steps.container-opts.outputs.version }}
-            GVM_LIBS_VERSION=${{ steps.container-opts.outputs.gvm-libs-version }}
-            IMAGE_REGISTRY=${{ vars.IMAGE_REGISTRY }}
+          build-args: ${{ steps.container-opts.outputs.build-args }}
           image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-arm64 # temporary tag that will be overwritten with the manifest upload
