@@ -14,6 +14,10 @@ on:
         description: "Linter to use: Default is 'pylint'."
         default: "pylint"
         type: string
+      formatter:
+        description: "Format check to use: Default is 'black --check --diff'."
+        default: "black --check --diff"
+        type: string
 
 jobs:
   linting:
@@ -27,3 +31,4 @@ jobs:
           packages: ${{ inputs.lint-packages }}
           python-version: ${{ inputs.python-version }}
           linter: ${{ inputs.linter }}
+          formatter: ${{ inputs.formatter }}
