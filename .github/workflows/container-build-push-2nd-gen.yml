@@ -1,4 +1,4 @@
-name: Sensor Build and Push
+name: GEA components Build and Push to Harbor
 
 on:
   workflow_call:
