@@ -23,6 +23,10 @@ on:
         description: "The name of the channel where the notification happens."
         type: string
         default: pd2ndgendeployment
+      shortline:
+        description: "Mattermost use shortline mode. Default: true"
+        type: string
+        default: "true"
     # Dependabot don't have this secrets and on PR's this secrets are not needed.
     secrets:
       MATTERMOST_WEBHOOK_URL:
@@ -44,6 +48,8 @@ jobs:
           workflow: ${{ github.run_id }}
           workflow-name: ${{ github.workflow }}
           status: ${{ inputs.status }}
+          shortline: ${{ inputs.highlight }}
+
       - name: Exit with monitored job status
         if: inputs.exit-with-status == 'true' && inputs.status != 'success'
         run: |
