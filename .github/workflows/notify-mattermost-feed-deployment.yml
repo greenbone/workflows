@@ -19,6 +19,10 @@ on:
         description: "The monitored job, job status."
         type: string
         required: true
+      shortline:
+        description: "Mattermost use shortline mode. Default: true"
+        type: string
+        default: "true"
     secrets:
       MATTERMOST_WEBHOOK_URL:
         required: true
@@ -43,7 +47,8 @@ jobs:
           workflow: ${{ github.run_id }}
           workflow-name: ${{ github.workflow }}
           status: ${{ inputs.status }}
-          shortline: "true"
+          shortline: ${{ inputs.highlight }}
+
       - name: Exit with monitored job status
         if: inputs.exit-with-status == 'true' && inputs.status != 'success'
         run: |
