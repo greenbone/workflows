@@ -138,46 +138,42 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      # Since we derive all image URLs from the GitHub repository URL, we need to reformat them here to obtain our product OCI URLs.
-      # As soon as we no longer need to do this,
-      # we could remove this step and include everything in the respective workflow calls in the service repositories.
+      # Since all image URLs are derived from the GitHub repository URL, we need to reformat them to obtain the correct product OCI URLs.
+      # We can remove this step after incorporate everything directly into the respective workflow calls within the service repositories.
       - name: Create image url
         id: image-url
         shell: bash
         run: |
-          if echo ${{ github.ref_name }} | grep -Eq "alpha|rc"; then
-            prefix="-dev"
-          fi
           case "${{ inputs.image-url }}" in
             *"asset-management"*)
-              url="opensight-asset$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-asset-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"vulnerability-intelligence"*)
-              url="opensight-lookout$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-lookout-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"scan-management"*)
-              url="opensight-appliance$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-appliance-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"management-console"*)
-              url="opensight-management-console$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-management-console-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"opensight-postgres"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"opensight-keycloak"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"opensight-ingress"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"opensight-opensearch"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"user-management"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"opensight-notification-service"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *)
               echo "No supported service in ${{ inputs.image-url }}"
