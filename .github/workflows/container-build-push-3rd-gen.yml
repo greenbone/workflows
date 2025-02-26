@@ -144,37 +144,36 @@ jobs:
         id: image-url
         shell: bash
         run: |
-          prefix="-dev"
           case "${{ inputs.image-url }}" in
             *"asset-management"*)
-              url="opensight-asset$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-asset-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"vulnerability-intelligence"*)
-              url="opensight-lookout$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-lookout-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"scan-management"*)
-              url="opensight-appliance$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-appliance-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"management-console"*)
-              url="opensight-management-console$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-management-console-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"opensight-postgres"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"opensight-keycloak"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"opensight-ingress"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"opensight-opensearch"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"user-management"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"opensight-notification-service"*)
-              url="opensight$prefix/$(basename ${{ inputs.image-url }})"
+              url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *)
               echo "No supported service in ${{ inputs.image-url }}"
