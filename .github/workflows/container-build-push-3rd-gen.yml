@@ -175,6 +175,9 @@ jobs:
             *"opensight-notification-service"*)
               url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
+            *"opensight-browser"*)
+              url="opensight-asset-dev/$(basename ${{ inputs.image-url }})"
+              ;;
             *)
               echo "No supported service in ${{ inputs.image-url }}"
               exit 1
