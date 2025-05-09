@@ -1,0 +1,227 @@
+name: Container Push
+
+on:
+  workflow_call:
+    inputs:
+      ref-name:
+        description: "Checkout ref name. Optional default is empty."
+        type: string
+      build-args:
+        description: "Additional build arguments for the container image. Default is empty."
+        type: string
+      build-context:
+        description: "Path to image build context. Default is ."
+        default: .
+        type: string
+      build-docker-file:
+        description: "Path to the docker file. Default is ./Dockerfile"
+        type: string
+      image-labels:
+        description: "Image labels."
+        required: true
+        type: string
+      image-tags:
+        description: "Docker meta action tag string."
+        default: |
+          # create container tag for git tags
+          type=ref,event=tag,value=latest
+          type=match,pattern=v(.*),group=1
+          type=ref,event=pr
+          # use unstable for main branch
+          type=raw,value=unstable,enable={{is_default_branch}}
+        type: string
+      image-flavor:
+        description: "Image flavor."
+        default: "latest=false"
+        type: string
+      image-url:
+        description: "Image url/name without registry."
+        required: true
+        type: string
+      notify:
+        description: "Enable mattermost notify. Default is true"
+        default: "true"
+        type: string
+      notification-channel:
+        description: "The name of the channel where the notification happens."
+        type: string
+        default: "pd2ndgendeployment"
+      notification-webhook-secret-name:
+        description: "The name of the webhook secret. Default is MATTERMOST_WEBHOOK_URL"
+        type: string
+        default: "MATTERMOST_WEBHOOK_URL"
+      registry:
+        description: "Registry domain name."
+        required: true
+        type: string
+      registry-username:
+        description: "Registry username."
+        type: string
+      registry-username-secret-name:
+        description: "The name of the registry username secret. Default is GREENBONE_REGISTRY_USER"
+        type: string
+        default: "GREENBONE_REGISTRY_USER"
+      registry-password-secret-name:
+        description: "The name of the registry password secret. Default is GREENBONE_REGISTRY_TOKEN"
+        type: string
+        default: "GREENBONE_REGISTRY_TOKEN"
+      scout-user-secret-name:
+        description: "The name of the scout user secret. Default is DOCKERHUB_USERNAME"
+        type: string
+        default: "DOCKERHUB_USERNAME"
+      scout-password-secret-name:
+        description: "The name of the scout user secret. Default is DOCKERHUB_TOKEN"
+        type: string
+        default: "DOCKERHUB_TOKEN"
+      cosign-key-secret-name:
+        description: "The name of the cosign key secret. Default is COSIGN_KEY_OPENSIGHT"
+        type: string
+        default: "COSIGN_KEY_OPENSIGHT"
+      cosign-key-passworp-secret-name:
+        description: "The name of the cosign key password secret. Default is COSIGN_KEY_PASSWORD_OPENSIGHT"
+        type: string
+        default: "COSIGN_KEY_PASSWORD_OPENSIGHT"
+
+    secrets:
+      COSIGN_KEY_OPENSIGHT:
+        required: false
+      COSIGN_KEY_PASSWORD_OPENSIGHT:
+        required: false
+      DOCKERHUB_USERNAME:
+        required: false
+      DOCKERHUB_TOKEN:
+        required: false
+      GREENBONE_REGISTRY:
+        required: false
+      GREENBONE_REGISTRY_USER:
+        required: false
+      GREENBONE_REGISTRY_TOKEN:
+        required: false
+      GREENBONE_BOT_TOKEN:
+        required: false
+      GREENBONE_REGISTRY_REPLICATION_USER:
+        required: false
+      GREENBONE_REGISTRY_REPLICATION_TOKEN:
+        required: false
+      MATTERMOST_WEBHOOK_URL:
+        required: false
+
+# INFO
+# We cannot use a matrix here because job outputs from matrix jobs cannot be passed to other jobs.
+# Due to cosign and the use of native runners, we cannot use the platform build mode from buildx anymore.
+# This means we have to build our own multi-arch manifest.
+
+jobs:
+  build-amd64:
+    name: Build amd64 container
+    runs-on: self-hosted-generic
+    outputs:
+      digest: ${{ steps.build-and-push.outputs.digest }}
+      tags: ${{ steps.build-and-push.outputs.tags }}
+      annotations: ${{ steps.build-and-push.outputs.annotations }}
+    steps:
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.ref-name }}
+
+      - name: Container build and push
+        id: build-and-push
+        uses: greenbone/actions/container-build-push-generic@v3
+        with:
+          build-context: ${{ inputs.build-context }}
+          build-docker-file: ${{ inputs.build-docker-file }}
+          build-args: ${{ inputs.build-args }}
+          image-url: ${{ inputs.image-url }}
+          image-labels: ${{ inputs.image-labels }}
+          image-tags: raw,value=${{ steps.checkout.outputs.ref }}-amd64 # temporary tag that will be overwritten with the manifest upload
+          image-platforms: linux/amd64
+          image-flavor: latest=false
+          registry: ${{ inputs.registry }}
+          registry-username: ${{ inputs.registry-username || secrets[inputs.registry-username-secret-name] }}
+          registry-password: ${{ secrets[inputs.registry-password-secret-name] }}
+          scout-user: ${{ secrets[inputs.scout-user-secret-name] }}
+          scout-password: ${{ secrets[inputs.scout-password-secret-name] }}
+          scout-command: cves
+
+  build-arm64:
+    # At the moment we don't have enough arm runners to provide a run for every PR!
+    name: Build arm64 container
+    if: github.event_name != 'pull_request'
+    runs-on: self-hosted-generic-arm64
+    outputs:
+      digest: ${{ steps.build-and-push.outputs.digest }}
+      tags: ${{ steps.build-and-push.outputs.tags }}
+      annotations: ${{ steps.build-and-push.outputs.annotations }}
+    steps:
+      - name: Checkout repository
+        id: checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.ref-name }}
+
+      - name: Container build and push
+        id: build-and-push
+        uses: greenbone/actions/container-build-push-generic@v3
+        with:
+          build-context: ${{ inputs.build-context }}
+          build-docker-file: ${{ inputs.build-docker-file }}
+          build-args: ${{ inputs.build-args }}
+          image-url: ${{ inputs.image-url }}
+          image-labels: ${{ inputs.image-labels }}
+          image-tags: raw,value=${{ steps.checkout.outputs.ref }}-arm64 # temporary tag that will be overwritten with the manifest upload
+          image-platforms: linux/arm64
+          image-flavor: latest=false
+          registry: ${{ inputs.registry }}
+          registry-username: ${{ inputs.registry-username || secrets[inputs.registry-username-secret-name] }}
+          registry-password: ${{ secrets[inputs.registry-password-secret-name] }}
+
+  create-multi-arch-manifest:
+    name: Create container multi arch manifest
+    if: github.event_name != 'pull_request'
+    runs-on: self-hosted-generic
+    needs:
+      - build-amd64
+      - build-arm64
+    outputs:
+      digest: ${{ steps.manifest.outputs.digest }}
+    steps:
+      - name: Generate Docker metadata
+        id: meta
+        uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5.6.1
+        with:
+          images: ${{ inputs.registry }}/${{ inputs.image-url }}
+          flavor: ${{ inputs.image-flavor }}
+          tags: ${{ inputs.image-tags }}
+
+      - name: Create multi arch manifest
+        id: manifest
+        uses: greenbone/actions/container-multi-arch-manifest@f0c8b8268b98d09237774489fefc2c0ab77703aa # v3.27.13
+        with:
+          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
+          cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
+          cosign-tlog-upload: "false"
+          annotations: |
+            ${{ needs.build-amd64.outputs.annotations }}
+            ${{ needs.build-arm64.outputs.annotations }}
+          meta-tags: ${{ steps.meta.outputs.tags }}
+          digests: |
+            ${{ needs.build-amd64.outputs.digest }}
+            ${{ needs.build-arm64.outputs.digest }}
+          url: ${{ inputs.image-url }}
+          registry: ${{ inputs.registry }}
+          registry-username: ${{ secrets[inputs.registry-username-secret-name] }}
+          registry-password: ${{ secrets[inputs.registry-password-secret-name] }}
+
+  notify:
+    needs:
+      - build-amd64
+      - build-arm64
+      - create-multi-arch-manifest
+    if: ${{ !cancelled()  && startsWith(inputs.notify, 'true') && github.event_name != 'pull_request' }}
+    uses: greenbone/workflows/.github/workflows/notify-mattermost-2nd-gen.yml@main
+    with:
+      status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
+      channel: ${{ inputs.notification-channel }}
+    secrets: inherit
