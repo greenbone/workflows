@@ -295,10 +295,10 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"policy_id": 1}')"
           status="$?"
+          echo "$out"
           # Harbor returns always HTTP-Statuscode 200 OK
           # We need to check the output!
           if [ "$status" -ne 0 ] || [[ "$out" == *"errors"* ]]; then
-            echo "$out"
             exit 1
           fi
 
