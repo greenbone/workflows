@@ -288,11 +288,19 @@ jobs:
             echo "Secret GREENBONE_REGISTRY_REPLICATION_TOKEN does not exist"
             exit 0
           fi
-          curl -X POST \
+          set -e
+          out="$(curl -X POST \
             https://${{ vars.GREENBONE_REGISTRY }}/api/v2.0/replication/executions \
             -u '${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}:${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}' \
             -H "Content-Type: application/json" \
-            -d '{"policy_id": 1}'
+            -d '{"policy_id": 1}')"
+          status="$?"
+          echo "$out"
+          # Harbor returns always HTTP-Statuscode 200 OK
+          # We need to check the output!
+          if [ "$status" -ne 0 ] || [[ "$out" == *"errors"* ]]; then
+            exit 1
+          fi
 
   # This job updates the Compose files for our products when a service name is provided by the workflow caller.
   building-product-compose:
