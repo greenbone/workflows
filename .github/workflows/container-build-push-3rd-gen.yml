@@ -219,7 +219,7 @@ jobs:
             echo "Secret GREENBONE_REGISTRY_REPLICATION_TOKEN does not exist"
             exit 0
           fi
-          curl -X POST \
+          curl --fail-with-body -X POST \
             https://${{ vars.GREENBONE_REGISTRY }}/api/v2.0/replication/executions \
             -u '${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}:${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}' \
             -H "Content-Type: application/json" \
