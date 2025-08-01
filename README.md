@@ -495,6 +495,52 @@ Outputs:
 |--------|-----------------------|
 | digest | The container digest. |
 
+### Generate an SBOM with trivy and push a cosigned artifact
+
+A workflow to generate an SBOM with trivy.
+This also cosigns and pushes it to a specified url.
+The workflow is run on t555555+60ag pushes (releases)
+Currently only the image scanning is implemented.
+
+```yml
+name: GenerateSBOM with trivy and push artifact 
+
+on:
+  push:
+    branches: [ main ]
+    tags: ["v*"]
+
+jobs:
+  generate-and-push-sbom-trivy:
+    # generate and push SBOM only on tag pushes (releases)
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on:
+      - self-hosted-generic-vm-amd64
+    needs: building
+    steps:
+      - name: Generate and Push SBOM
+        uses: greenbone/workflows/.github/workflows/helm-container-build-push-3rd-gen.yml@main
+        with:
+          image-url: "${{ vars.IMAGE_REGISTRY}}/${{ github.repository}}:${{ github.ref_name }}"
+          artifact-url: "${{ vars.GREENBONE_REGISTRY }}/opensight-management-console-dev/management-console-backend-sbom:${{ github.ref_name }}"
+```
+
+Inputs:
+
+| Name                                | Description                                                                                                                                                      |          |
+|-------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| image-url                           | Image url/name without registry. Default is github.repository                                                                                                    | Required |
+| artifact-url                        | Where the generated SBOM should be pushed after it is cosigned, with artifact name and registry.                                                                 | Required |
+| sbom-format                         | Format of the SBOM. Default is `cyclonedx`. Options are (trivy): `table`, `json`, `template`, `sarif`, `cyclonedx`, `spdx`, `spdx-json,` `github`, `cosign-vuln` | Optional |
+| output-file-name                    | Tells trivy to save the output into a file. Needs to be done so that the cosign action can sign and upload it. Default is `sbom-file.json`                       | Optional |
+| image-registry-username-secret-name | The name of the registry username secret in which the image is found. This is used by trivy to login into the registry. Default is `GREENBONE_BOT_USERNAME`      | Optional |
+| image-registry-password-secret-name | The name of the registry password secret in which the image is found. This is used by trivy to login into the registry. Default is `GREENBONE_BOT_TOKEN`         | Optional |
+| registry                            | Registry to which the SBOM should be pushed. If not set, it will be evaluated to `GREENBONE_REGISTRY`                                                            | Optional |
+| registry-username-secret-name       | The name of the registry username secret to which the artifact should be pushed. Default is `GREENBONE_REGISTRY_USER`                                            | Optional |
+| registry-password-secret-name       | The name of the registry password secret to which the artifact should be pushed. Default is `GREENBONE_REGISTRY_TOKEN`                                           | Optional |
+| cosign-key-secret-name              | The name of the cosign key secret. Default is `COSIGN_KEY_OPENSIGHT`                                                                                             | Optional |
+| cosign-key-password-secret-name     | The name of the cosign key password secret. Default is `COSIGN_KEY_PASSWORD_OPENSIGHT`                                                                           | Optional |
+
 ### Notify Mattermost Feed Deployment
 
 Reusable workflow designed for the feed delivery pipeline.
