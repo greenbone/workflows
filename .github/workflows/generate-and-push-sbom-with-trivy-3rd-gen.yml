@@ -1,0 +1,94 @@
+name: Generate Trivy SBOM with image scanning
+on:
+  workflow_call:
+    workflow_call:
+      inputs:
+        # input for trivy
+        image-url:
+          description: "Image url with registry. This is used by trivy to scan the image and generate the SBOM."
+          type: string
+          required: true
+        image-registry-username-secret-name:
+          description: "The name of the registry username in which the image is found. Default is GREENBONE_BOT_USERNAME"
+          type: string
+          default: "GREENBONE_BOT_USERNAME"
+        image-registry-password-secret-name:
+          description: "The name of the registry password secret in which the image is found. Default is GREENBONE_BOT_TOKEN"
+          type: string
+          default: "GREENBONE_BOT_TOKEN"
+        sbom-format:
+          description: "Format of the generated SBOM. Default is cyclonedx"
+          default: 'cyclonedx'
+          type: string
+        output-file-name:
+          description: "File name for the trivy output, can also contain '.json' for an output in JSON format. Default is sbom-file.json"
+          default: 'sbom-file.json'
+        # input for the greenbone action push-and-sign-artifact
+        artifact-url:
+          description: "Artifact upload url/with artifact name and registry. This is where the signed artifact is uploaded."
+          type: string
+          required: true
+        registry:
+          description: "Registry to which the SBOM should be pushed. If not set, it will be evaluated to GREENBONE_REGISTRY"
+          type: string
+        registry-username-secret-name:
+          description: "The name of the registry username secret to which the artifact should be pushed. Default is GREENBONE_REGISTRY_USER"
+          type: string
+          default: "GREENBONE_REGISTRY_USER"
+        registry-password-secret-name:
+          description: "The name of the registry password secret to which the artifact should be pushed. Default is GREENBONE_REGISTRY_TOKEN"
+          type: string
+          default: "GREENBONE_REGISTRY_TOKEN"
+        cosign-key-secret-name:
+          description: "The name of the cosign key secret. Default is COSIGN_KEY_OPENSIGHT"
+          type: string
+          default: "COSIGN_KEY_OPENSIGHT"
+        cosign-key-password-secret-name:
+          description: "The name of the cosign key password secret. Default is COSIGN_KEY_PASSWORD_OPENSIGHT"
+          type: string
+          default: "COSIGN_KEY_PASSWORD_OPENSIGHT"
+
+      secrets:
+        COSIGN_KEY_OPENSIGHT:
+          required: false
+        COSIGN_KEY_PASSWORD_OPENSIGHT:
+          required: false
+        GREENBONE_BOT_USERNAME:
+          required: false
+        GREENBONE_BOT_TOKEN:
+          required: false
+        GREENBONE_REGISTRY:
+          required: false
+        GREENBONE_REGISTRY_USER:
+          required: false
+        GREENBONE_REGISTRY_TOKEN:
+          required: false
+
+jobs:
+  generate-and-push-sbom-trivy:
+    runs-on:
+      - self-hosted-generic-vm-amd64
+    steps:
+      - name: Scan image in a private registry
+        uses: aquasecurity/trivy-action@dc5a429b52fcf669ce959baa2c2dd26090d2a6c4 # 0.32.0
+        env:
+          TRIVY_USERNAME: ${{ secrets.[inputs.image-registry-username-secret-name] }}
+          TRIVY_PASSWORD: ${{ secrets.[inputs.image-registry-password-secret-name] }}
+        with:
+          image-ref: ${{ inputs.image-url }}
+          scan-type: image
+          format: ${{ inputs.sbom-format }}
+          output: ${{ inputs.output-file-name }}
+          github-pat: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push and sign artifact
+        uses: greenbone/actions/push-and-sign-artifact@v3.31.0
+        with:
+          artifact-file: ${{ inputs.output-file-name }}
+          artifact-url: ${{ inputs.artifact-url }}
+          artifact-folder: ${{ github.workspace }}
+          registry-domain: ${{ inputs.registry || vars.GREENBONE_REGISTRY }}
+          registry-user: ${{ secrets[inputs.registry-username-secret-name] }}
+          registry-token: ${{ secrets[inputs.registry-password-secret-name] }}
+          cosign-key: ${{ secrets[inputs.cosign-key-secret-name] }}
+          cosign-password: ${{ secrets[inputs.cosign-key-password-secret-name] }}
