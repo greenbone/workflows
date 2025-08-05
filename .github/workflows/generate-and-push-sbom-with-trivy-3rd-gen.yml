@@ -21,6 +21,7 @@ on:
         type: string
       output-file-name:
         description: "File name for the trivy output, can also contain '.json' for an output in JSON format. Default is sbom-file.json"
+        type: string
         default: 'sbom-file.json'
       # input for the greenbone action push-and-sign-artifact
       artifact-url:
