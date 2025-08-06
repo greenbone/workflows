@@ -39,7 +39,7 @@ jobs:
         uses: greenbone/actions/mattermost-notify@v3
         with:
           url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-          channel: "pdfeeddeploymentnotification"
+          channel: "pdgeaqmnotification"
           highlight: ${{ inputs.highlight }}
           branch: ${{ github.ref_name }}
           commit: ${{ inputs.commit }}
