@@ -48,21 +48,21 @@ on:
         type: string
         default: "COSIGN_KEY_PASSWORD_OPENSIGHT"
 
-      secrets:
-        COSIGN_KEY_OPENSIGHT:
-          required: false
-        COSIGN_KEY_PASSWORD_OPENSIGHT:
-          required: false
-        GREENBONE_BOT_USERNAME:
-          required: false
-        GREENBONE_BOT_TOKEN:
-          required: false
-        GREENBONE_REGISTRY:
-          required: false
-        GREENBONE_REGISTRY_USER:
-          required: false
-        GREENBONE_REGISTRY_TOKEN:
-          required: false
+    secrets:
+      COSIGN_KEY_OPENSIGHT:
+        required: false
+      COSIGN_KEY_PASSWORD_OPENSIGHT:
+        required: false
+      GREENBONE_BOT_USERNAME:
+        required: false
+      GREENBONE_BOT_TOKEN:
+        required: false
+      GREENBONE_REGISTRY:
+        required: false
+      GREENBONE_REGISTRY_USER:
+        required: false
+      GREENBONE_REGISTRY_TOKEN:
+        required: false
 
 jobs:
   generate-and-push-sbom-trivy:
@@ -72,8 +72,8 @@ jobs:
       - name: Scan image in a private registry
         uses: aquasecurity/trivy-action@dc5a429b52fcf669ce959baa2c2dd26090d2a6c4 # 0.32.0
         env:
-          TRIVY_USERNAME: ${{ secrets.[inputs.image-registry-username-secret-name] }}
-          TRIVY_PASSWORD: ${{ secrets.[inputs.image-registry-password-secret-name] }}
+          TRIVY_USERNAME: ${{ secrets[inputs.image-registry-username-secret-name] }}
+          TRIVY_PASSWORD: ${{ secrets[inputs.image-registry-password-secret-name] }}
         with:
           image-ref: ${{ inputs.image-url }}
           scan-type: image
