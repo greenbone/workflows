@@ -11,6 +11,10 @@ on:
         description: "Exit this job/workflow with the monitored job status. Options: true or false. Default: true"
         type: string
         default: "true"
+      channel:
+        description: "Mattermost channel. Default: pd3rdgendeploymentnotifications"
+        type: string
+        default: "pd3rdgendeploymentnotifications"
       highlight:
         description: "Mattermost highlight. Default: channel"
         type: string
@@ -39,7 +43,7 @@ jobs:
         uses: greenbone/actions/mattermost-notify@v3
         with:
           url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-          channel: "pd3rdgendeploymentnotifications"
+          channel: ${{ inputs.channel }}
           highlight: ${{ inputs.highlight }}
           branch: ${{ github.ref_name }}
           commit: ${{ inputs.commit }}
