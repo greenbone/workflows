@@ -46,7 +46,7 @@ jobs:
           workflow: ${{ github.run_id }}
           workflow-name: ${{ github.workflow }}
           status: ${{ inputs.status }}
-          shortline: ${{ inputs.highlight }}
+          shortline: ${{ inputs.shortline }}
 
       - name: Exit with monitored job status
         if: inputs.exit-with-status == 'true' && inputs.status != 'success'
