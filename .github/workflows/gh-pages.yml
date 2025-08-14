@@ -3,8 +3,9 @@ name: Deploy docs to GitHub Pages
 on:
   workflow_call:
     inputs:
+      matrix:
       artifact-path:
-        description: "Path to the folder containing build artifacts to deploy"
+        description: "matrix of artifact names and paths"
         required: true
         type: string
 
@@ -14,16 +15,18 @@ permissions:
   pages: write
 
 jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      environment:
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
-      steps:
-      - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ${{ inputs.artifact-path }}
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(inputs.matrix) }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - name: Upload pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ${{ matrix.artifact-path }}
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
