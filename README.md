@@ -19,6 +19,7 @@ Greenbone projects
   - [Release Cloud](#release-cloud)
   - [Helm Build/Push](#helm-buildpush)
   - [Deploy docs on GitHub Pages](#deploy-docs-on-github-pages)
+  - [Deploy docs with HTML artifacts (GitHub Pages)](#deploy-docs-with-html-artifacts-github-pages)
   - [Build and push container images to ghcr.io or docker.io](#build-and-push-container-images-to-ghcr-io-or-docker-io)
 - [Support](#support)
 - [Maintainer](#maintainer)
@@ -438,6 +439,32 @@ Inputs:
 | source | Directory containing the sources for the documentation | Optional (default: `"docs"`) |
 | build | Directory containing the build of the documentation | Optional (default: `"docs/build/html"`) |
 | environment-name | Name of the deployment environment | Optional (default: `"github-pages"`) |
+
+### Deploy docs with HTML artifacts (GitHub Pages)
+
+A workflow publishes preview to GitHub Pages from **HTML build artifacts** with name prefixed "html-"(eg: 'html-en/', 'html-de'). 
+This workflow uses a helper script (`gh-pages-helper.sh`) to generate main index.html that leads viewers to the pages of the individual artifact that gets deployed.
+
+```yml
+name: Deploy docs with HTML artifacts (GitHub Pages)
+
+on:
+  workflow_call:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  gh-pages-deploy:      # downloads HTML build artifact, extracts, generates a root index.html, and deploys to github pages for preview.
+```
+
+**Note**:
+To use this workflow you need:
+- One or more html documentation artifact named html-*.
+- The artifacts must contain a tar.xz file, which again must contain a directory with the html files.
 
 ### Build and push 3rd gen container images and related helm chart
 
