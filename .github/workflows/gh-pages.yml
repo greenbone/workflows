@@ -1,15 +1,18 @@
 name: Deploy docs to GitHub Pages
 
 on:
+  workflow_dispatch():
   workflow_call:
     inputs:
       artifact-name:
         description: "Name of the artifact to deploy"
+        default: "html-en"
         required: true
         type: string
       artifact-path:
         description: "Path to extract the artifact to"
-        default: "."
+        default: "_build/html/*"
+        required: true
         type: string
 
 permissions:
