@@ -1,0 +1,38 @@
+name: Deploy docs to GitHub Pages
+
+on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: "Name of the artifact to deploy"
+        required: true
+        type: string
+      artifact-path:
+        description: "Path to extract the artifact to"
+        default: "."
+        type: string
+
+  permissions:
+      contents: write
+      id-token: write
+      pages: write
+
+  jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+      steps:
+      - name: Download artifact 
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: ${{ matrix.artifact-path }}
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ matrix.artifact-path }}
+      - name: Deploy to GitHub Pages
+        id: deploy-preview
+        uses: actions/deploy-pages@v4
