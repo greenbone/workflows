@@ -4,7 +4,6 @@ on:
   workflow_call:
     inputs:
       matrix:
-      artifact-path:
         description: "matrix of artifact names and paths"
         required: true
         type: string
