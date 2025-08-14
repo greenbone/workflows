@@ -1,30 +1,17 @@
 name: Deploy docs to GitHub Pages
 
 on:
-  workflow_dispatch:
-    inputs:
-      artifact-name:
-        description: "Name of the artifact to deploy"
-        default: "html-en"
-        required: true
-        type: string
-      artifact-path:
-        description: "Path to extract the artifact to"
-        default: "_build/html/*"
-        required: true
-        type: string
   workflow_call:
     inputs:
       artifact-name:
         description: "Name of the artifact to deploy"
-        default: "html-en"
         required: true
         type: string
-      artifact-path:
-        description: "Path to extract the artifact to"
-        default: "_build/html/*"
-        required: true
-        type: string
+      # artifact-path:
+      #   description: "Path to extract the artifact to"
+      #   default: "_build/html/*"
+      #   required: true
+      #   type: string
 
 permissions:
   contents: write
@@ -41,12 +28,15 @@ jobs:
       - name: Download artifact 
         uses: actions/download-artifact@v4
         with:
-          name: ${{ matrix.artifact-name }}
-          path: ${{ matrix.artifact-path }}
+          name: ${{ inputs.artifact-name }}
+          path: .
+      - name: Extract artifact
+        run: |
+            tar --xz -xvf ${{ inputs.artifact-name }}.tar.xz
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ matrix.artifact-path }}
+          path: ./${{ github.ref-name }}-${{ github.sha }}-${{ inputs.artifact-name }}
       - name: Deploy to GitHub Pages
         id: deploy-preview
         uses: actions/deploy-pages@v4
