@@ -12,12 +12,12 @@ on:
         default: "."
         type: string
 
-  permissions:
-      contents: write
-      id-token: write
-      pages: write
+permissions:
+  contents: write
+  id-token: write
+  pages: write
 
-  jobs:
+jobs:
     deploy:
       runs-on: ubuntu-latest
       environment:
