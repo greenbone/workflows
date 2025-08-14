@@ -7,11 +7,6 @@ on:
         description: "Name of the artifact to deploy"
         required: true
         type: string
-      # artifact-path:
-      #   description: "Path to extract the artifact to"
-      #   default: "_build/html/*"
-      #   required: true
-      #   type: string
 
 permissions:
   contents: write
@@ -36,7 +31,7 @@ jobs:
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./${{ github.ref-name }}-${{ github.sha }}-${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-name }}
       - name: Deploy to GitHub Pages
-        id: deploy-preview
+        id: deployment
         uses: actions/deploy-pages@v4
