@@ -3,8 +3,8 @@ name: Deploy docs to GitHub Pages
 on:
   workflow_call:
     inputs:
-      artifact-name:
-        description: "Name of the artifact to deploy"
+      artifact-path:
+        description: "Path to the folder containing build artifacts to deploy"
         required: true
         type: string
 
@@ -20,18 +20,10 @@ jobs:
         name: github-pages
         url: ${{ steps.deployment.outputs.page_url }}
       steps:
-      - name: Download artifact 
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.artifact-name }}
-          path: .
-      - name: Extract artifact
-        run: |
-            tar --xz -xvf ${{ inputs.artifact-name }}.tar.xz
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-path }}
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
