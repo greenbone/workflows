@@ -28,6 +28,30 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+    - name: Clean github-pages artifacts
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      run: |
+        artifact_ids=$(gh api repos/
+        $GITHUB_REPOSITORY/actions/artifacts \
+         --jq '.artifacts[ ] | select(.name == "github-pages") | .id') \
+         | xargs -I{} gh api -X DELETE repos/$GITHUB_REPOSITORY/actions/artifacts/{} 
+         echo "Deleted $(echo "$artifact_ids" 
+         #
+          # const { data } = await github.rest.actions.listWorkflowRunArtifacts({
+          #   owner: context.repo.owner,
+          #   repo: context.repo.repo,
+          #   run_id: context.repo.runId,
+          # });
+          # const conflicts = artifacts.data.artifacts.filter(a => a.name === 'github-pages')
+          # for(async a => {await github.rest.actions.deleteArtifact(
+          # {
+          #   owner: context.repo.owner,
+          #   repo: context.repo.repo,
+          #   artifact_id: a.id,
+          #   });
+          # console.log('Deleted artifacts: ${ a.name} (ID: ${a.id})');
+          #   });
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
@@ -39,14 +63,14 @@ jobs:
         ls -R artifact-dir
     - name: Extract artifact
       run: |
-        echo "${{ inputs.artifact-name }}.tar.xz"
-        tar --xz -xvf artifact-dir/${{ inputs.artifact-name }}.tar.xz -C artifact-dir/
+        mkdir -p artifact-dir/
+        tar --xz -xvf ${{ inputs.artifact-name }}.tar.xz -C artifact-dir/
+    - name: Clean all previous artifacts
+      uses: actions/github-script@v7 
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: artifact-dir
+        path: artifact-dir/
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
-      # with:
-      #   name: ${{ inputs.artifact-name  }}-pages
