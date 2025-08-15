@@ -36,14 +36,14 @@ jobs:
     - name: Extract artifact
       run: |
           tar --xz -xvf ${{ inputs.artifact-name }}.tar.xz
-          ls -R .
+          ls -R
     - name: print artifacts
       run: |
         echo "name: ${{ inputs.artifact-name}}"
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        name: ${{ inputs.artifact-name  }}
+        name: ${{ inputs.artifact-name  }}-pages
         path: .
     - name: Deploy to GitHub Pages
       id: deployment
