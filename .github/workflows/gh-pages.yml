@@ -42,4 +42,5 @@ jobs:
     - name: Show URLs
       run: |
         echo "Preview_url: ${{ steps.deployment.outputs.preview_url }}"
-        echo "Page_url: ${{ steps.deployment.outputs.page_url }}"
+        echo "All outputs:"
+        echo "${{ toJSON(steps.deployment.outputs) }}"
