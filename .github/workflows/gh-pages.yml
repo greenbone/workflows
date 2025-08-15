@@ -3,14 +3,18 @@ name: Deploy docs to GitHub Pages
 on:
   workflow_call:
     inputs:
-      artifact-name:
+      matrix_name:
         description: " artifact names "
         required: true
         type: string
-      artifact-path:
+      matrix_path:
         description: " artifact paths"
         required: true
         type: string
+      retention-day:
+          required: false
+          type: number
+          default: 2
 
 permissions:
   contents: write
@@ -26,13 +30,13 @@ jobs:
     steps:
     - name: print artifacts
       run: |
-        echo "artifact-name: ${{ inputs.artifact-name }}"
-        echo "artifact-path: ${{ github.workspace }}/${{ inputs.artifact-name }}"
+        echo "artifact-name: ${{ inputs.matrix_name}}"
+        echo "artifact-path: ${{ inputs.matrix_name }}"
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        artifact-name: ${{ inputs.artifact-name  }}
-        artifact-path: ${{ inputs.artifact-path  }}
+        artifact-name: ${{ inputs.matrix_name  }}
+        artifact-path: ${{ inputs.matrix_path  }}
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
