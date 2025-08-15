@@ -33,6 +33,7 @@ jobs:
         echo "name: ${{ inputs.name}}"
         echo "path: ${{ inputs.path }}"
         cd ${{ inputs.path }}
+        pwd
         ls
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
