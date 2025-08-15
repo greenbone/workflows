@@ -3,11 +3,11 @@ name: Deploy docs to GitHub Pages
 on:
   workflow_call:
     inputs:
-      matrix_name:
+      name:
         description: " artifact names "
         required: true
         type: string
-      matrix_path:
+      path:
         description: " artifact paths"
         required: true
         type: string
@@ -30,15 +30,16 @@ jobs:
     steps:
     - name: print artifacts
       run: |
-        echo "name: ${{ inputs.matrix_name}}"
-        echo "path: ${{ inputs.matrix_path }}"
-        cd ${{ inputs.matrix_path }}
+        echo "name: ${{ inputs.name}}"
+        echo "path: ${{ inputs.path }}"
+        cd ${{ inputs.path }}
         ls
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        artifact-name: ${{ inputs.matrix_name  }}
-        artifact-path: ${{ inputs.matrix_path  }}
+        name: ${{ inputs.name  }}
+        path: ${{ inputs.path  }}
+        retention-day: ${{ inputs.retention-day }}
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
