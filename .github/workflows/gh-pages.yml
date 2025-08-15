@@ -72,7 +72,11 @@ jobs:
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: artifact-dir
+        path: artifact-dir/${{ inputs.artifact-name }}
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+    - name: Show URLs
+      run: |
+        echo "Preview_url: ${{ steps.deployment.outputs.preview_url }}"
+        echo "Page_url: ${{ steps.deployment.outputs.page_url }}"
