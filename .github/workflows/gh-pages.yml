@@ -7,10 +7,10 @@ on:
         description: " artifact names to download"
         required: true
         type: string
-      artifact-path:
-        description: " artifact paths"
-        required: true
-        type: string
+      # artifact-path:
+      #   description: " artifact paths"
+      #   required: true
+      #   type: string
       # retention-day:
       #     required: false
       #     type: number
@@ -62,13 +62,13 @@ jobs:
     #     ls -R artifact-dir
     - name: Extract artifact
       run: |
-        tar --xz -xvf artifact-dir/${{ inputs.artifact-name }}
+        tar --xz -xvf artifact-dir/${{ inputs.artifact-name }}.tar.xz -C artifact-dir/
     # - name: Clean all previous artifacts
     #   uses: actions/github-script@v7 
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: ${{ inputs.artifact-name }}
+        path: artifact-dir
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
