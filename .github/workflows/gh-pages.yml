@@ -43,8 +43,10 @@ jobs:
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        name: ${{ inputs.artifact-name  }}-pages
+        name: github-pages
         path: .
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+      # with:
+      #   name: ${{ inputs.artifact-name  }}-pages
