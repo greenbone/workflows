@@ -38,7 +38,7 @@ jobs:
       uses: actions/upload-pages-artifact@v3
       with:
         name: ${{ inputs.name  }}
-        path: ${{ inputs.path  }}
+        path: extracted/${{ inputs.path  }}
         retention-day: ${{ inputs.retention-day }}
     - name: Deploy to GitHub Pages
       id: deployment
