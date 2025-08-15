@@ -3,18 +3,18 @@ name: Deploy docs to GitHub Pages
 on:
   workflow_call:
     inputs:
-      name:
-        description: " artifact names "
+      artifact-name:
+        description: " artifact names to download"
         required: true
         type: string
-      path:
-        description: " artifact paths"
-        required: true
-        type: string
-      retention-day:
-          required: false
-          type: number
-          default: 2
+      # path:
+      #   description: " artifact paths"
+      #   required: true
+      #   type: string
+      # retention-day:
+      #     required: false
+      #     type: number
+      #     default: 2
 
 permissions:
   contents: write
@@ -28,19 +28,23 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name}}
+        path: .
+    - name: Extract artifact
+      run: |
+          tar --xz -xvf ${{ inputs.artifact-name }}.tar.xz
+          ls -R .
     - name: print artifacts
       run: |
-        echo "name: ${{ inputs.name}}"
-        echo "path: ${{ inputs.path }}"
-        cd ${{ inputs.path }}
-        pwd
-        ls
+        echo "name: ${{ inputs.artifact-name}}"
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        name: ${{ inputs.name  }}
-        path: extracted/${{ inputs.path  }}
-        retention-day: ${{ inputs.retention-day }}
+        name: ${{ inputs.artifact-name  }}
+        path: .
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
