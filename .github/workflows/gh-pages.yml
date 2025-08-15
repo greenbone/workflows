@@ -33,10 +33,14 @@ jobs:
       with:
         name: ${{ inputs.artifact-name}}
         path: .
+    - name: verify artifacts
+      run: |
+        pwd
+        ls -R
     - name: Extract artifact
       run: |
-          tar --xz -xvf ${{ inputs.artifact-name }}.tar.xz
-          ls -R .
+        echo "${{ inputs.artifact-name }}.tar.xz"
+        tar --xz -xvf ./${{ inputs.artifact-name }}.tar.xz
     - name: print artifacts
       run: |
         echo "name: ${{ inputs.artifact-name}}"
