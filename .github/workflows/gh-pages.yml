@@ -30,8 +30,10 @@ jobs:
     steps:
     - name: print artifacts
       run: |
-        echo "artifact-name: ${{ inputs.matrix_name}}"
-        echo "artifact-path: ${{ inputs.matrix_name }}"
+        echo "name: ${{ inputs.matrix_name}}"
+        echo "path: ${{ inputs.matrix_path }}"
+        cd ${{ inputs.matrix_path }}
+        ls
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
