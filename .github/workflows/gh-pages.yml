@@ -51,24 +51,24 @@ jobs:
           #   });
           # console.log('Deleted artifacts: ${ a.name} (ID: ${a.id})');
           #   });    ñ
-    # - name: Download artifact
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     name: ${{ inputs.artifact-name}}
-    #     path: artifact-dir
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name}}
+        path: artifact-dir
     # - name: verify artifacts
     #   run: |
     #     pwd
     #     ls -R artifact-dir
     - name: Extract artifact
       run: |
-        tar --xz -xvf ${{ inputs.artifact-path }}
+        tar --xz -xvf artifact-dir/${{ inputs.artifact-name }}
     # - name: Clean all previous artifacts
     #   uses: actions/github-script@v7 
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: ${{ inputs.artifact-path }}
+        path: ${{ inputs.artifact-name }}
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
