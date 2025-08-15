@@ -36,7 +36,7 @@ jobs:
     - name: Extract artifact
       run: |
           tar --xz -xvf ${{ inputs.artifact-name }}.tar.xz
-          ls -R
+          ls -R .
     - name: print artifacts
       run: |
         echo "name: ${{ inputs.artifact-name}}"
