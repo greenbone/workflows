@@ -3,7 +3,7 @@ name: Deploy docs to GitHub Pages
 on:
   workflow_call:
     inputs:
-      artifact-name:
+      artifact-names:
         description: " artifact names to download"
         required: true
         type: string
@@ -20,27 +20,38 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-    - name: Download artifact
+    - name: Parse artifact names
+      id: parse
+      run: |
+        echo "${{ inputs.artifact-names}}" | tr ',' '\n' > artifacts.txt
+        echo "Artifacts to process:"
+        cat artifacts.txt
+    - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ inputs.artifact-name}}
+        name: ${{ inputs.artifact-names}}
         path: artifact-dir
     - name: Extract artifact
       run: |
-        tar --xz -xvf artifact-dir/${{ inputs.artifact-name }}.tar.xz -C artifact-dir/
+        while read artifact; do
+          echo "Extracting $artifact"
+          mkdir -p "artifact-dir/$artifact"
+          tar --xz -xvf artifact-dir/$artifact.tar.xz -C "artifact-dir/$artifact"
+        done > artifacts.txt
     - name: debug contents
       run: |
           pwd
-          ls -R artifact-dir
+          ls -R artifact-dir/$artifact
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: artifact-dir/${{ inputs.artifact-name }}
+        path: artifact-dir/
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
     - name: Show URLs
       run: |
         echo "Preview_url: ${{ steps.deployment.outputs.preview_url }}"
+        echo "Page_url: ${{ steps.deployment.outputs.page_url }}"
         echo "All outputs:"
         echo "${{ toJSON(steps.deployment.outputs) }}"
