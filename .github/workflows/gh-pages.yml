@@ -1,0 +1,54 @@
+name: Deploy docs with HTML artifacts named "html-*" (GitHub Pages)
+
+# To use this workflow you need:
+# - One or more html documentation artifact named html-*
+# - the artifacts must contain a tar.xz file, which again must contain a directory with the html files
+
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+  id-token: write
+  pages: write
+
+jobs:
+  gh-pages-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        pattern: html-*
+        path: doc-packages
+        merge-multiple: true
+    - name: Extract packages
+      run: |
+        ls -R doc-packages/
+        mkdir -p merged
+        for archive in doc-packages/html-*.tar.xz; do
+          tar --xz -xvf $archive -C merged
+        done
+        ls -R merged/
+    - name: Checkout workflow repository (to get helper script)
+      uses: actions/checkout@v4
+      with:
+        repository: greenbone/workflows
+        ref: main
+        path: helper-repo
+    - name: Generate root index (HTML only)
+      run: |
+        ./helper-repo/.github/workflows/gh-pages-helper.sh
+    - name: Upload pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: merged
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+    - name: Show URLs
+      run: |
+        echo "Page_url: ${{ steps.deployment.outputs.page_url }}"
