@@ -1,0 +1,59 @@
+name: Release Agents
+
+on:
+  workflow_call:
+    inputs:
+      git-tag-prefix:
+        description: "Set git tag prefix to the passed input. Default: ''"
+        default: "v"
+        type: string
+      release-type:
+        description: "Release type. One of alpha, patch, minor, major, release-candidate"
+        type: string
+      release-version:
+        description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
+        type: string
+      update-project:
+        description: "Update version in project files like `pyproject.toml`. Default is 'true'."
+        default: "true"
+        type: string
+    secrets:
+      GREENBONE_BOT:
+        required: true
+      GREENBONE_BOT_MAIL:
+        required: true
+      GREENBONE_BOT_TOKEN:
+        required: true
+      GPG_KEY:
+        required: false
+      GPG_FINGERPRINT:
+        required: false
+      GPG_PASSPHRASE:
+        required: false
+      MATTERMOST_WEBHOOK_URL:
+        required: false
+
+jobs:
+  build-and-release:
+    name: Create a new release
+    uses: ./.github/workflows/release-generic.yml
+    with:
+      release-type: ${{ inputs.release-type }}
+      release-version: ${{ inputs.release-version }}
+      versioning-scheme: "semver"
+      update-project: ${{ inputs.update-project }}
+    secrets:
+      GREENBONE_BOT: ${{ secrets.GREENBONE_BOT }}
+      GREENBONE_BOT_MAIL: ${{ secrets.GREENBONE_BOT_MAIL }}
+      GREENBONE_BOT_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
+      GPG_KEY: ${{ secrets.GPG_KEY }}
+      GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
+      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+  notify:
+    needs: build-and-release
+    if: ${{ !cancelled() && inputs.MATTERMOST_WEBHOOK_URL }}
+    uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
+    with:
+      status: ${{ needs.build-and-release.result }}
+    secrets: inherit
