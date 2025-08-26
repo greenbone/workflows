@@ -8,7 +8,7 @@ on:
         default: "v"
         type: string
       release-type:
-        description: "Release type. One of alpha, patch, minor, major, release-candidate"
+        description: "Release type. One of alpha, hotfix, minor, major, release-candidate"
         type: string
       release-version:
         description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
