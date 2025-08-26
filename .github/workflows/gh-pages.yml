@@ -34,7 +34,7 @@ jobs:
         done
         ls -R merged/
     - name: Checkout workflow repository (to get helper script)
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: greenbone/workflows
         ref: main
