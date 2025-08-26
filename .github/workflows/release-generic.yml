@@ -8,7 +8,7 @@ on:
         default: "v"
         type: string
       release-type:
-        description: "Release type. One of alpha, patch, minor, major, release-candidate and calendar"
+        description: "Release type. One of alpha, patch, hotfix, minor, major, release-candidate and calendar"
         type: string
       release-version:
         description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
@@ -55,6 +55,7 @@ jobs:
         ( contains(github.event.pull_request.labels.*.name, 'alpha release') ||
           contains(github.event.pull_request.labels.*.name, 'rc release') ||
           contains(github.event.pull_request.labels.*.name, 'patch release') ||
+          contains(github.event.pull_request.labels.*.name, 'hotfix release') ||
           contains(github.event.pull_request.labels.*.name, 'make release') ||
           contains(github.event.pull_request.labels.*.name, 'calendar release') ||
           contains(github.event.pull_request.labels.*.name, 'minor release') ||
