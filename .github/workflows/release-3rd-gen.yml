@@ -36,6 +36,7 @@ on:
 jobs:
   build-and-release:
     name: Create a new release
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'patch release') && inputs.release-type != 'patch' }}
     uses: ./.github/workflows/release-generic.yml
     with:
       release-type: ${{ inputs.release-type }}
