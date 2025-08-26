@@ -43,7 +43,7 @@ jobs:
       run: |
         ./helper-repo/.github/workflows/gh-pages-helper.sh
     - name: Upload pages artifact
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-pages-artifact@v4
       with:
         path: merged
     - name: Deploy to GitHub Pages
