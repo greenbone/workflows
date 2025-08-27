@@ -11,6 +11,7 @@ permissions:
   contents: write
   id-token: write
   pages: write
+  actions: write
 
 jobs:
   gh-pages-deploy:
@@ -19,6 +20,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+    - name: Clean Local directories
+      run: | 
+        rm -rf doc-packages merged
+        mkdir -p doc-packages merged
     - name: Download artifacts
       uses: actions/download-artifact@v5
       with:
@@ -37,9 +42,11 @@ jobs:
       uses: actions/checkout@v5
       with:
         repository: greenbone/workflows
-        ref: main
+        ref: DEVOPS-1677-add_identifier-gh-pages
         path: helper-repo
     - name: Generate root index (HTML only)
+      env:
+        PR_NUMBER: ${{ github.event.pull_request.number }}
       run: |
         ./helper-repo/.github/workflows/gh-pages-helper.sh
     - name: Upload pages artifact
