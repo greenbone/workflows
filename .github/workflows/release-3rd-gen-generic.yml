@@ -1,4 +1,4 @@
-name: Release Agents
+name: Release 3rd Gen
 
 on:
   workflow_call:
