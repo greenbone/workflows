@@ -1,5 +1,7 @@
 name: Release 3rd Gen
 
+# Patch releases are NOT allowed in this workflow!
+
 on:
   workflow_call:
     inputs:
