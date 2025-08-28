@@ -42,7 +42,6 @@ jobs:
       uses: actions/checkout@v5
       with:
         repository: greenbone/workflows
-        ref: DEVOPS-1677-add_identifier-gh-pages
         path: helper-repo
     - name: Generate root index (HTML only)
       env:
