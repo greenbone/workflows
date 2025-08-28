@@ -16,6 +16,19 @@ set -euo
 #------------------------------------------------------------------------------------------------------------------------------
 BASE_DIR=${BASE_DIR:-./merged}                                  # where artifacts (html-en, html-de) are extracted.
 BASE_URL=${BASE_URL:-http://localhost/}                         # only used for printing URLs to logs
+REF_NAME="${GITHUB_REF_NAME}"                                   # GITHUB_REF_NAME
+RUN_ID="${GITHUB_RUN_ID}"                                       # GITHUB_RUN_ID
+PR_NUMBER="${PR_NUMBER}"                                        # PR_NUMBER
+
+if [ -z "${REF_NAME:-}" ]; then
+    echo "ERROR: GITHUB_REF_NAME does not exist" >&2
+    exit 1
+fi
+
+if [ -z "${RUN_ID:-}" ]; then
+    echo "ERROR: GITHUB_RUN_ID does not exist" >&2
+    exit 1
+fi
 
 if [ ! -d "$BASE_DIR" ]; then
     echo "ERROR: Base_DIR does not exist: $BASE_DIR" >&2
@@ -77,11 +90,25 @@ if [ ! -s "$ITEMS_LIST_FILE" ]; then
     exit 1 
 fi
 
+# Add GITHUB REFs to recognize each run uniquely
+if [ -n "${PR_NUMBER}" ]; then
+    echo "$PR_NUMBER"
+    GITHUB_DATA="     PR: #$PR_NUMBER     REF_NAME: $REF_NAME     RUN ID: $RUN_ID"
+else
+    GITHUB_DATA="     REF_NAME: $REF_NAME     RUN ID: $RUN_ID"
+fi
+
 # Write root index.html next to merged content
 cat > "$BASE_DIR/index.html" <<ROOT_EOF
 <!doctype html>
 <meta charset="utf-8">
 <title>Docs</title>
+<p style="font:16px/1.4 monospace;
+          font-weight:bold;
+          color:#fffff;
+          padding:10px 15px;
+          margin:12px 0;
+          border-radius:6px;">$GITHUB_DATA</p>
 <ul>
 $(cat "$ITEMS_LIST_FILE")
 </ul>
@@ -100,6 +127,7 @@ rm -f -- "$ITEMS_LIST_FILE"
 # Print URLs for quick local check
 echo "Base URL: $BASE_URL"
 echo "Root: ${BASE_URL%/}/"
+echo "GITHUB_DATA: ${GITHUB_DATA}" 
 while IFS= read -r entry_relative_path; do
     [ -n "$entry_relative_path" ] || continue
     echo " - ${BASE_URL%}$entry_relative_path"
