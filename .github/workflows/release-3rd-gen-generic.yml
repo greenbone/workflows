@@ -1,6 +1,6 @@
 name: Release 3rd Gen
 
-# Patch releases are NOT allowed in this workflow!
+# Patch and hotfix releases are allowed in this workflow!
 
 on:
   workflow_call:
@@ -10,7 +10,7 @@ on:
         default: "v"
         type: string
       release-type:
-        description: "Release type. One of alpha, hotfix, minor, major, release-candidate"
+        description: "Release type. One of alpha, patch, hotfix, minor, major, release-candidate"
         type: string
       release-version:
         description: "Set an explicit version, that will overwrite release-type. Fails if version is not compliant."
@@ -38,7 +38,6 @@ on:
 jobs:
   build-and-release:
     name: Create a new release
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'patch release') && inputs.release-type != 'patch' }}
     uses: ./.github/workflows/release-generic.yml
     with:
       release-type: ${{ inputs.release-type }}
