@@ -1,0 +1,238 @@
+name: OPENVAS SCAN Components Container Image Build and Push
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: "The ref to checkout the used actions from."
+        type: string
+        default: ""
+        required: false
+      ref-name:
+        description: "The ref name to use for the build."
+        type: string
+        default: ""
+        required: false
+      build-args:
+        description: "A newline separated list of build arguments to pass to the Docker build. Example: 'ARG1=value1\nARG2=value2'."
+        type: string
+        required: false
+        default: ""
+      main-image:
+        description: "The main image name to build and push."
+        type: string
+        default: "ghcr.io/${{ github.repository }}"
+        required: false
+      images:
+        description: "List of images to build separated by new lines."
+        type: string
+        required: false
+        default: |
+          ghcr.io/${{ github.repository }},enable=true
+          ${{ vars.GREENBONE_REGISTRY }}/community/${{ github.event.repository.name }},enable=${{ github.event_name != 'pull_request' }}
+      annotation-levels:
+        description: |
+          "The levels to apply the annotations to. ghcr.io only supports index "
+          "level annotations for multi-arch images. Default is 'index'."
+        type: string
+        required: false
+        default: "index"
+      tags:
+        description: |
+          "Tag description as in https://github.com/docker/metadata-action?tab=readme-ov-file#tags-input."
+        type: string
+        required: false
+        default: ""
+      labels:
+        description: |
+          "List of additional labels for the multi-arch image separated by new "
+          "lines."
+        type: string
+        required: false
+        default: |
+          org.opencontainers.image.vendor=Greenbone
+          org.opencontainers.image.base.name=greenbone/gvm-libs
+      flavor:
+        description: |
+          "The flavor to use for the metadata action. Default is 'latest=false'."
+        type: string
+        required: false
+        default: "latest=false"
+      name:
+        description: "The name to use for the digest files. This will be part of the digest file name. If not set, 'digests-<arch>' will be used."
+        type: string
+        required: false
+        default: ""
+      prefix:
+        description: "The prefix to use for the image tags."
+        type: string
+        required: false
+        default: ""
+      suffix:
+        description: |
+          "An optional suffix to append to all tags. For example '-beta'. "
+          "Not applied if tags is set."
+        type: string
+        required: false
+        default: ""
+
+    secrets:
+      GREENBONE_REGISTRY_USER:
+        required: true
+      GREENBONE_REGISTRY_TOKEN:
+        required: true
+
+jobs:
+  meta-data:
+    name: Create Image Meta Data
+    runs-on: ubuntu-latest
+    outputs:
+      annotations: ${{ steps.meta.outputs.annotations }}
+      tags: ${{ steps.meta.outputs.tags }}
+      ref-name: ${{ steps.properties.outputs.ref-name }}
+      ref: ${{ steps.properties.outputs.ref }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Determine workflow properties
+        shell: bash
+        id: properties
+        run: |
+          echo "ref-name=${{ inputs.ref-name || github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "ref=${{ inputs.ref || github.ref }}" >> $GITHUB_OUTPUT
+          echo "prefix=${{ inputs.prefix && format('{0}-',inputs.prefix) || '' }}" >> $GITHUB_OUTPUT
+          echo "suffix=${{ inputs.suffix && format('-{0}',inputs.suffix) || '' }}" >> $GITHUB_OUTPUT
+
+      - name: Checkout repository
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ steps.properties.outputs.ref }}
+
+      - name: Fetch git tags
+        if: ${{ github.event_name != 'pull_request' }}
+        shell: bash
+        run: |
+          git fetch --tags --force
+
+      - uses: greenbone/actions/is-latest-tag@v3
+        if: ${{ github.event_name != 'pull_request' }}
+        id: latest
+        with:
+          tag-name: ${{ steps.properties.outputs.ref-name }}
+
+      - name: Determine container tags pattern
+        shell: bash
+        id: determine-tags
+        run: |
+          if [ -z "${{ inputs.tags }}" ]; then
+            echo "tags<<EOF" >> $GITHUB_OUTPUT
+            echo "type=ref,event=pr,prefix=${{ steps.properties.outputs.prefix }}pr-,suffix=${{ steps.properties.outputs.suffix }}" >> $GITHUB_OUTPUT
+
+            echo "type=raw,value=latest,prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
+            echo "type=raw,value=stable,prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
+
+            echo "type=semver,pattern={{version}},value=${{ steps.properties.outputs.ref-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
+            echo "type=semver,pattern={{major}},value=${{ steps.properties.outputs.ref-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
+            echo "type=semver,pattern={{major}}.{{minor}},value=${{ steps.properties.outputs.ref-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
+
+            echo "type=raw,value=edge,prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable={{is_default_branch}}" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "tags<<EOF" >> $GITHUB_OUTPUT
+            echo "${{ inputs.tags }}" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
+        with:
+          images: ${{ inputs.images }}
+          flavor: ${{ inputs.flavor }}
+          labels: ${{ inputs.labels }}
+          tags: ${{ steps.determine-tags.outputs.tags }}
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: ${{ inputs.annotation-levels }}
+
+      - name: Set up default build matrix
+        shell: bash
+        id: set-matrix
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "Pull request detected, only building for amd64."
+            echo "matrix={\"include\": [{\"arch\": {\"name\": \"amd64\", \"runner\": \"ubuntu-latest\"}}]}" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "matrix={\"include\": [{\"arch\": {\"name\": \"amd64\", \"runner\": \"ubuntu-latest\"}}, {\"arch\": {\"name\": \"arm64\", \"runner\": \"self-hosted-generic-arm64\"}}]}" >> $GITHUB_OUTPUT
+
+  build:
+    needs:
+      - meta-data
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.meta-data.outputs.matrix) }}
+    name: Build and Push Container Image (${{ matrix.arch.name }})
+    runs-on: ${{ matrix.arch.runner }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ needs.meta-data.outputs.ref }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: greenbone/actions/container-build-push-by-digest@v3
+        id: build-image
+        with:
+          build-args: ${{ inputs.build-args }}
+          images: ${{ inputs.main-image }}
+          platforms: linux/${{ matrix.arch.name }}
+          context: .
+          dockerfile: ./.docker/prod.Dockerfile
+
+      - name: Upload digest
+        uses: greenbone/actions/upload-digest@v3
+        with:
+          digest: "${{ inputs.main-image }}@${{ steps.build-image.outputs.digest }}"
+          name: digests${{ inputs.name && format('-{0}', inputs.name) || '' }}-${{ matrix.arch.name }}
+
+  build-multi-arch:
+    if: ${{ !cancelled() && needs.build.result != 'failure' }}
+    needs:
+      - meta-data
+      - build
+    name: Create and Push Multi-Arch Image
+    runs-on: self-hosted-generic
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Login to Greenbone Container Registry
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ${{ vars.GREENBONE_REGISTRY }}
+          username: ${{ secrets.GREENBONE_REGISTRY_USER }}
+          password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
+
+      - name: Download digests
+        id: digests
+        uses: greenbone/actions/download-digest@v3
+        with:
+          pattern: "digests${{ inputs.name && format('-{0}', inputs.name) || '' }}-*"
+
+      - name: Create and push multi-arch container image
+        uses: greenbone/actions/create-multi-arch-container-image@v3
+        with:
+          digests: ${{ steps.digests.outputs.digests }}
+          annotations: ${{ needs.meta-data.outputs.annotations }}
+          tags: ${{ needs.meta-data.outputs.tags }}
