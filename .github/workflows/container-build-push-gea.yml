@@ -1,4 +1,4 @@
-name: GEA Components Container Image Build and Push
+name: OPENVAS SCAN Components Container Image Build and Push
 
 on:
   workflow_call:
