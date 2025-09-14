@@ -131,7 +131,6 @@ jobs:
             echo "build-args=${{ inputs.build-args }}" >> $GITHUB_OUTPUT
           fi
 
-      # Add step to compute primary/secondary image URLs.
       - name: Prepare image urls (amd64)
         id: image-urls
         shell: bash
@@ -139,17 +138,22 @@ jobs:
           IMAGE_URL="${{ inputs.image-url }}"
           PRIMARY="$IMAGE_URL"
           SECONDARY=""
+          # CHANGED: Use openvas-detect-dev as primary, community as secondary
           if [[ "$IMAGE_URL" == community/* ]]; then
             REST="${IMAGE_URL#community/}"
-            PRIMARY="opensight-sensor-dev/${REST}"
+            PRIMARY="openvas-detect-dev/${REST}"
             SECONDARY="community/${REST}"
-          elif [[ "$IMAGE_URL" == opensight-sensor-dev/* ]]; then
-            REST="${IMAGE_URL#opensight-sensor-dev/}"
-            PRIMARY="opensight-sensor-dev/${REST}"
+          elif [[ "$IMAGE_URL" == openvas-detect-dev/* ]]; then
+            REST="${IMAGE_URL#openvas-detect-dev/}"
+            PRIMARY="openvas-detect-dev/${REST}"
             SECONDARY="community/${REST}"
           fi
+          # CHANGED: Safe fallback for secondary image url if empty
+          if [[ -z "$SECONDARY" ]]; then
+            SECONDARY="$PRIMARY"
+          fi
           echo "primary-image-url=$PRIMARY" >> "$GITHUB_OUTPUT"
-          echo "secondary-image-url=$SECONDARY" >> "$GITHUB_OUTPUT
+          echo "secondary-image-url=$SECONDARY" >> "$GITHUB_OUTPUT"
 
       - name: Container build and push 2nd gen
         id: build-and-push
@@ -211,7 +215,6 @@ jobs:
             echo "build-args=${{ inputs.build-args }}" >> $GITHUB_OUTPUT
           fi
 
-      # Add step to compute primary/secondary image URLs.
       - name: Prepare image urls (arm64)
         id: image-urls
         shell: bash
@@ -219,14 +222,19 @@ jobs:
           IMAGE_URL="${{ inputs.image-url }}"
           PRIMARY="$IMAGE_URL"
           SECONDARY=""
+          # Use openvas-detect-dev as primary, community as secondary
           if [[ "$IMAGE_URL" == community/* ]]; then
             REST="${IMAGE_URL#community/}"
-            PRIMARY="opensight-sensor-dev/${REST}"
+            PRIMARY="openvas-detect-dev/${REST}"
             SECONDARY="community/${REST}"
-          elif [[ "$IMAGE_URL" == opensight-sensor-dev/* ]]; then
-            REST="${IMAGE_URL#opensight-sensor-dev/}"
-            PRIMARY="opensight-sensor-dev/${REST}"
+          elif [[ "$IMAGE_URL" == openvas-detect-dev/* ]]; then
+            REST="${IMAGE_URL#openvas-detect-dev/}"
+            PRIMARY="openvas-detect-dev/${REST}"
             SECONDARY="community/${REST}"
+          fi
+          # Safe fallback for secondary image url if empty
+          if [[ -z "$SECONDARY" ]]; then
+            SECONDARY="$PRIMARY"
           fi
           echo "primary-image-url=$PRIMARY" >> "$GITHUB_OUTPUT"
           echo "secondary-image-url=$SECONDARY" >> "$GITHUB_OUTPUT"
@@ -273,7 +281,6 @@ jobs:
           echo "ENABLE_STABLE=${{ github.event_name != 'workflow_dispatch' && (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable')}}" >> $GITHUB_OUTPUT 
           echo "branch=${{ steps.branch.outputs.branch }}"
 
-      # Add step to compute primary/secondary image URLs.
       - name: Prepare image urls (manifest)
         id: image-urls
         shell: bash
@@ -281,14 +288,19 @@ jobs:
           IMAGE_URL="${{ inputs.image-url }}"
           PRIMARY="$IMAGE_URL"
           SECONDARY=""
+          # Use openvas-detect-dev as primary, community as secondary
           if [[ "$IMAGE_URL" == community/* ]]; then
             REST="${IMAGE_URL#community/}"
-            PRIMARY="opensight-sensor-dev/${REST}"
+            PRIMARY="openvas-detect-dev/${REST}"
             SECONDARY="community/${REST}"
-          elif [[ "$IMAGE_URL" == opensight-sensor-dev/* ]]; then
-            REST="${IMAGE_URL#opensight-sensor-dev/}"
-            PRIMARY="opensight-sensor-dev/${REST}"
+          elif [[ "$IMAGE_URL" == openvas-detect-dev/* ]]; then
+            REST="${IMAGE_URL#openvas-detect-dev/}"
+            PRIMARY="openvas-detect-dev/${REST}"
             SECONDARY="community/${REST}"
+          fi
+          # Safe fallback for secondary image url if empty
+          if [[ -z "$SECONDARY" ]]; then
+            SECONDARY="$PRIMARY"
           fi
           echo "primary-image-url=$PRIMARY" >> "$GITHUB_OUTPUT"
           echo "secondary-image-url=$SECONDARY" >> "$GITHUB_OUTPUT"
@@ -366,17 +378,17 @@ jobs:
       - harbor-replication
     runs-on: "ubuntu-latest"
     steps:
-      # Compute primary image-url for Automatix update.
       - name: Prepare image url (compose update)
         id: image-urls
         shell: bash
         run: |
           IMAGE_URL="${{ inputs.image-url }}"
           PRIMARY="$IMAGE_URL"
+          #Use openvas-detect-dev for compose update as primary
           if [[ "$IMAGE_URL" == community/* ]]; then
             REST="${IMAGE_URL#community/}"
-            PRIMARY="opensight-sensor-dev/${REST}"
-          elif [[ "$IMAGE_URL" == opensight-sensor-dev/* ]]; then
+            PRIMARY="openvas-detect-dev/${REST}"
+          elif [[ "$IMAGE_URL" == openvas-detect-dev/* ]]; then
             PRIMARY="$IMAGE_URL"
           fi
           echo "primary-image-url=$PRIMARY" >> "$GITHUB_OUTPUT"
