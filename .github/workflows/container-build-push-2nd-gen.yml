@@ -131,6 +131,26 @@ jobs:
             echo "build-args=${{ inputs.build-args }}" >> $GITHUB_OUTPUT
           fi
 
+      # Add step to compute primary/secondary image URLs.
+      - name: Prepare image urls (amd64)
+        id: image-urls
+        shell: bash
+        run: |
+          IMAGE_URL="${{ inputs.image-url }}"
+          PRIMARY="$IMAGE_URL"
+          SECONDARY=""
+          if [[ "$IMAGE_URL" == community/* ]]; then
+            REST="${IMAGE_URL#community/}"
+            PRIMARY="opensight-sensor-dev/${REST}"
+            SECONDARY="community/${REST}"
+          elif [[ "$IMAGE_URL" == opensight-sensor-dev/* ]]; then
+            REST="${IMAGE_URL#opensight-sensor-dev/}"
+            PRIMARY="opensight-sensor-dev/${REST}"
+            SECONDARY="community/${REST}"
+          fi
+          echo "primary-image-url=$PRIMARY" >> "$GITHUB_OUTPUT"
+          echo "secondary-image-url=$SECONDARY" >> "$GITHUB_OUTPUT
+
       - name: Container build and push 2nd gen
         id: build-and-push
         uses: greenbone/actions/container-build-push-generic@v3
@@ -138,7 +158,7 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ steps.container-opts.outputs.build-args }}
-          image-url: ${{ inputs.image-url }}
+          image-url: ${{ steps.image-urls.outputs.primary-image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-amd64 # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/amd64
@@ -191,6 +211,26 @@ jobs:
             echo "build-args=${{ inputs.build-args }}" >> $GITHUB_OUTPUT
           fi
 
+      # Add step to compute primary/secondary image URLs.
+      - name: Prepare image urls (arm64)
+        id: image-urls
+        shell: bash
+        run: |
+          IMAGE_URL="${{ inputs.image-url }}"
+          PRIMARY="$IMAGE_URL"
+          SECONDARY=""
+          if [[ "$IMAGE_URL" == community/* ]]; then
+            REST="${IMAGE_URL#community/}"
+            PRIMARY="opensight-sensor-dev/${REST}"
+            SECONDARY="community/${REST}"
+          elif [[ "$IMAGE_URL" == opensight-sensor-dev/* ]]; then
+            REST="${IMAGE_URL#opensight-sensor-dev/}"
+            PRIMARY="opensight-sensor-dev/${REST}"
+            SECONDARY="community/${REST}"
+          fi
+          echo "primary-image-url=$PRIMARY" >> "$GITHUB_OUTPUT"
+          echo "secondary-image-url=$SECONDARY" >> "$GITHUB_OUTPUT"
+
       - name: Container build and push 2nd gen
         id: build-and-push
         uses: greenbone/actions/container-build-push-generic@v3
@@ -198,7 +238,7 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ steps.container-opts.outputs.build-args }}
-          image-url: ${{ inputs.image-url }}
+          image-url: ${{ steps.image-urls.outputs.primary-image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-arm64 # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/arm64
@@ -233,11 +273,33 @@ jobs:
           echo "ENABLE_STABLE=${{ github.event_name != 'workflow_dispatch' && (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable')}}" >> $GITHUB_OUTPUT 
           echo "branch=${{ steps.branch.outputs.branch }}"
 
+      # Add step to compute primary/secondary image URLs.
+      - name: Prepare image urls (manifest)
+        id: image-urls
+        shell: bash
+        run: |
+          IMAGE_URL="${{ inputs.image-url }}"
+          PRIMARY="$IMAGE_URL"
+          SECONDARY=""
+          if [[ "$IMAGE_URL" == community/* ]]; then
+            REST="${IMAGE_URL#community/}"
+            PRIMARY="opensight-sensor-dev/${REST}"
+            SECONDARY="community/${REST}"
+          elif [[ "$IMAGE_URL" == opensight-sensor-dev/* ]]; then
+            REST="${IMAGE_URL#opensight-sensor-dev/}"
+            PRIMARY="opensight-sensor-dev/${REST}"
+            SECONDARY="community/${REST}"
+          fi
+          echo "primary-image-url=$PRIMARY" >> "$GITHUB_OUTPUT"
+          echo "secondary-image-url=$SECONDARY" >> "$GITHUB_OUTPUT"
+
       - name: Generate Docker metadata
         id: meta
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
         with:
-          images: ${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}
+          images: |
+            ${{ vars.GREENBONE_REGISTRY }}/${{ steps.image-urls.outputs.primary-image-url }}
+            ${{ vars.GREENBONE_REGISTRY }}/${{ steps.image-urls.outputs.secondary-image-url }}
           flavor: latest=false
           tags: |
             type=raw,value=latest,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
@@ -271,7 +333,9 @@ jobs:
           digests: |
             ${{ needs.build-amd64.outputs.digest }}
             ${{ needs.build-arm64.outputs.digest }}
-          url: ${{ inputs.image-url }}
+          url: |
+            ${{ steps.image-urls.outputs.primary-image-url }}
+            ${{ steps.image-urls.outputs.secondary-image-url }}
           registry: ${{ vars.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
@@ -302,13 +366,28 @@ jobs:
       - harbor-replication
     runs-on: "ubuntu-latest"
     steps:
+      # Compute primary image-url for Automatix update.
+      - name: Prepare image url (compose update)
+        id: image-urls
+        shell: bash
+        run: |
+          IMAGE_URL="${{ inputs.image-url }}"
+          PRIMARY="$IMAGE_URL"
+          if [[ "$IMAGE_URL" == community/* ]]; then
+            REST="${IMAGE_URL#community/}"
+            PRIMARY="opensight-sensor-dev/${REST}"
+          elif [[ "$IMAGE_URL" == opensight-sensor-dev/* ]]; then
+            PRIMARY="$IMAGE_URL"
+          fi
+          echo "primary-image-url=$PRIMARY" >> "$GITHUB_OUTPUT"
+
       - name: Trigger product compose upgrade
         uses: greenbone/actions/trigger-workflow@v3
         with:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ inputs.image-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ steps.image-urls.outputs.primary-image-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
