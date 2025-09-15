@@ -253,7 +253,6 @@ jobs:
           else
             echo "url=${{ secrets.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
           fi 
-
       
       - name: Generate Docker metadata
         id: meta
