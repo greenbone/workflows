@@ -241,9 +241,7 @@ jobs:
             IMAGE_URL="${{ inputs.image-url }}"
             REGISTRY="${{ vars.GREENBONE_REGISTRY }}"
 
-            # openvas-detect-dev variant
             OPENVAS_URL="$(echo "$IMAGE_URL" | sed 's@^community@openvas-detect-dev@')"
-            # community variant
             COMMUNITY_URL="$(echo "$IMAGE_URL" | sed 's@^openvas-detect-dev@community@')"
 
             echo 'url<<EOF' >> $GITHUB_OUTPUT
