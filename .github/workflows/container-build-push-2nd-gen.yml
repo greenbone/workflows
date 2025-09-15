@@ -233,6 +233,28 @@ jobs:
           echo "ENABLE_STABLE=${{ github.event_name != 'workflow_dispatch' && (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable')}}" >> $GITHUB_OUTPUT 
           echo "branch=${{ steps.branch.outputs.branch }}"
 
+      - name: Generate URL
+        shell: bash
+        id: url
+        run: |
+          if [ "${{ inputs.service }}" ]; then
+            IMAGE_URL="${{ inputs.image-url }}"
+            REGISTRY="${{ vars.GREENBONE_REGISTRY }}"
+
+            # openvas-detect-dev variant
+            OPENVAS_URL="$(echo "$IMAGE_URL" | sed 's@^community@openvas-detect-dev@')"
+            # community variant
+            COMMUNITY_URL="$(echo "$IMAGE_URL" | sed 's@^openvas-detect-dev@community@')"
+
+            echo 'url<<EOF' >> $GITHUB_OUTPUT
+            echo "${REGISTRY}/${OPENVAS_URL}" >> $GITHUB_OUTPUT
+            echo "${REGISTRY}/${COMMUNITY_URL}" >> $GITHUB_OUTPUT
+            echo 'EOF' >> $GITHUB_OUTPUT
+          else
+            echo "url=${{ secrets.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
+          fi 
+
+      
       - name: Generate Docker metadata
         id: meta
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
