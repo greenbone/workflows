@@ -25,6 +25,16 @@ on:
         type: string
         required: false
         default: ""
+      dockerfile:
+        description: "The path to the Dockerfile to use. Default is './.docker/prod.Dockerfile'."
+        type: string
+        required: false
+        default: "./.docker/prod.Dockerfile"
+      context:
+        description: "The build context to use. Default is '.'."
+        type: string
+        required: false
+        default: "."
       main-image:
         description: |
           "The main image name to build and push. Used for pushing by digests "
@@ -233,8 +243,8 @@ jobs:
           build-args: ${{ inputs.build-args }}
           images: ${{ inputs.main-image }}
           platforms: linux/${{ matrix.arch.name }}
-          context: .
-          dockerfile: ./.docker/prod.Dockerfile
+          context: ${{ inputs.context }}
+          dockerfile: ${{ inputs.dockerfile }}
 
       - name: Upload digest
         uses: greenbone/actions/upload-digest@v3
