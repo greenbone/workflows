@@ -4,27 +4,36 @@ on:
   workflow_call:
     inputs:
       ref:
-        description: "The ref to checkout the used actions from."
+        description: |
+          "The ref to checkout and build the containers from. If not set or "
+          "empty, the {{ github.ref }} will be used."
         type: string
         default: ""
         required: false
       ref-name:
-        description: "The ref name to use for the build."
+        description: |
+          "The ref name used for checking if it is the latest tag and as input "
+          "for the container tag generation. If not set or empty, the "
+          "{{ github.ref_name }} will be used."
         type: string
         default: ""
         required: false
       build-args:
-        description: "A newline separated list of build arguments to pass to the Docker build. Example: 'ARG1=value1\nARG2=value2'."
+        description: |
+          "A newline separated list of build arguments to pass to the Docker "
+          "build. Example: 'ARG1=value1\nARG2=value2'."
         type: string
         required: false
         default: ""
       main-image:
-        description: "The main image name to build and push."
+        description: |
+          "The main image name to build and push. Used for pushing by digests "
+          "only."
         type: string
         default: "ghcr.io/${{ github.repository }}"
         required: false
       images:
-        description: "List of images to build separated by new lines."
+        description: "List of images to build and push separated by new lines."
         type: string
         required: false
         default: |
@@ -59,7 +68,9 @@ on:
         required: false
         default: "latest=false"
       name:
-        description: "The name to use for the digest files. This will be part of the digest file name. If not set, 'digests-<arch>' will be used."
+        description: |
+          "The name to use for the digest files. This will be part of the "
+          "digest file name. If not set, 'digests-<arch>' will be used."
         type: string
         required: false
         default: ""
