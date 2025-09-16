@@ -144,19 +144,19 @@ jobs:
           echo "suffix=${{ inputs.suffix && format('-{0}',inputs.suffix) || '' }}" >> $GITHUB_OUTPUT
 
       - name: Checkout repository
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' && inputs.tags != ''}}
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           ref: ${{ steps.properties.outputs.ref }}
 
       - name: Fetch git tags
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' && inputs.tags != '' }}
         shell: bash
         run: |
           git fetch --tags --force
 
       - uses: greenbone/actions/is-latest-tag@v3
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' && inputs.tags != '' }}
         id: latest
         with:
           tag-name: ${{ steps.properties.outputs.ref-name }}
