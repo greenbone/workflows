@@ -75,7 +75,9 @@ on:
         required: false
         default: ""
       prefix:
-        description: "The prefix to use for the image tags."
+        description: |
+          "The prefix to use for the image tags. For example 'some-feature-'. "
+          "Not applied if tags is set."
         type: string
         required: false
         default: ""
@@ -86,6 +88,34 @@ on:
         type: string
         required: false
         default: ""
+      stable-name:
+        description: |
+          "The name to use for the stable tag. If not set, 'stable' will be "
+          "used. Not applied if tags is set."
+        type: string
+        required: false
+        default: "stable"
+      edge-name:
+        description: |
+          "The name to use for the edge tag. If not set, 'edge' will be used. "
+          "Not applied if tags is set."
+        type: string
+        required: false
+        default: "edge"
+      enable-latest:
+        description: |
+          "Whether to enable the 'latest' tag for the latest release. "
+          "Not applied if tags is set."
+        type: boolean
+        required: false
+        default: true
+      enable-version:
+        description: |
+          "Whether to enable the version based tags for the latest release. "
+          "Not applied if tags is set."
+        type: boolean
+        required: false
+        default: true
 
     secrets:
       GREENBONE_REGISTRY_USER:
@@ -139,14 +169,14 @@ jobs:
             echo "tags<<EOF" >> $GITHUB_OUTPUT
             echo "type=ref,event=pr,prefix=${{ steps.properties.outputs.prefix }}pr-,suffix=${{ steps.properties.outputs.suffix }}" >> $GITHUB_OUTPUT
 
-            echo "type=raw,value=latest,prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
-            echo "type=raw,value=stable,prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
+            echo "type=raw,value=latest,prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' && inputs.enable-latest == true }}" >> $GITHUB_OUTPUT
+            echo "type=raw,value=${{ inputs.stable-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
 
-            echo "type=semver,pattern={{version}},value=${{ steps.properties.outputs.ref-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
-            echo "type=semver,pattern={{major}},value=${{ steps.properties.outputs.ref-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
-            echo "type=semver,pattern={{major}}.{{minor}},value=${{ steps.properties.outputs.ref-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
+            echo "type=semver,pattern={{version}},value=${{ steps.properties.outputs.ref-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' && inputs.enable-version == true }}" >> $GITHUB_OUTPUT
+            echo "type=semver,pattern={{major}},value=${{ steps.properties.outputs.ref-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' && inputs.enable-version == true }}" >> $GITHUB_OUTPUT
+            echo "type=semver,pattern={{major}}.{{minor}},value=${{ steps.properties.outputs.ref-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' && inputs.enable-version == true }}" >> $GITHUB_OUTPUT
 
-            echo "type=raw,value=edge,prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable={{is_default_branch}}" >> $GITHUB_OUTPUT
+            echo "type=raw,value=${{ inputs.edge-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable={{is_default_branch}}" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           else
             echo "tags<<EOF" >> $GITHUB_OUTPUT
