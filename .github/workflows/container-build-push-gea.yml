@@ -126,6 +126,13 @@ on:
         type: boolean
         required: false
         default: true
+      enable-pr:
+        description: |
+          "Whether to enable the 'pr-<pr-number>' tag for container builds "
+          "based on pull requests. Not applied if tags is set."
+        type: boolean
+        required: false
+        default: true
 
     secrets:
       GREENBONE_REGISTRY_USER:
@@ -177,7 +184,7 @@ jobs:
         run: |
           if [ -z "${{ inputs.tags }}" ]; then
             echo "tags<<EOF" >> $GITHUB_OUTPUT
-            echo "type=ref,event=pr,prefix=${{ steps.properties.outputs.prefix }}pr-,suffix=${{ steps.properties.outputs.suffix }}" >> $GITHUB_OUTPUT
+            echo "type=ref,event=pr,prefix=${{ steps.properties.outputs.prefix }}pr-,suffix=${{ steps.properties.outputs.suffix }},enable=${{ inputs.enable-pr }}" >> $GITHUB_OUTPUT
 
             echo "type=raw,value=latest,prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' && inputs.enable-latest == true }}" >> $GITHUB_OUTPUT
             echo "type=raw,value=${{ inputs.stable-name }},prefix=${{ steps.properties.outputs.prefix }},suffix=${{ steps.properties.outputs.suffix }},enable=${{ steps.latest.outputs.is-latest-tag == 'true' }}" >> $GITHUB_OUTPUT
@@ -253,7 +260,7 @@ jobs:
           name: digests${{ inputs.name && format('-{0}', inputs.name) || '' }}-${{ matrix.arch.name }}
 
   build-multi-arch:
-    if: ${{ !cancelled() && needs.build.result != 'failure' }}
+    if: ${{ !cancelled() && needs.build.result != 'failure' && needs.meta-data.outputs.tags != '' }}
     needs:
       - meta-data
       - build
