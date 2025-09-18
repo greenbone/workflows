@@ -131,6 +131,12 @@ jobs:
             echo "build-args=${{ inputs.build-args }}" >> $GITHUB_OUTPUT
           fi
 
+      - name: Derive OpenVAS image url
+        id: image-path
+        run: |
+          OPENVAS_URL="$(echo '${{ inputs.image-url }}' | sed 's@/community/@/openvas-detect-dev/@')"
+          echo "openvas-url=$OPENVAS_URL" >> $GITHUB_OUTPUT
+
       - name: Container build and push 2nd gen
         id: build-and-push
         uses: greenbone/actions/container-build-push-generic@v3
@@ -138,7 +144,7 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ steps.container-opts.outputs.build-args }}
-          image-url: ${{ inputs.image-url }}
+          image-url: ${{ steps.image-path.outputs.openvas-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-amd64 # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/amd64
@@ -191,6 +197,12 @@ jobs:
             echo "build-args=${{ inputs.build-args }}" >> $GITHUB_OUTPUT
           fi
 
+      - name: Derive OpenVAS image url
+        id: image-path
+        run: |
+          OPENVAS_URL="$(echo '${{ inputs.image-url }}' | sed 's@/community/@/openvas-detect-dev/@')"
+          echo "openvas-url=$OPENVAS_URL" >> $GITHUB_OUTPUT
+
       - name: Container build and push 2nd gen
         id: build-and-push
         uses: greenbone/actions/container-build-push-generic@v3
@@ -198,7 +210,7 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ steps.container-opts.outputs.build-args }}
-          image-url: ${{ inputs.image-url }}
+          image-url: ${{ steps.image-path.outputs.openvas-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-arm64 # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/arm64
@@ -218,6 +230,7 @@ jobs:
       - build-arm64
     outputs:
       digest: ${{ steps.manifest.outputs.digest }}
+      openvas-url: ${{ steps.url.outputs.openvas-url }}
     steps:
       - name: Get branch
         id: branch
@@ -233,30 +246,19 @@ jobs:
           echo "ENABLE_STABLE=${{ github.event_name != 'workflow_dispatch' && (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable')}}" >> $GITHUB_OUTPUT 
           echo "branch=${{ steps.branch.outputs.branch }}"
 
-      - name: Generate URL
-        shell: bash
+      - name: Derive OpenVAS image url
         id: url
+        shell: bash
         run: |
-          if [ "${{ inputs.service }}" ]; then
-            IMAGE_URL="${{ inputs.image-url }}"
-            REGISTRY="${{ vars.GREENBONE_REGISTRY }}"
-
-            OPENVAS_URL="$(echo "$IMAGE_URL" | sed 's@^community@openvas-detect-dev@')"
-            COMMUNITY_URL="$(echo "$IMAGE_URL" | sed 's@^openvas-detect-dev@community@')"
-
-            echo 'url<<EOF' >> $GITHUB_OUTPUT
-            echo "${REGISTRY}/${OPENVAS_URL}" >> $GITHUB_OUTPUT
-            echo "${REGISTRY}/${COMMUNITY_URL}" >> $GITHUB_OUTPUT
-            echo 'EOF' >> $GITHUB_OUTPUT
-          else
-            echo "url=${{ secrets.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
-          fi 
+          OPENVAS_URL="$(echo '${{ inputs.image-url }}' | sed 's@/community/@/openvas-detect-dev/@')"
+          echo "openvas-url=$OPENVAS_URL" >> $GITHUB_OUTPUT
+          echo "registry-url=${{ vars.GREENBONE_REGISTRY }}/$OPENVAS_URL" >> $GITHUB_OUTPUT
       
       - name: Generate Docker metadata
         id: meta
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
         with:
-          images: ${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}
+          images: ${{ vars.GREENBONE_REGISTRY }}/${{ steps.url.outputs.openvas-url }}
           flavor: latest=false
           tags: |
             type=raw,value=latest,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
@@ -290,7 +292,7 @@ jobs:
           digests: |
             ${{ needs.build-amd64.outputs.digest }}
             ${{ needs.build-arm64.outputs.digest }}
-          url: ${{ inputs.image-url }}
+          url: ${{ steps.url.outputs.openvas-url }}
           registry: ${{ vars.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
@@ -327,7 +329,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ inputs.image-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.create-multi-arch-manifest.outputs.openvas-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
