@@ -246,19 +246,25 @@ jobs:
           echo "ENABLE_STABLE=${{ github.event_name != 'workflow_dispatch' && (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable')}}" >> $GITHUB_OUTPUT 
           echo "branch=${{ steps.branch.outputs.branch }}"
 
-      - name: Derive OpenVAS image url
-        id: url
+      - name: Generate URL
         shell: bash
+        id: url
         run: |
-          OPENVAS_URL="$(echo '${{ inputs.image-url }}' | sed 's@/community/@/openvas-detect-dev/@')"
-          echo "openvas-url=$OPENVAS_URL" >> $GITHUB_OUTPUT
-          echo "registry-url=${{ vars.GREENBONE_REGISTRY }}/$OPENVAS_URL" >> $GITHUB_OUTPUT
+          if [ "${{ inputs.service }}" ]; then
+            OPENVAS_URL="$(echo "${{ inputs.image-url }}" | sed 's@/community/@/openvas-detect-dev/@')"
+            echo 'url<<EOF' >> $GITHUB_OUTPUT
+            echo "${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
+            echo "${{ vars.GREENBONE_REGISTRY }}/${OPENVAS_URL}" >> $GITHUB_OUTPUT
+            echo 'EOF' >> $GITHUB_OUTPUT
+          else
+            echo "url=${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
+          fi
       
       - name: Generate Docker metadata
         id: meta
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
         with:
-          images: ${{ vars.GREENBONE_REGISTRY }}/${{ steps.url.outputs.openvas-url }}
+          images: ${{ steps.url.outputs.url }}
           flavor: latest=false
           tags: |
             type=raw,value=latest,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
@@ -292,7 +298,7 @@ jobs:
           digests: |
             ${{ needs.build-amd64.outputs.digest }}
             ${{ needs.build-arm64.outputs.digest }}
-          url: ${{ steps.url.outputs.openvas-url }}
+          url: ${{ steps.url.outputs.url }}
           registry: ${{ vars.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
