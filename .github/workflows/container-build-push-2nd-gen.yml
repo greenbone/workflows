@@ -138,7 +138,7 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ steps.container-opts.outputs.build-args }}
-          image-url: ${{ steps.image-path.outputs.openvas-url }}
+          image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-amd64 # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/amd64
@@ -198,7 +198,7 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ steps.container-opts.outputs.build-args }}
-          image-url: ${{ steps.image-path.outputs.openvas-url }}
+          image-url: ${{ inputs.image-url }}
           image-labels: ${{ inputs.image-labels }}
           image-tags: raw,value=${{ inputs.ref-name || github.ref_name }}-arm64 # temporary tag that will be overwritten with the manifest upload
           image-platforms: linux/arm64
@@ -218,7 +218,6 @@ jobs:
       - build-arm64
     outputs:
       digest: ${{ steps.manifest.outputs.digest }}
-      openvas-url: ${{ steps.url.outputs.openvas-url }}
     steps:
       - name: Get branch
         id: branch
@@ -323,7 +322,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.create-multi-arch-manifest.outputs.openvas-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ inputs.image-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
