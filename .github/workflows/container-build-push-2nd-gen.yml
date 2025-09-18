@@ -131,12 +131,6 @@ jobs:
             echo "build-args=${{ inputs.build-args }}" >> $GITHUB_OUTPUT
           fi
 
-      - name: Derive OpenVAS image url
-        id: image-path
-        run: |
-          OPENVAS_URL="$(echo '${{ inputs.image-url }}' | sed 's@/community/@/openvas-detect-dev/@')"
-          echo "openvas-url=$OPENVAS_URL" >> $GITHUB_OUTPUT
-
       - name: Container build and push 2nd gen
         id: build-and-push
         uses: greenbone/actions/container-build-push-generic@v3
@@ -196,12 +190,6 @@ jobs:
           else
             echo "build-args=${{ inputs.build-args }}" >> $GITHUB_OUTPUT
           fi
-
-      - name: Derive OpenVAS image url
-        id: image-path
-        run: |
-          OPENVAS_URL="$(echo '${{ inputs.image-url }}' | sed 's@/community/@/openvas-detect-dev/@')"
-          echo "openvas-url=$OPENVAS_URL" >> $GITHUB_OUTPUT
 
       - name: Container build and push 2nd gen
         id: build-and-push
