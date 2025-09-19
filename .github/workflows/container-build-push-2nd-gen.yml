@@ -285,7 +285,7 @@ jobs:
           digests: |
             ${{ needs.build-amd64.outputs.digest }}
             ${{ needs.build-arm64.outputs.digest }}
-          url: ${{ steps.url.outputs.url }}
+          url: ${{ inputs.image-url }}
           registry: ${{ vars.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
