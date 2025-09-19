@@ -273,7 +273,7 @@ jobs:
 
       - name: Create multi arch manifest
         id: manifest
-        uses: greenbone/actions/container-multi-arch-manifest@f0c8b8268b98d09237774489fefc2c0ab77703aa # v3.27.13
+        uses: greenbone/actions/container-multi-arch-manifest@v3
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
@@ -296,17 +296,11 @@ jobs:
     runs-on: self-hosted-generic
     steps:
       - name: Trigger harbor replication
-        shell: bash
-        run: |
-          if ! [ '${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}' ]; then
-            echo "Secret GREENBONE_REGISTRY_REPLICATION_TOKEN does not exist"
-            exit 0
-          fi
-          curl --fail-with-body -X POST \
-            https://${{ vars.GREENBONE_REGISTRY }}/api/v2.0/replication/executions \
-            -u '${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}:${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}' \
-            -H "Content-Type: application/json" \
-            -d '{"policy_id": 1}'
+        uses: greenbone/actions/trigger-harbor-replication@v3
+        with:
+          registry: ${{ vars.GREENBONE_REGISTRY }}
+          user: ${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}
+          token: ${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}
 
   # This job updates the Compose files for our products when a service name is provided by the workflow caller.
   building-product-compose:
