@@ -218,6 +218,8 @@ jobs:
       - build-arm64
     outputs:
       digest: ${{ steps.manifest.outputs.digest }}
+      compose_url: ${{ steps.url.outputs.compose_url }}
+
     steps:
       - name: Get branch
         id: branch
@@ -318,7 +320,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ steps.url.outputs.compose_url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.create-multi-arch-manifest.compose_url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
