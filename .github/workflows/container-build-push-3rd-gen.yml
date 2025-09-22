@@ -119,6 +119,8 @@ jobs:
             type=ref,event=pr
             # use unstable for main branch
             type=raw,value=unstable,enable={{is_default_branch}}
+            # use unstable-release for release branch
+            type=raw,value=unstable-release,enable=${{startsWith(github.ref, 'refs/heads/release-v')}}
           image-platforms: ${{ inputs.image-platforms }}
           registry: ${{ vars.IMAGE_REGISTRY }}
           registry-username: ${{ github.actor }}
@@ -205,6 +207,8 @@ jobs:
             type=ref,event=pr
             # use unstable for main branch
             type=raw,value=unstable,enable={{is_default_branch}}
+            # use unstable-release for release branch
+            type=raw,value=unstable-release,enable=${{startsWith(github.ref, 'refs/heads/release-v')}}
           registry: ${{ vars.GREENBONE_REGISTRY }}
           registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
