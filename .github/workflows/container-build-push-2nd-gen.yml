@@ -218,6 +218,8 @@ jobs:
       - build-arm64
     outputs:
       digest: ${{ steps.manifest.outputs.digest }}
+      compose_url: ${{ steps.url.outputs.compose_url }}
+
     steps:
       - name: Get branch
         id: branch
@@ -233,11 +235,27 @@ jobs:
           echo "ENABLE_STABLE=${{ github.event_name != 'workflow_dispatch' && (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable')}}" >> $GITHUB_OUTPUT 
           echo "branch=${{ steps.branch.outputs.branch }}"
 
+      - name: Generate URL
+        shell: bash
+        id: url
+        run: |
+          if [ "${{ inputs.service }}" ]; then
+            OPENVAS_URL="$(echo "${{ inputs.image-url }}" | sed 's@community/@openvas-detect-dev/@')"
+            echo 'url<<EOF' >> $GITHUB_OUTPUT
+            echo "${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
+            echo "${{ vars.GREENBONE_REGISTRY }}/${OPENVAS_URL}" >> $GITHUB_OUTPUT
+            echo 'EOF' >> $GITHUB_OUTPUT
+            echo "compose_url=$OPENVAS_URL" >> $GITHUB_OUTPUT
+          else
+            echo "url=${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
+            echo "compose_url=${{ inputs.image-url }}" >> $GITHUB_OUTPUT
+          fi
+      
       - name: Generate Docker metadata
         id: meta
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
         with:
-          images: ${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}
+          images: ${{ steps.url.outputs.url }}
           flavor: latest=false
           tags: |
             type=raw,value=latest,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
@@ -259,7 +277,7 @@ jobs:
 
       - name: Create multi arch manifest
         id: manifest
-        uses: greenbone/actions/container-multi-arch-manifest@f0c8b8268b98d09237774489fefc2c0ab77703aa # v3.27.13
+        uses: greenbone/actions/container-multi-arch-manifest@v3
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
@@ -282,21 +300,15 @@ jobs:
     runs-on: self-hosted-generic
     steps:
       - name: Trigger harbor replication
-        shell: bash
-        run: |
-          if ! [ '${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}' ]; then
-            echo "Secret GREENBONE_REGISTRY_REPLICATION_TOKEN does not exist"
-            exit 0
-          fi
-          curl --fail-with-body -X POST \
-            https://${{ vars.GREENBONE_REGISTRY }}/api/v2.0/replication/executions \
-            -u '${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}:${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}' \
-            -H "Content-Type: application/json" \
-            -d '{"policy_id": 1}'
+        uses: greenbone/actions/trigger-harbor-replication@v3
+        with:
+          registry: ${{ vars.GREENBONE_REGISTRY }}
+          user: ${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}
+          token: ${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}
 
   # This job updates the Compose files for our products when a service name is provided by the workflow caller.
   building-product-compose:
-    if: startsWith(github.ref, 'refs/tags/v') && inputs.service
+    #if: startsWith(github.ref, 'refs/tags/v') && inputs.service
     needs:
       - create-multi-arch-manifest
       - harbor-replication
@@ -308,7 +320,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ inputs.image-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.create-multi-arch-manifest.outputs.compose_url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
