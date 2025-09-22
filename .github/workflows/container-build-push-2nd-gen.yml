@@ -64,6 +64,10 @@ on:
         required: false
       GREENBONE_REGISTRY_TOKEN:
         required: false
+      GREENBONE_REGISTRY_READ_USER:
+        required: false
+      GREENBONE_REGISTRY_READ_TOKEN:
+        required: false
       GREENBONE_BOT_TOKEN:
         required: false
       GREENBONE_REGISTRY_REPLICATION_USER:
@@ -318,8 +322,8 @@ jobs:
     uses: greenbone/workflows/.github/workflows/generate-and-push-sbom-with-trivy-3rd-gen.yml@main
     with:
       image-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.create-multi-arch-manifest.outputs.compose-url }}:${{ github.ref_name }}"
-      image-registry-username-secret-name: "GREENBONE_REGISTRY_USER"
-      image-registry-password-secret-name: "GREENBONE_REGISTRY_TOKEN"
+      image-registry-username-secret-name: "GREENBONE_REGISTRY_READ_USER"
+      image-registry-password-secret-name: "GREENBONE_REGISTRY_READ_TOKEN"
       output-file-name: "${{ needs.create-multi-arch-manifest.outputs.image-name }}.${{ github.ref_name }}.sbom.json"
       artifact-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.create-multi-arch-manifest.outputs.compose-url }}-sbom:${{ github.ref_name }}"
     secrets: inherit
