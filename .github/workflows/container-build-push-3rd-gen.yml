@@ -265,8 +265,8 @@ jobs:
 
       - name: Trigger security security-intelligence compose upgrade
         if: |
-          inputs.service == 'asset-management-backend' ||
-          inputs.service == 'vulnerability-intelligence' ||
+          startsWith(inputs.service, 'asset-management-') ||
+          startsWith(inputs.service, 'vulnerability-intelligence-') ||
           inputs.service == 'management-console' ||
           inputs.service == 'user-management' ||
           inputs.service == 'opensearch' ||
