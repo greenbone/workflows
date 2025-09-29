@@ -64,6 +64,10 @@ on:
         required: false
       GREENBONE_REGISTRY_TOKEN:
         required: false
+      GREENBONE_REGISTRY_READ_USER:
+        required: false
+      GREENBONE_REGISTRY_READ_TOKEN:
+        required: false
       GREENBONE_BOT_TOKEN:
         required: false
       GREENBONE_REGISTRY_REPLICATION_USER:
@@ -218,7 +222,8 @@ jobs:
       - build-arm64
     outputs:
       digest: ${{ steps.manifest.outputs.digest }}
-      compose_url: ${{ steps.url.outputs.compose_url }}
+      compose-url: ${{ steps.url.outputs.compose_url }}
+      image-name: ${{ steps.url.outputs.name }}
 
     steps:
       - name: Get branch
@@ -250,6 +255,7 @@ jobs:
             echo "url=${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
             echo "compose_url=${{ inputs.image-url }}" >> $GITHUB_OUTPUT
           fi
+          echo "name=$(basename ${{ inputs.image-url }})" >> $GITHUB_OUTPUT
       
       - name: Generate Docker metadata
         id: meta
@@ -306,12 +312,29 @@ jobs:
           user: ${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}
           token: ${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}
 
-  # This job updates the Compose files for our products when a service name is provided by the workflow caller.
+  # push-sbom and building-product-compose are only started for services used in automatix
+  push-sbom:
+    name: Scan image and push SBOM
+    if: startsWith(github.ref, 'refs/tags/v') && inputs.service
+    needs: 
+      - create-multi-arch-manifest
+      - harbor-replication
+    uses: greenbone/workflows/.github/workflows/generate-and-push-sbom-with-trivy-3rd-gen.yml@main
+    with:
+      image-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.create-multi-arch-manifest.outputs.compose-url }}:${{ github.ref_name }}"
+      image-registry-username-secret-name: "GREENBONE_REGISTRY_READ_USER"
+      image-registry-password-secret-name: "GREENBONE_REGISTRY_READ_TOKEN"
+      output-file-name: "${{ needs.create-multi-arch-manifest.outputs.image-name }}.${{ github.ref_name }}.sbom.json"
+      artifact-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.create-multi-arch-manifest.outputs.compose-url }}-sbom:${{ github.ref_name }}"
+    secrets: inherit
+
+  # push-sbom and building-product-compose are only started for services used in automatix
   building-product-compose:
     if: startsWith(github.ref, 'refs/tags/v') && inputs.service
     needs:
       - create-multi-arch-manifest
       - harbor-replication
+      - push-sbom
     runs-on: "ubuntu-latest"
     steps:
       - name: Trigger product compose upgrade
@@ -320,13 +343,14 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.create-multi-arch-manifest.outputs.compose_url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.create-multi-arch-manifest.outputs.compose-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
       - build-amd64
       - build-arm64
       - create-multi-arch-manifest
+      - harbor-replication
     if: ${{ !cancelled()  && startsWith(inputs.notify, 'true') && github.event_name != 'pull_request' }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-2nd-gen.yml@main
     with:
