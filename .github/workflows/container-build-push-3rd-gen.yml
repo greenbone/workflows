@@ -263,6 +263,27 @@ jobs:
           workflow: "push.yml"
           inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.building-container-greenbone.outputs.image-url }}", "digest": "${{ needs.building-container-greenbone.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
+      - name: Trigger security security-intelligence compose upgrade
+        if: |
+          inputs.service == 'asset-management-backend' ||
+          inputs.service == 'vulnerability-intelligence' ||
+          inputs.service == 'management-console' ||
+          inputs.service == 'user-management' ||
+          inputs.service == 'opensearch' ||
+          inputs.service == 'notification-service' ||
+          inputs.service == 'ingress'
+        uses: greenbone/actions/trigger-workflow@v3
+        with:
+          token: ${{ secrets.GREENBONE_BOT_TOKEN }}
+          repository: "greenbone/automatix"
+          workflow: "push.yml"
+          inputs: |
+            {
+              "service": "security-intelligence",
+              "image-url": "${{ needs.building-container-greenbone.outputs.image-url }}",
+              "digest": "${{ needs.building-container-greenbone.outputs.digest }}",
+              "version": "${{ github.ref_name }}"
+            }
   notify:
     needs:
       - building-container-ghcr
