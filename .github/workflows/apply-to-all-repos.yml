@@ -40,16 +40,16 @@ jobs:
           git add .github/workflows/detect-hidden-unicode.yml
           git commit -am "Fix: Add or Update detect-hidden-unicode.yml"
           git push --set-upstream origin automated-general-changes
-       env:
-         GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
 
       - name: Create PR
         shell: bash
         working-directory: ${{ github.workspace }}/${{ matrix.repository }}
         run: |
           gh pr create --reviewer "@greenbone/devops" --label automated --label general --fill --head automated-general-changes --title "Fix: Add or Update detect-hidden-unicode.yml"
-       env:
-         GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
 
      #- name: Approve PR
      #  shell: bash
