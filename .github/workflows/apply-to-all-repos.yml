@@ -24,6 +24,7 @@ jobs:
         with:
           repository: ${{ matrix.repository }}
           path: ${{ matrix.repository }}
+          token: ${{ secrets.GREENBONE_BOT_TOKEN }}
 
       - name: Checkout branch, Commit and Push
         shell: bash
