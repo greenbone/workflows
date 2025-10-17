@@ -1,0 +1,44 @@
+name: Build Linux Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: "The version of the service."
+        required: true
+      release:
+        type: string
+        description: "The release of the service."
+        default: "1"
+
+jobs:
+  create-linux-packages:
+    name: Build DEB and RPM Packages
+    runs-on: self-hosted-generic
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: false
+
+      - name: Install nfpm
+        run: |
+          go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
+          echo "$HOME/go/bin" >> $GITHUB_PATH
+
+      - name: Clean and prepare binary directory
+        run: |
+          # Remove any existing binaries to ensure clean build
+          rm -rf nfpm/packaging/bin
+          mkdir -p nfpm/packaging/bin
+          # Clean temp directory
+          rm -rf ./temp
+          mkdir -p ./temp
