@@ -374,18 +374,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
 
-     #- name: Approve PR
-     #  shell: bash
-     #  working-directory: ${{ github.workspace }}/${{ matrix.repository }}
-     #  run: |
-     #    gh pr review automated-general-changes --approve
-     #  env:
-     #    GITHUB_TOKEN: ${{ secrets.MERGE_TOKEN }}
+     - name: Approve PR
+       shell: bash
+       working-directory: ${{ github.workspace }}/${{ matrix.repository }}
+       run: |
+         gh pr review automated-general-changes --approve
+       env:
+         GITHUB_TOKEN: ${{ secrets.MERGE_TOKEN }}
 
-     #- name: Merge PR
-     #  shell: bash
-     #  working-directory: ${{ github.workspace }}/${{ matrix.repository }}
-     #  run: |
-     #    gh pr merge --auto automated-general-changes --squash
-     #  env:
-     #    GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
+     - name: Merge PR
+       shell: bash
+       working-directory: ${{ github.workspace }}/${{ matrix.repository }}
+       run: |
+         gh pr merge --auto automated-general-changes --squash
+       env:
+         GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
