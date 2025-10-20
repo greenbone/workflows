@@ -48,8 +48,8 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/${{ matrix.repository }}
         run: |
-          gh label create automated --description "Items with this label are created automatically" --color 352AD1
-          gh label create general --description "Items with this label are created by a general workflow in greenbone/workflows" --color 3BD12A
+          gh label create automated --description "Items with this label are created automatically" --color 352AD1 --force
+          gh label create general --description "Items with this label are created by a general workflow in greenbone/workflows" --color 3BD12A --force
         env:
           GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
 
