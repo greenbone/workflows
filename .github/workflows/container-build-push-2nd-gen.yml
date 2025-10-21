@@ -267,9 +267,11 @@ jobs:
             type=raw,value=latest,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
             type=raw,value=stable,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
             type=semver,pattern={{version}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
+            type=raw,value=${{ github.ref_name }},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{major}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{major}}.{{minor}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
+            type=raw,value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
             type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
             type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
 
@@ -321,11 +323,11 @@ jobs:
       - harbor-replication
     uses: greenbone/workflows/.github/workflows/generate-and-push-sbom-with-trivy-3rd-gen.yml@main
     with:
-      image-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.create-multi-arch-manifest.outputs.compose-url }}:${{ github.ref_name }}"
+      image-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.create-multi-arch-manifest.outputs.compose-url }}:${{ inputs.ref-name || github.ref_name }}"
       image-registry-username-secret-name: "GREENBONE_REGISTRY_READ_USER"
       image-registry-password-secret-name: "GREENBONE_REGISTRY_READ_TOKEN"
       output-file-name: "${{ needs.create-multi-arch-manifest.outputs.image-name }}.${{ github.ref_name }}.sbom.json"
-      artifact-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.create-multi-arch-manifest.outputs.compose-url }}-sbom:${{ github.ref_name }}"
+      artifact-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.create-multi-arch-manifest.outputs.compose-url }}-sbom:${{ inputs.ref-name || github.ref_name }}"
     secrets: inherit
 
   # push-sbom and building-product-compose are only started for services used in automatix
@@ -343,7 +345,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.create-multi-arch-manifest.outputs.compose-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.create-multi-arch-manifest.outputs.compose-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ inputs.ref-name || github.ref_name }}"}'
 
   notify:
     needs:
