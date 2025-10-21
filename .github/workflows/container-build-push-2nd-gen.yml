@@ -271,7 +271,7 @@ jobs:
             type=semver,pattern={{major}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{major}}.{{minor}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
-            type=match,pattern=v(.*),group=1,enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
+            type=match,pattern=v(.*),group=1,value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
             type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
             type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
 
