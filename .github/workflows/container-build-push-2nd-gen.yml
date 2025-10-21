@@ -267,6 +267,7 @@ jobs:
             type=raw,value=latest,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
             type=raw,value=stable,enable=${{ (needs.build-amd64.outputs.is-latest-tag == 'true') && (inputs.base-image-label == 'stable') }}
             type=semver,pattern={{version}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
+            type=match,pattern=v(.*),group=1,enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{major}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{major}}.{{minor}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
