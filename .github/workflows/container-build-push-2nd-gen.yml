@@ -271,6 +271,7 @@ jobs:
             type=semver,pattern={{major}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{major}}.{{minor}},enable=${{ steps.conditions.outputs.ENABLE_STABLE }}
             type=semver,pattern={{version}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
+            type=match,pattern=v(.*),group=1,enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
             type=semver,pattern={{major}}.{{minor}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
             type=semver,pattern={{major}},value=${{ inputs.ref-name }},enable=${{ github.event_name == 'workflow_dispatch' && (inputs.base-image-label == 'stable') }}
 
@@ -316,7 +317,7 @@ jobs:
   # push-sbom and building-product-compose are only started for services used in automatix
   push-sbom:
     name: Scan image and push SBOM
-    if: startsWith(github.ref, 'refs/tags/v') && inputs.service
+    #if: startsWith(github.ref, 'refs/tags/v') && inputs.service
     needs: 
       - create-multi-arch-manifest
       - harbor-replication
@@ -331,7 +332,7 @@ jobs:
 
   # push-sbom and building-product-compose are only started for services used in automatix
   building-product-compose:
-    if: startsWith(github.ref, 'refs/tags/v') && inputs.service
+    #if: startsWith(github.ref, 'refs/tags/v') && inputs.service
     needs:
       - create-multi-arch-manifest
       - harbor-replication
