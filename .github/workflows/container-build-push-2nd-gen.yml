@@ -345,7 +345,7 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.create-multi-arch-manifest.outputs.compose-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.create-multi-arch-manifest.outputs.compose-url }}", "digest": "${{ needs.create-multi-arch-manifest.outputs.digest }}", "version": "${{ inputs.ref-name || github.ref_name }}"}'
 
   notify:
     needs:
