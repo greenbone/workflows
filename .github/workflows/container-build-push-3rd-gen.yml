@@ -96,7 +96,7 @@ jobs:
       digest: ${{ steps.build-and-push.outputs.digest }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
 
       - name: Container build push 3rd gen
         id: build-and-push
@@ -139,7 +139,7 @@ jobs:
       image-name: ${{ steps.image-url.outputs.name }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
 
       # Since all image URLs are derived from the GitHub repository URL, we need to reformat them to obtain the correct product OCI URLs.
       # We can remove this step after incorporate everything directly into the respective workflow calls within the service repositories.
