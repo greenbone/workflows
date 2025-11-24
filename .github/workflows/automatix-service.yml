@@ -1,0 +1,99 @@
+name: Automatix Service Update
+
+on:
+  workflow_call:
+    inputs:
+      service:
+        description: "The name of the service to update. If not set, no service update will be done in the product compose files. Default is empty"
+        default: ""
+        type: string
+      url:
+        description: "An image url pushed on harbor-os."
+        type: string
+        required: true
+      tag:
+        description: "An image tag pushed on harbor-os."
+        type: string
+        required: true
+      digest:
+        description: "An image digest pushed on harbor-os."
+        type: string
+        required: true
+
+    secrets:
+      COSIGN_KEY_OPENSIGHT:
+        required: false
+      COSIGN_KEY_PASSWORD_OPENSIGHT:
+        required: false
+      GREENBONE_REGISTRY:
+        required: false
+      GREENBONE_REGISTRY_USER:
+        required: false
+      GREENBONE_REGISTRY_TOKEN:
+        required: false
+      GREENBONE_REGISTRY_READ_USER:
+        required: false
+      GREENBONE_REGISTRY_READ_TOKEN:
+        required: false
+      GREENBONE_BOT_TOKEN:
+        required: false
+
+jobs:
+  settings:
+    if: inputs.service && startsWith(github.ref, 'refs/tags/v')
+    runs-on: "ubuntu-latest"
+    outputs:
+      name: ${{ steps.settings.outputs.name }}
+      url: ${{ steps.settings.outputs.url }}
+    steps:
+      - name: Split url
+        id: settings
+        run: |
+          echo "name=$(basename '${{ inputs.url }})'" >> $GITHUB_OUTPUT
+          echo "url=$(echo '${{ inputs.url }}' | sed 's/^[^/]*\///')" >> $GITHUB_OUTPUT
+
+  signing:
+    if: inputs.service && startsWith(github.ref, 'refs/tags/v')
+    needs: settings
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Login to Greenbone Container Registry
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          registry: ${{ vars.GREENBONE_REGISTRY }}
+          username: ${{ secrets.GREENBONE_REGISTRY_USER }}
+          password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
+
+      - name: Container signing
+        uses: greenbone/actions/container-signing@v3
+        with:
+          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
+          cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
+          cosign-tlog-upload: "false"
+          image-tags: "${{ inputs.url }}:${{ inputs.tag }}"
+          image-digest: ${{ inputs.digest }}
+
+  sbom:
+    if: inputs.service && startsWith(github.ref, 'refs/tags/v')
+    needs: settings
+    uses: greenbone/workflows/.github/workflows/generate-and-push-sbom-with-trivy-3rd-gen.yml@main
+    with:
+      image-url: "${{ inputs.url }}:${{ inputs.tag }}"
+      image-registry-username-secret-name: "GREENBONE_REGISTRY_READ_USER"
+      image-registry-password-secret-name: "GREENBONE_REGISTRY_READ_TOKEN"
+      output-file-name: "${{ needs.settings.outputs.name }}.${{ inputs.tag }}.sbom.json"
+      artifact-url: "${{ inputs.url }}-sbom:${{ inputs.tag }}"
+    secrets: inherit
+
+  service-update:
+    if: inputs.service && startsWith(github.ref, 'refs/tags/v')
+    needs: settings
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Trigger product compose upgrade
+        uses: greenbone/actions/trigger-workflow@v3
+        with:
+          token: ${{ secrets.GREENBONE_BOT_TOKEN }}
+          repository: "greenbone/automatix"
+          workflow: "push.yml"
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.settings.outputs.url }}", "digest": "${{ inputs.digest }}", "version": "${{ inputs.tag }}"}'
