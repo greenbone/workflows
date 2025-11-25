@@ -272,7 +272,7 @@ jobs:
     name: Create and Push Multi-Arch Image
     runs-on: self-hosted-generic
     outputs:
-      digest: ${{ steps.digests.outputs.digests }}
+      digest: ${{ steps.march.outputs.digest }}
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
