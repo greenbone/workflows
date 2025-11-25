@@ -19,7 +19,7 @@ on:
         description: "An image digest pushed on harbor-os."
         type: string
       artifact-pattern:
-        description: "Download the container digest as artifact."
+        description: "Download the image digest as artifact. The image must be on harbor-os."
         type: string
 
 
