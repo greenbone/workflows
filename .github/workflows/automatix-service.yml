@@ -101,7 +101,7 @@ jobs:
       artifact-url: "${{ inputs.url }}-sbom:${{ inputs.tag }}"
     secrets: inherit
 
-  service-update:
+  automatix:
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
     needs: settings
     runs-on: "ubuntu-latest"
