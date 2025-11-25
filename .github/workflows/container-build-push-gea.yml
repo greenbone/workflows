@@ -296,8 +296,15 @@ jobs:
           pattern: "digests${{ inputs.name && format('-{0}', inputs.name) || '' }}-*"
 
       - name: Create and push multi-arch container image
+        id: march
         uses: greenbone/actions/create-multi-arch-container-image@v3
         with:
           digests: ${{ steps.digests.outputs.digests }}
           annotations: ${{ needs.meta-data.outputs.annotations }}
           tags: ${{ needs.meta-data.outputs.tags }}
+
+      - name: Upload digest
+        uses: greenbone/actions/upload-digest@v3
+        with:
+          digest: "${{ steps.march.outputs.digest }}"
+          name: march-digests${{ inputs.name && format('-{0}', inputs.name) || '' }}-${{ matrix.arch.name }}
