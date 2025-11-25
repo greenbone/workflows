@@ -55,7 +55,7 @@ jobs:
         id: digests
         uses: greenbone/actions/download-digest@v3
         with:
-          pattern: "digests${{ inputs.artifact-pattern && format('-{0}', inputs.artifact-pattern) || '' }}-*"
+          pattern: "march-digests${{ inputs.artifact-pattern && format('-{0}', inputs.artifact-pattern) || '' }}-*"
 
       - name: Set vars
         id: settings
