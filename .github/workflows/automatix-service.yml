@@ -18,7 +18,10 @@ on:
       digest:
         description: "An image digest pushed on harbor-os."
         type: string
-        required: true
+      artifact-pattern:
+        description: "Download the container digest as artifact."
+        type: string
+
 
     secrets:
       COSIGN_KEY_OPENSIGHT:
@@ -45,12 +48,25 @@ jobs:
     outputs:
       name: ${{ steps.settings.outputs.name }}
       url: ${{ steps.settings.outputs.url }}
+      digest: ${{ steps.settings.outputs.digest }}
     steps:
-      - name: Split url
+      - name: Download digests
+        if: inputs.artifact-pattern
+        id: digests
+        uses: greenbone/actions/download-digest@v3
+        with:
+          pattern: "digests${{ inputs.artifact-pattern && format('-{0}', inputs.artifact-pattern) || '' }}-*"
+
+      - name: Set vars
         id: settings
         run: |
           echo "name=$(basename '${{ inputs.url }})'" >> $GITHUB_OUTPUT
           echo "url=$(echo '${{ inputs.url }}' | sed 's/^[^/]*\///')" >> $GITHUB_OUTPUT
+          if [ '${{ inputs.artifact-pattern }}' ]; then
+            echo "digest=${{ steps.digests.outputs.digests }}" >> $GITHUB_OUTPUT
+          else
+            echo "digest=${{ inputs.digest }}" >> $GITHUB_OUTPUT
+          fi
 
   signing:
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
@@ -71,7 +87,7 @@ jobs:
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
           cosign-tlog-upload: "false"
           image-tags: "${{ inputs.url }}:${{ inputs.tag }}"
-          image-digest: ${{ inputs.digest }}
+          image-digest: ${{ needs.settings.outputs.digest }}
 
   sbom:
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
@@ -96,4 +112,4 @@ jobs:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
           workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.settings.outputs.url }}", "digest": "${{ inputs.digest }}", "version": "${{ inputs.tag }}"}'
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.settings.outputs.url }}", "digest": "${{ needs.settings.outputs.digest }}", "version": "${{ inputs.tag }}"}'
