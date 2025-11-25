@@ -140,6 +140,11 @@ on:
       GREENBONE_REGISTRY_TOKEN:
         required: true
 
+    outputs:
+      digest:
+        description: "The container digest"
+        value: ${{ jobs.build-multi-arch.outputs.digest }}
+
 jobs:
   meta-data:
     name: Create Image Meta Data
@@ -266,6 +271,8 @@ jobs:
       - build
     name: Create and Push Multi-Arch Image
     runs-on: self-hosted-generic
+    outputs:
+      digest: ${{ steps.march.outputs.digest }}
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
@@ -289,8 +296,15 @@ jobs:
           pattern: "digests${{ inputs.name && format('-{0}', inputs.name) || '' }}-*"
 
       - name: Create and push multi-arch container image
+        id: march
         uses: greenbone/actions/create-multi-arch-container-image@v3
         with:
           digests: ${{ steps.digests.outputs.digests }}
           annotations: ${{ needs.meta-data.outputs.annotations }}
           tags: ${{ needs.meta-data.outputs.tags }}
+
+      - name: Upload digest
+        uses: greenbone/actions/upload-digest@v3
+        with:
+          digest: "${{ steps.march.outputs.digest }}"
+          name: march-digests${{ inputs.name && format('-{0}', inputs.name) || '' }}-${{ matrix.arch.name }}
