@@ -44,7 +44,7 @@ on:
 jobs:
   digest:
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     outputs:
       name: ${{ steps.settings.outputs.name }}
       url: ${{ steps.settings.outputs.url }}
@@ -71,7 +71,7 @@ jobs:
   signing:
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
     needs: digest
-    runs-on: "ubuntu-latest"
+    runs-on: self-hosted-generic-vm-amd64
     steps:
       - name: Login to Greenbone Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
@@ -104,7 +104,7 @@ jobs:
   automatix:
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
     needs: digest
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
       - name: Trigger product compose upgrade
         uses: greenbone/actions/trigger-workflow@v3
