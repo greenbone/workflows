@@ -60,7 +60,7 @@ jobs:
       - name: Set vars
         id: settings
         run: |
-          echo "name=$(basename '${{ inputs.url }})'" >> $GITHUB_OUTPUT
+          echo "name=$(basename '${{ inputs.url }}')" >> $GITHUB_OUTPUT
           echo "url=$(echo '${{ inputs.url }}' | sed 's/^[^/]*\///')" >> $GITHUB_OUTPUT
           if [ '${{ inputs.artifact-pattern }}' ]; then
             echo "digest=${{ steps.digests.outputs.digests }}" >> $GITHUB_OUTPUT
