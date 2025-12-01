@@ -48,6 +48,15 @@ jobs:
         PR_NUMBER: ${{ github.event.pull_request.number }}
       run: |
         ./helper-repo/.github/workflows/gh-pages-helper.sh
+    # When actions/upload-pages-artifact runs more than once in the same workflow run (due to retries, re‑runs, or multiple invocations)
+    # we need to remove the duplicate artifacts.
+    - name: Remove existing github-pages artifacts in this run
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts \
+          --jq '.artifacts[] | select(.name=="github-pages") | .id' | \
+        xargs -r -I{} gh api -X DELETE repos/${{ github.repository }}/actions/artifacts/{}
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v4
       with:
