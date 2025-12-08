@@ -244,15 +244,23 @@ jobs:
         shell: bash
         id: url
         run: |
+          DETECT="openvas-scanner openvas-feed-sync openvas-gpg-data openvas-redis"
           OPENVAS_URL="$(echo "${{ inputs.image-url }}" | sed 's@community/@openvas-detect-dev/@')"
           OPENVAS_SCAN_URL="$(echo "${{ inputs.image-url }}" | sed 's@community/@openvas-scan-dev/@')"
           if [ "${{ inputs.service }}" ]; then
             echo 'url<<EOF' >> $GITHUB_OUTPUT
             echo "${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
-            echo "${{ vars.GREENBONE_REGISTRY }}/${OPENVAS_URL}" >> $GITHUB_OUTPUT
-            echo "${{ vars.GREENBONE_REGISTRY }}/${OPENVAS_SCAN_URL}" >> $GITHUB_OUTPUT
+            if [[ " $DETECT " =~ "${{ inputs.service }}" ]]; then
+              echo "${{ vars.GREENBONE_REGISTRY }}/${OPENVAS_URL}" >> $GITHUB_OUTPUT
+            else
+              echo "${{ vars.GREENBONE_REGISTRY }}/${OPENVAS_SCAN_URL}" >> $GITHUB_OUTPUT
+            fi
             echo 'EOF' >> $GITHUB_OUTPUT
-            echo "compose_url=$OPENVAS_URL" >> $GITHUB_OUTPUT
+            if [[ " $DETECT " =~ "${{ inputs.service }}" ]]; then
+              echo "compose_url=$OPENVAS_URL" >> $GITHUB_OUTPUT
+            else
+              echo "compose_url=$OPENVAS_SCAN_URL" >> $GITHUB_OUTPUT
+            fi
           else
             echo 'url<<EOF' >> $GITHUB_OUTPUT
             echo "${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
