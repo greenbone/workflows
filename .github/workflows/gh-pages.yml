@@ -25,7 +25,7 @@ jobs:
         rm -rf doc-packages merged
         mkdir -p doc-packages merged
     - name: Download artifacts
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         pattern: html-*
         path: doc-packages
