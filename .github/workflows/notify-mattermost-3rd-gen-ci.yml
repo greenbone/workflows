@@ -69,7 +69,7 @@ jobs:
     if: ${{ !cancelled() }}
     steps:
       - name: Notify Mattermost 3rd gen ci
-        uses: greenbone/actions/mattermost-notify@DEVOPS-1929-improve-mattermost-notifications
+        uses: greenbone/actions/mattermost-notify@v3
         with:
           url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: "pd3rdgenci"
