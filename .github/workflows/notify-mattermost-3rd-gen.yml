@@ -23,6 +23,39 @@ on:
         description: "Mattermost use shortline mode. Default: true"
         type: string
         default: "true"
+      # New inputs
+      product:
+        description: "Product name (asset, lookout, detect, management-console, security-intelligence, enterprise-containers)"
+        type: string
+        required: false
+      stage:
+        description: "Deployment stage (dev, integration, testing, staging, production)"
+        type: string
+        required: false
+      version:
+        description: "Product or service version (semver format, e.g., 1.15.1-alpha.10)"
+        type: string
+        required: false
+      service:
+        description: "Service name for service-update notifications"
+        type: string
+        required: false
+      from-stage:
+        description: "Source stage for stage-transition notifications (e.g., testing)"
+        type: string
+        required: false
+      to-stage:
+        description: "Target stage for stage-transition notifications (e.g., staging)"
+        type: string
+        required: false
+      notification-type:
+        description: "Type of notification (deployment, service-update, stage-transition, release, hotfix)"
+        type: string
+        required: false
+      changed-services:
+        description: "Comma-separated list of changed services"
+        type: string
+        required: false
     # Dependabot don't have this secrets and on PR's this secrets are not needed.
     secrets:
       MATTERMOST_WEBHOOK_URL:
@@ -47,6 +80,14 @@ jobs:
           workflow-name: ${{ github.workflow }}
           status: ${{ inputs.status }}
           shortline: ${{ inputs.shortline }}
+          product: ${{ inputs.product }}
+          stage: ${{ inputs.stage }}
+          version: ${{ inputs.version }}
+          service: ${{ inputs.service }}
+          from-stage: ${{ inputs.from-stage }}
+          to-stage: ${{ inputs.to-stage }}
+          notification-type: ${{ inputs.notification-type }}
+          changed-services: ${{ inputs.changed-services }}
 
       - name: Exit with monitored job status
         if: inputs.exit-with-status == 'true' && inputs.status != 'success'
