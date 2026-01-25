@@ -23,6 +23,10 @@ on:
         description: "Mattermost use shortline mode. Default: true"
         type: string
         default: "true"
+      stage:
+        description: "Deployment stage (e.g., enterprise, enterprise-staging, community, community-staging)."
+        type: string
+        required: true
     secrets:
       MATTERMOST_WEBHOOK_URL:
         required: true
@@ -48,6 +52,7 @@ jobs:
           workflow-name: ${{ github.workflow }}
           status: ${{ inputs.status }}
           shortline: ${{ inputs.shortline }}
+          stage: ${{ inputs.stage }}
 
       - name: Exit with monitored job status
         if: inputs.exit-with-status == 'true' && inputs.status != 'success'
