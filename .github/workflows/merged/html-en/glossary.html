@@ -1,0 +1,573 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="19 Frequently Asked Questions" href="faq.html" />
+        <link rel="prefetch" href="_static/logo.png" as="image" />
+
+    <link rel="shortcut icon" href="_static/Gb_favicon_head_32x32.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2025.07.19 -->
+        <title>20 Glossary - Greenbone Enterprise Appliance – GOS 24.10.4</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_greenbone.css?v=86d35ff1" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #4D4D4D;
+  --color-foreground-primary: 4D4D4D;
+  --color-foreground-secondary: #808080;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --color-admonition-title--note-background: #D8F1E2;
+  --color-admonition-title--warning: #E5393D;
+  --color-admonition-title--warning-background: #FBDDDE;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #FFFFFF;
+  --color-background-secondary: #F5F5F5;
+  --color-sidebar-background: #F5F5F5;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #F5F5F5;
+  --color-foreground-primary: F5F5F5;
+  --color-foreground-secondary: #E6E6E6;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #171717;
+  --color-background-secondary: #4D4D4D;
+  --color-sidebar-background: #333333;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #F5F5F5;
+  --color-foreground-primary: F5F5F5;
+  --color-foreground-secondary: #E6E6E6;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #171717;
+  --color-background-secondary: #4D4D4D;
+  --color-sidebar-background: #333333;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Greenbone Enterprise Appliance – GOS 24.10.4</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Greenbone Enterprise Appliance – GOS 24.10.4</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1 Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read-before-use.html">2 Read Before Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appliance-overview.html">3 Greenbone Enterprise Appliance – Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setting-up-the-appliance.html">4 Setting up the Greenbone Enterprise Appliance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading-gos.html">5 Upgrading the Greenbone Enterprise Appliance to the Latest Major Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-gos.html">6 Managing the Greenbone Operating System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web-interface.html">7 Getting to Know the Web Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web-interface-access.html">8 Managing the Web Interface Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scanning.html">9 Scanning a System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">10 Reports and Vulnerability Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compliance-and-special-scans.html">11 Performing Compliance Scans and Special Scans</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-assets.html">12 Managing Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-secinfo.html">13 Managing SecInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmp.html">14 Using the Greenbone Management Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="master-sensor-setup.html">15 Using a Master-Sensor Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">16 Managing the Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting-other-systems.html">17 Connecting the Greenbone Enterprise Appliance to Other Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">18 Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">19 Frequently Asked Questions</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">20 Glossary</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="glossary">
+<h1><span class="section-number">20 </span>Glossary<a class="headerlink" href="#glossary" title="Link to this heading">¶</a></h1>
+<p>This section defines relevant terminology which is consistently used across the entire system.</p>
+<section id="alert">
+<span id="glossary-alert"></span><span id="index-0"></span><h2><span class="section-number">20.1 </span>Alert<a class="headerlink" href="#alert" title="Link to this heading">¶</a></h2>
+<p>An alert is an action which can be triggered by certain events.
+In most cases, this means the output of a notification, for example an e-mail in case of a finished scan.</p>
+</section>
+<section id="asset">
+<span id="glossary-asset"></span><span id="index-1"></span><h2><span class="section-number">20.2 </span>Asset<a class="headerlink" href="#asset" title="Link to this heading">¶</a></h2>
+<p>Assets are hosts, operating systems, and TLS certificates that are discovered on the network during a vulnerability scan or entered manually by the user.</p>
+</section>
+<section id="cert-bund-advisory">
+<span id="glossary-cert-bund"></span><span id="index-2"></span><h2><span class="section-number">20.3 </span>CERT-Bund Advisory<a class="headerlink" href="#cert-bund-advisory" title="Link to this heading">¶</a></h2>
+<p>An advisory published by CERT-Bund. See <a class="reference external" href="https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Cyber-Sicherheitslage/Reaktion/CERT-Bund/cert-bund_node.html">https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Cyber-Sicherheitslage/Reaktion/CERT-Bund/cert-bund_node.html</a> for more information.</p>
+</section>
+<section id="compliance-audit">
+<span id="index-3"></span><h2><span class="section-number">20.4 </span>Compliance Audit<a class="headerlink" href="#compliance-audit" title="Link to this heading">¶</a></h2>
+<p>A compliance audit is a scan task with the flag <em>audit</em> and used to check the fulfillment of compliances.</p>
+</section>
+<section id="compliance-policy">
+<span id="index-4"></span><h2><span class="section-number">20.5 </span>Compliance Policy<a class="headerlink" href="#compliance-policy" title="Link to this heading">¶</a></h2>
+<p>A compliance policy is a scan configuration with the flag <em>policy</em> and used to check the fulfillment of compliances.</p>
+</section>
+<section id="cpe">
+<span id="glossary-cpe"></span><span id="index-5"></span><h2><span class="section-number">20.6 </span>CPE<a class="headerlink" href="#cpe" title="Link to this heading">¶</a></h2>
+<p>Common Platform Enumeration (CPE) is a structured naming scheme for information technology systems, platforms and packages.</p>
+<p>A CPE name starts with “cpe:/”, followed by up to seven components separated by colons.</p>
+</section>
+<section id="cve">
+<span id="glossary-cve"></span><span id="index-6"></span><h2><span class="section-number">20.7 </span>CVE<a class="headerlink" href="#cve" title="Link to this heading">¶</a></h2>
+<p>Common Vulnerabilities and Exposures (CVE) is a dictionary of publicly known information security vulnerabilities and exposures.
+Every vulnerability is assigned a unique identifier, consisting of the release year and a simple number, and serves as a central reference.</p>
+</section>
+<section id="cvss">
+<span id="glossary-cvss"></span><span id="index-7"></span><h2><span class="section-number">20.8 </span>CVSS<a class="headerlink" href="#cvss" title="Link to this heading">¶</a></h2>
+<p>The Common Vulnerability Scoring System (CVSS) is an industry standard for describing the severity of security risks in computer systems.
+Security risks are rated and compared using different criteria.
+This allows for the creation of a priority list of countermeasures.</p>
+</section>
+<section id="dfn-cert-advisory">
+<span id="glossary-dfn-cert"></span><span id="index-8"></span><h2><span class="section-number">20.9 </span>DFN-CERT Advisory<a class="headerlink" href="#dfn-cert-advisory" title="Link to this heading">¶</a></h2>
+<p>An advisory published by DFN-CERT. See <a class="reference external" href="https://www.dfn-cert.de/">https://www.dfn-cert.de/</a> for more information.</p>
+</section>
+<section id="epss">
+<span id="glossary-epss"></span><span id="index-9"></span><h2><span class="section-number">20.10 </span>EPSS<a class="headerlink" href="#epss" title="Link to this heading">¶</a></h2>
+<p>The Exploit Prediction Scoring System (EPSS) is a measure of a vulnerability’s likelihood of exploitation within the next 30 days.
+This allows for the creation of a priority list of countermeasures.</p>
+</section>
+<section id="filter">
+<span id="glossary-filter"></span><span id="index-10"></span><h2><span class="section-number">20.11 </span>Filter<a class="headerlink" href="#filter" title="Link to this heading">¶</a></h2>
+<p>A filter describes how to select a certain subset from a group of resources.</p>
+</section>
+<section id="group">
+<span id="glossary-group"></span><span id="index-11"></span><h2><span class="section-number">20.12 </span>Group<a class="headerlink" href="#group" title="Link to this heading">¶</a></h2>
+<p>A group is a collection of users.</p>
+</section>
+<section id="host">
+<span id="glossary-host"></span><span id="index-12"></span><h2><span class="section-number">20.13 </span>Host<a class="headerlink" href="#host" title="Link to this heading">¶</a></h2>
+<p>A host is a single system that is connected to a computer network and that can be scanned.
+One or many hosts form the basis of a scan target.</p>
+</section>
+<section id="note">
+<span id="glossary-note"></span><span id="index-13"></span><h2><span class="section-number">20.14 </span>Note<a class="headerlink" href="#note" title="Link to this heading">¶</a></h2>
+<p>A note is a textual comment associated with a VT.
+Notes show up in reports, below the results generated by the VT.</p>
+</section>
+<section id="vulnerability-test-vt">
+<span id="glossary-nvt"></span><span id="index-14"></span><h2><span class="section-number">20.15 </span>Vulnerability Test (VT)<a class="headerlink" href="#vulnerability-test-vt" title="Link to this heading">¶</a></h2>
+<p>A vulnerability test (VT) is a routine that checks a target system for the presence of a specific known or potential security problem.</p>
+<p>VTs are grouped into families of similar VTs.
+The selection of families and/or single VTs is part of a scan configuration.</p>
+</section>
+<section id="override">
+<span id="glossary-override"></span><span id="index-15"></span><h2><span class="section-number">20.16 </span>Override<a class="headerlink" href="#override" title="Link to this heading">¶</a></h2>
+<p>An override is a rule to change the severity of items within one or many report(s).</p>
+<p>Overrides are especially useful to mark report items as false positives (for example an incorrect or expected finding), or emphasize items that are of higher severity in the observed scenario.</p>
+</section>
+<section id="permission">
+<span id="glossary-permission"></span><span id="index-16"></span><h2><span class="section-number">20.17 </span>Permission<a class="headerlink" href="#permission" title="Link to this heading">¶</a></h2>
+<p>A permission grants a user, role or group the right to perform a specific action.</p>
+</section>
+<section id="port-list">
+<span id="glossary-port-list"></span><span id="index-17"></span><h2><span class="section-number">20.18 </span>Port List<a class="headerlink" href="#port-list" title="Link to this heading">¶</a></h2>
+<p>A port list is a list of ports. Each target is associated with a port list.
+This determines which ports are scanned during a scan of the target.</p>
+</section>
+<section id="quality-of-detection-qod">
+<span id="glossary-qod"></span><span id="index-18"></span><h2><span class="section-number">20.19 </span>Quality of Detection (QoD)<a class="headerlink" href="#quality-of-detection-qod" title="Link to this heading">¶</a></h2>
+<p>The Quality of Detection (QoD) is a value between 0 % and 100 % describing the reliability of the executed vulnerability detection or product detection.
+The value of 70 % is the default minimum used for filtering the displayed results in the reports.</p>
+<p>For more information about the QoD see Chapter <a class="reference internal" href="reports.html#quality-of-detection-concept"><span class="std std-ref">10.2.6</span></a>.</p>
+</section>
+<section id="remediation-ticket">
+<span id="index-19"></span><h2><span class="section-number">20.20 </span>Remediation Ticket<a class="headerlink" href="#remediation-ticket" title="Link to this heading">¶</a></h2>
+<p>Tickets are assignments for users to resolve or keep track of a vulnerability.</p>
+</section>
+<section id="report">
+<span id="glossary-report"></span><span id="index-20"></span><h2><span class="section-number">20.21 </span>Report<a class="headerlink" href="#report" title="Link to this heading">¶</a></h2>
+<p>A report is the result of a scan and contains a summary of what the selected VTs detected for each of the target hosts.</p>
+<p>A report is always associated with a task.
+The scan configuration that determines the extent of the report is part of the associated task and cannot be modified.
+Therefore, for any report it is ensured that its execution configuration is preserved and available.</p>
+</section>
+<section id="report-format">
+<span id="glossary-report-format"></span><span id="index-21"></span><h2><span class="section-number">20.22 </span>Report Format<a class="headerlink" href="#report-format" title="Link to this heading">¶</a></h2>
+<p>A format in which a report can be downloaded.</p>
+<p>An example is TXT which has the content type “text/plain”, meaning that the report is a plain text document.</p>
+</section>
+<section id="result">
+<span id="glossary-result"></span><span id="index-22"></span><h2><span class="section-number">20.23 </span>Result<a class="headerlink" href="#result" title="Link to this heading">¶</a></h2>
+<p>A single result generated by the scanner as part of a report, for example a vulnerability warning or a log message.</p>
+</section>
+<section id="role">
+<span id="glossary-role"></span><span id="index-23"></span><h2><span class="section-number">20.24 </span>Role<a class="headerlink" href="#role" title="Link to this heading">¶</a></h2>
+<p>A role defines a set of permissions that can be applied to a user or a group.</p>
+</section>
+<section id="scan">
+<span id="glossary-scan"></span><span id="index-24"></span><h2><span class="section-number">20.25 </span>Scan<a class="headerlink" href="#scan" title="Link to this heading">¶</a></h2>
+<p>A scan is a task in progress.
+For each task only one scan can be active.
+The result of a scan is a report.</p>
+</section>
+<section id="scanner">
+<span id="glossary-scanner"></span><span id="index-25"></span><h2><span class="section-number">20.26 </span>Scanner<a class="headerlink" href="#scanner" title="Link to this heading">¶</a></h2>
+<p>A scanner is an OpenVAS Scanner daemon or compatible OSP daemon on which the scan will be run.</p>
+</section>
+<section id="scan-configuration">
+<span id="glossary-scan-configuration"></span><span id="index-26"></span><h2><span class="section-number">20.27 </span>Scan Configuration<a class="headerlink" href="#scan-configuration" title="Link to this heading">¶</a></h2>
+<p>A scan configuration defines the set of VTs that are executed during a scan.
+It also contains general and very specific (expert) parameters for the scan server and for some of the VTs.</p>
+<p>Not covered by a scan configuration is the selection of targets.</p>
+</section>
+<section id="schedule">
+<span id="glossary-schedule"></span><span id="index-27"></span><h2><span class="section-number">20.28 </span>Schedule<a class="headerlink" href="#schedule" title="Link to this heading">¶</a></h2>
+<p>A schedule sets the time when task should be automatically started, a period after which the task should run again and a maximum duration the task is allowed to take.</p>
+</section>
+<section id="severity">
+<span id="glossary-severity"></span><span id="index-28"></span><h2><span class="section-number">20.29 </span>Severity<a class="headerlink" href="#severity" title="Link to this heading">¶</a></h2>
+<p>The severity is a qualitative measure of a vulnerability’s severity according to the Common Vulnerability Scoring System (CVSS).
+This includes a severity score, which is a number from 0.0 to 10.0, with 10.0 being the most severe, and a severity class based on the score (<em>High</em>, <em>Medium</em> and <em>Low</em>).</p>
+</section>
+<section id="solution-type">
+<span id="glossary-solution-type"></span><span id="index-29"></span><h2><span class="section-number">20.30 </span>Solution Type<a class="headerlink" href="#solution-type" title="Link to this heading">¶</a></h2>
+<p>The solution type shows possible solutions for the remediation of the vulnerability (workaround, mitigation, vendor fix), or whether a vulnerability cannot or will not be fixed.</p>
+</section>
+<section id="tag">
+<span id="glossary-tag"></span><span id="index-30"></span><h2><span class="section-number">20.31 </span>Tag<a class="headerlink" href="#tag" title="Link to this heading">¶</a></h2>
+<p>A tag is a short data package consisting of a name and a value that is attached to a resource of any kind and contains user defined information on this resource.</p>
+</section>
+<section id="target">
+<span id="glossary-target"></span><span id="index-31"></span><h2><span class="section-number">20.32 </span>Target<a class="headerlink" href="#target" title="Link to this heading">¶</a></h2>
+<p>A target defines a set of systems (hosts) that are scanned.
+The systems are identified either by their IP addresses, by their host names or with CIDR network notation.</p>
+</section>
+<section id="task">
+<span id="glossary-task"></span><span id="index-32"></span><h2><span class="section-number">20.33 </span>Task<a class="headerlink" href="#task" title="Link to this heading">¶</a></h2>
+<p>A task is fundamentally formed by a target and a scan configuration.
+Executing a task initiates a scan, which then produces a scan report containing the found vulnerabilities.</p>
+<p>A container task is a task with the function to hold imported reports.
+Running a container task is not possible.</p>
+</section>
+<section id="tls-certificate">
+<span id="index-33"></span><h2><span class="section-number">20.34 </span>TLS Certificate<a class="headerlink" href="#tls-certificate" title="Link to this heading">¶</a></h2>
+<p>A TLS (Transport Layer Security) certificate is a certificate used for authentication when establishing a connection secured by TLS.</p>
+<p>The scan report contains all TLS certificates collected during a vulnerability scan.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          <a class="prev-page" href="faq.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><span class="section-number">19 </span>Frequently Asked Questions</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2015–2025, Greenbone AG
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Aug 18, 2025</div>
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/greenbone/gsm-manual" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">20 Glossary</a><ul>
+<li><a class="reference internal" href="#alert">20.1 Alert</a></li>
+<li><a class="reference internal" href="#asset">20.2 Asset</a></li>
+<li><a class="reference internal" href="#cert-bund-advisory">20.3 CERT-Bund Advisory</a></li>
+<li><a class="reference internal" href="#compliance-audit">20.4 Compliance Audit</a></li>
+<li><a class="reference internal" href="#compliance-policy">20.5 Compliance Policy</a></li>
+<li><a class="reference internal" href="#cpe">20.6 CPE</a></li>
+<li><a class="reference internal" href="#cve">20.7 CVE</a></li>
+<li><a class="reference internal" href="#cvss">20.8 CVSS</a></li>
+<li><a class="reference internal" href="#dfn-cert-advisory">20.9 DFN-CERT Advisory</a></li>
+<li><a class="reference internal" href="#epss">20.10 EPSS</a></li>
+<li><a class="reference internal" href="#filter">20.11 Filter</a></li>
+<li><a class="reference internal" href="#group">20.12 Group</a></li>
+<li><a class="reference internal" href="#host">20.13 Host</a></li>
+<li><a class="reference internal" href="#note">20.14 Note</a></li>
+<li><a class="reference internal" href="#vulnerability-test-vt">20.15 Vulnerability Test (VT)</a></li>
+<li><a class="reference internal" href="#override">20.16 Override</a></li>
+<li><a class="reference internal" href="#permission">20.17 Permission</a></li>
+<li><a class="reference internal" href="#port-list">20.18 Port List</a></li>
+<li><a class="reference internal" href="#quality-of-detection-qod">20.19 Quality of Detection (QoD)</a></li>
+<li><a class="reference internal" href="#remediation-ticket">20.20 Remediation Ticket</a></li>
+<li><a class="reference internal" href="#report">20.21 Report</a></li>
+<li><a class="reference internal" href="#report-format">20.22 Report Format</a></li>
+<li><a class="reference internal" href="#result">20.23 Result</a></li>
+<li><a class="reference internal" href="#role">20.24 Role</a></li>
+<li><a class="reference internal" href="#scan">20.25 Scan</a></li>
+<li><a class="reference internal" href="#scanner">20.26 Scanner</a></li>
+<li><a class="reference internal" href="#scan-configuration">20.27 Scan Configuration</a></li>
+<li><a class="reference internal" href="#schedule">20.28 Schedule</a></li>
+<li><a class="reference internal" href="#severity">20.29 Severity</a></li>
+<li><a class="reference internal" href="#solution-type">20.30 Solution Type</a></li>
+<li><a class="reference internal" href="#tag">20.31 Tag</a></li>
+<li><a class="reference internal" href="#target">20.32 Target</a></li>
+<li><a class="reference internal" href="#task">20.33 Task</a></li>
+<li><a class="reference internal" href="#tls-certificate">20.34 TLS Certificate</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=8cef54a6"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

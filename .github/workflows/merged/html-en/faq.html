@@ -1,0 +1,700 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="20 Glossary" href="glossary.html" /><link rel="prev" title="18 Architecture" href="architecture.html" />
+        <link rel="prefetch" href="_static/logo.png" as="image" />
+
+    <link rel="shortcut icon" href="_static/Gb_favicon_head_32x32.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2025.07.19 -->
+        <title>19 Frequently Asked Questions - Greenbone Enterprise Appliance – GOS 24.10.4</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_greenbone.css?v=86d35ff1" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #4D4D4D;
+  --color-foreground-primary: 4D4D4D;
+  --color-foreground-secondary: #808080;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --color-admonition-title--note-background: #D8F1E2;
+  --color-admonition-title--warning: #E5393D;
+  --color-admonition-title--warning-background: #FBDDDE;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #FFFFFF;
+  --color-background-secondary: #F5F5F5;
+  --color-sidebar-background: #F5F5F5;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #F5F5F5;
+  --color-foreground-primary: F5F5F5;
+  --color-foreground-secondary: #E6E6E6;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #171717;
+  --color-background-secondary: #4D4D4D;
+  --color-sidebar-background: #333333;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #F5F5F5;
+  --color-foreground-primary: F5F5F5;
+  --color-foreground-secondary: #E6E6E6;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #171717;
+  --color-background-secondary: #4D4D4D;
+  --color-sidebar-background: #333333;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Greenbone Enterprise Appliance – GOS 24.10.4</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Greenbone Enterprise Appliance – GOS 24.10.4</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1 Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read-before-use.html">2 Read Before Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appliance-overview.html">3 Greenbone Enterprise Appliance – Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setting-up-the-appliance.html">4 Setting up the Greenbone Enterprise Appliance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading-gos.html">5 Upgrading the Greenbone Enterprise Appliance to the Latest Major Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-gos.html">6 Managing the Greenbone Operating System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web-interface.html">7 Getting to Know the Web Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web-interface-access.html">8 Managing the Web Interface Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scanning.html">9 Scanning a System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">10 Reports and Vulnerability Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compliance-and-special-scans.html">11 Performing Compliance Scans and Special Scans</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-assets.html">12 Managing Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-secinfo.html">13 Managing SecInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmp.html">14 Using the Greenbone Management Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="master-sensor-setup.html">15 Using a Master-Sensor Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">16 Managing the Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting-other-systems.html">17 Connecting the Greenbone Enterprise Appliance to Other Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">18 Architecture</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">19 Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">20 Glossary</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="frequently-asked-questions">
+<span id="index-0"></span><h1><span class="section-number">19 </span>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Link to this heading">¶</a></h1>
+<section id="why-is-the-scanning-process-so-slow">
+<span id="index-1"></span><h2><span class="section-number">19.1 </span>Why Is the Scanning Process so Slow?<a class="headerlink" href="#why-is-the-scanning-process-so-slow" title="Link to this heading">¶</a></h2>
+<p>The performance of a scan depends on various aspects.</p>
+<ul>
+<li><p>Several port scanners were activated concurrently.</p>
+<p>If an individual scan configuration is used, select only a single port scanner in the VT family <span class="target" id="gos-webui-0"></span><em>Port scanners</em> (see Chapter <a class="reference internal" href="scanning.html#create-scan-config"><span class="std std-ref">9.9.2</span></a>).
+The VT <span class="target" id="gos-webui-1"></span><em>Ping Host</em> can still be activated.</p>
+</li>
+<li><p>Unused IP addresses are scanned very time-consuming.</p>
+<p>As a first step, it is detected whether an active system is present or not for each IP address.
+In case it is not, this IP address will not be scanned.
+Firewalls and other systems can prevent a successful detection.
+The VT <span class="target" id="gos-webui-2"></span><em>Ping Host</em> (1.3.6.1.4.1.25623.1.0.100315) in the VT family <span class="target" id="gos-webui-3"></span><em>Port scanners</em> offers fine-tuning of the detection.</p>
+</li>
+<li><p>The ports to be scanned resulted in port throttling, or UDP port scanning has been chosen.</p>
+<p>For more information, see Chapters <a class="reference internal" href="performance.html#seleting-port-list"><span class="std std-ref">16.2.1.2</span></a> and <a class="reference internal" href="performance.html#port-list-scan-duration"><span class="std std-ref">16.2.1.2.1</span></a>.</p>
+</li>
+</ul>
+</section>
+<section id="what-influences-the-scan-capacity">
+<span id="scan-capacity-influence"></span><span id="index-2"></span><h2><span class="section-number">19.2 </span>What Influences the Scan Capacity?<a class="headerlink" href="#what-influences-the-scan-capacity" title="Link to this heading">¶</a></h2>
+<p>The scan capacity – the scannable number of IP addresses per 24 hours – depends on the appliance model (see Chapter <a class="reference internal" href="appliance-overview.html#appliance-overview"><span class="std std-ref">3</span></a>).
+However, the values provided for the estimated scan capacity can only be understood as guide values, as the scan capacity is influenced by many factors.</p>
+<p>The following factors influence the scan capacity:</p>
+<ul>
+<li><dl class="simple">
+<dt>Complexity of the used scan configuration</dt><dd><p>In the same amount of time, many more discovery scans can be performed than vulnerability scans.
+For more information about scan configurations, see Chapter <a class="reference internal" href="scanning.html#scanconfigs"><span class="std std-ref">9.9</span></a>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Using the appliance outside its specifications</dt><dd><p>Starting too many scans or scanning too many targets at once can result in performance problems.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Performance of the network infrastructure and the target system(s)</dt><dd><p>If systems are slow to respond to network requests, the scanning process will be slower.</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Type of the scanned target system(s)</dt><dd><p>The type determines which and how many vulnerability tests are executed during a scan.
+More vulnerability tests usually mean slower scans.</p>
+<p>Some scan scenarios increase resource usage, which can have an impact on performance, for example scanning of virtual hosts (vhosts) and scanning of web servers with CGI caching enabled.
+For more information about configuration options for those scenarios, see Chapter <a class="reference internal" href="scanning.html#scanconfigs"><span class="std std-ref">9.9</span></a>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Using the appliance in parallel while scanning</dt><dd><p>If other resource-intensive operations (for example, feed updates, generation of large reports) are running, less system resources are available for scans.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Using sensors</dt><dd><p>Using sensors can increase the scanable IP addresses per 24 hours.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="why-is-a-service-product-not-detected">
+<span id="product-not-detected"></span><h2><span class="section-number">19.3 </span>Why Is a Service/Product Not Detected?<a class="headerlink" href="#why-is-a-service-product-not-detected" title="Link to this heading">¶</a></h2>
+<ul>
+<li><p>The target is not detected as online/reachable.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>Fix the network setup/routing to the target.</p></li>
+<li><p>Update the criteria/test configuration to detect the target as alive (see Chapter <a class="reference internal" href="scanning.html#vulnerabilitymanagement-create-target"><span class="std std-ref">9.2.1</span></a>).</p></li>
+<li><p>Ensure that the scan configuration includes the following VTs from the VT family <em>Port scanners</em>:
+* <em>Nmap (NASL wrapper)</em> (OID: 1.3.6.1.4.1.25623.1.0.14259)
+* <em>Ping Host</em> (OID: 1.3.6.1.4.1.25623.1.0.100315)</p></li>
+<li><p>Verify and remove any network device (firewall, IDS/IPS, WAF, etc.) between the scanner and the target, or any security mechanisms on the target itself.
+Whitelist the scanner’s IP address.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>The service/product is running on a specific port not included in the port list.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>Create a suitable port list (see Chapter <a class="reference internal" href="scanning.html#creating-port-lists"><span class="std std-ref">9.7</span></a>). This is especially important for UDP ports.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>There is a detection VT for an service/product available but the service/product is not found during a scan.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>Fix the network setup/routing to the target.</p></li>
+<li><p>Update the criteria/test configuration to detect the target as alive (see Chapter <a class="reference internal" href="scanning.html#vulnerabilitymanagement-create-target"><span class="std std-ref">9.2.1</span></a>).</p></li>
+<li><p>Verify and remove any network device (firewall, IDS/IPS, WAF, etc.) between the scanner and the target, or any security mechanisms on the target itself.
+Whitelist the scanner’s IP address.</p></li>
+<li><p>Create a suitable port list (see Chapter <a class="reference internal" href="scanning.html#creating-port-lists"><span class="std std-ref">9.7</span></a>). This is especially important for UDP ports.</p></li>
+<li><p>If the solutions above do not help, contact the <a class="reference external" href="https://www.greenbone.net/en/technical-support/">Greenbone Enterprise Support</a> and provide more information about the service/product (product name, specific version running, etc.).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>The target is not stable/responds slowly during a scan.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>Lower the concurrently executed VTs (see Chapter <a class="reference internal" href="scanning.html#creating-task"><span class="std std-ref">9.2.2</span></a>).</p></li>
+<li><p>Update the service/product to a newer version (for example to fix triggered bugs).</p></li>
+<li><p>Assign more resources (CPU, RAM, etc.) to the target to make it more stable during scans.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="why-is-a-vulnerability-not-detected">
+<h2><span class="section-number">19.4 </span>Why Is a Vulnerability Not Detected?<a class="headerlink" href="#why-is-a-vulnerability-not-detected" title="Link to this heading">¶</a></h2>
+<ul>
+<li><p>The affected service/product is not detected at all.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>See Chapter <a class="reference internal" href="#product-not-detected"><span class="std std-ref">19.3</span></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>The service/product was detected but the a version extraction was not possible.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>Perform an authenticated scan (see Chapter <a class="reference internal" href="scanning.html#authenticated-scan"><span class="std std-ref">9.3</span></a>).</p></li>
+<li><p>If the solutions above do not help, contact the <a class="reference external" href="https://www.greenbone.net/en/technical-support/">Greenbone Enterprise Support</a> and provide more information about the service/product (product name, specific version running, etc.).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>There is only a version check with a lower Quality of Detection (QoD) and the vulnerability is not displayed by default.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>Change the QoD value in the results filter (see Chapter <a class="reference internal" href="reports.html#filtering-report"><span class="std std-ref">10.2.1.3</span></a>).</p></li>
+<li><p>Perform an authenticated scan (see Chapter <a class="reference internal" href="scanning.html#authenticated-scan"><span class="std std-ref">9.3</span></a>).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>If an authenticated scan was carried out, the login has failed.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>Check the correctness of the used credentials.</p></li>
+<li><p>Verify that the user is not blocked.</p></li>
+<li><p>Verify that the user is allowed to log in to the target.</p></li>
+<li><p>If the solutions above do not help, contact the <a class="reference external" href="https://www.greenbone.net/en/technical-support/">Greenbone Enterprise Support</a> and provide more information about the service/product (product name, specific version running, etc.).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>The service/product itself crashed or stopped to respond during the scan.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>Lower the concurrently executed VTs (see Chapter <a class="reference internal" href="scanning.html#creating-task"><span class="std std-ref">9.2.2</span></a>).</p></li>
+<li><p>Update the service/product to a newer version (for example to fix triggered bugs).</p></li>
+<li><p>Assign more resources (CPU, RAM, etc.) to the target to make it more stable during scans.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>The vulnerability was only recently discovered and there is no VT for it yet.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>Contact the <a class="reference external" href="https://www.greenbone.net/en/technical-support/">Greenbone Enterprise Support</a> and ask for a new VT or whether a VT is already planned.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>The specific detection became outdated.</p>
+<dl class="simple">
+<dt>Solution(s):</dt><dd><ul class="simple">
+<li><p>Contact the <a class="reference external" href="https://www.greenbone.net/en/technical-support/">Greenbone Enterprise Support</a>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="why-do-the-results-for-the-same-target-differ-across-several-consecutive-scans">
+<span id="index-3"></span><h2><span class="section-number">19.5 </span>Why Do the Results for the Same Target Differ across Several Consecutive Scans?<a class="headerlink" href="#why-do-the-results-for-the-same-target-differ-across-several-consecutive-scans" title="Link to this heading">¶</a></h2>
+<p>The results of consecutive scans may differ due to the following reasons:</p>
+<ul class="simple">
+<li><p>There was a loss of connection over unreliable network connections (between the scanner host and the target).</p></li>
+<li><p>The network connection or equipment (between the scanner host and the target) was overloaded.</p></li>
+<li><p>An overloaded target host and/or service stopped responding.</p></li>
+<li><p>“Fragile” protocols (for example Remote Desktop Protocol) do not always respond as expected.</p></li>
+<li><p>A previous probe/attacking request caused the service to not respond for a short period of time.</p></li>
+</ul>
+<p>Although the scanner tries to reduce the occurrence of such situations by internal retry routines, they cannot be ruled out completely.</p>
+</section>
+<section id="why-is-it-not-possible-to-edit-scan-configurations-port-lists-compliance-policies-or-report-formats">
+<span id="index-4"></span><h2><span class="section-number">19.6 </span>Why Is It Not Possible to Edit Scan Configurations, Port Lists, Compliance Policies, or Report Formats?<a class="headerlink" href="#why-is-it-not-possible-to-edit-scan-configurations-port-lists-compliance-policies-or-report-formats" title="Link to this heading">¶</a></h2>
+<p>Scan configurations, port lists, compliance policies and report formats by Greenbone (hereafter referred to as “objects”) are distributed via the feed.
+These objects must be owned by a user, the Feed Import Owner.
+The objects are downloaded and updated during a feed update, if a Feed Import Owner has been set.</p>
+<p>The objects cannot be edited.
+This is by design to ensure that the objects function as intended by Greenbone.</p>
+</section>
+<section id="why-is-it-not-possible-to-delete-scan-configurations-port-lists-compliance-policies-or-report-formats">
+<span id="index-5"></span><h2><span class="section-number">19.7 </span>Why Is It Not Possible to Delete Scan Configurations, Port Lists, Compliance Policies, or Report Formats?<a class="headerlink" href="#why-is-it-not-possible-to-delete-scan-configurations-port-lists-compliance-policies-or-report-formats" title="Link to this heading">¶</a></h2>
+<p>Scan configurations, port lists, compliance policies and report formats by Greenbone (hereafter referred to as “objects”) are distributed via the feed.
+These objects must be owned by a user, the Feed Import Owner.
+The objects are downloaded and updated during a feed update, if a Feed Import Owner has been set.</p>
+<p>Only the Feed Import Owner, a super administrator and users who obtained respective rights are able to delete objects.</p>
+<p>If objects are deleted, they will be downloaded again during the next feed update.
+If no objects should be downloaded, the Feed Import Owner must be unset.</p>
+</section>
+<section id="why-does-a-vnc-dialog-appear-on-the-scanned-target-system">
+<span id="index-6"></span><h2><span class="section-number">19.8 </span>Why Does a VNC Dialog Appear on the Scanned Target System?<a class="headerlink" href="#why-does-a-vnc-dialog-appear-on-the-scanned-target-system" title="Link to this heading">¶</a></h2>
+<p>When testing port 5900 or configuring a VNC port, a window appears on the scanned target system asking the user to allow the connection.
+This was observed for UltraVNC Version 1.0.2.</p>
+<p>Solution: exclude port 5900 or other configured VNC ports from the target specification.
+Alternatively, upgrading to a newer version of UltraVNC would help (UltraVNC 1.0.9.6.1 only uses balloons to inform users).</p>
+</section>
+<section id="why-does-the-scan-trigger-alarms-on-other-security-tools">
+<span id="index-7"></span><h2><span class="section-number">19.9 </span>Why Does the Scan Trigger Alarms on Other Security Tools?<a class="headerlink" href="#why-does-the-scan-trigger-alarms-on-other-security-tools" title="Link to this heading">¶</a></h2>
+<p>For many vulnerability tests the behavior of real attacks is applied.
+Even though a real attack does not happen, some security tools will issue an alarm.</p>
+<p>A known example is:</p>
+<p>Symantec reports attacks regarding CVE-2009-3103 if the VT <span class="target" id="gos-webui-4"></span><em>Microsoft Windows SMB2 ‘_Smb2ValidateProviderCallback()’ Remote Code Execution Vulnerability</em> (1.3.6.1.4.1.25623.1.0.100283) is executed.
+This VT is only executed if the radio button <span class="target" id="gos-webui-5"></span><em>No</em> is selected for <span class="target" id="gos-webui-6"></span><em>safe_checks</em> in the scanner preferences (see <a class="reference internal" href="#fig-faq"><span class="std std-numref">Fig. 19.1</span></a>). Otherwise the target system can be affected.</p>
+<figure class="align-center" id="id8">
+<span id="fig-faq"></span><a class="reference internal image-reference" href="_images/faq.png"><img alt="_images/faq.png" src="_images/faq.png" style="width: 70%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 19.1 </span><span class="caption-text">Disabling the scanner preference <em>safe_checks</em></span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="how-can-a-factory-reset-of-the-appliance-be-performed">
+<span id="faq-factoryreset"></span><span id="index-8"></span><h2><span class="section-number">19.10 </span>How Can a Factory Reset of the Appliance Be Performed?<a class="headerlink" href="#how-can-a-factory-reset-of-the-appliance-be-performed" title="Link to this heading">¶</a></h2>
+<p>A factory reset can be performed to erase user data securely from the appliance.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Contact the <a class="reference external" href="https://www.greenbone.net/en/technical-support/">Greenbone Enterprise Support</a> to receive detailed instructions on how to perform a factory reset.</p>
+</div>
+</section>
+<section id="why-does-neither-feed-update-nor-gos-upgrade-work-after-a-factory-reset">
+<span id="index-9"></span><h2><span class="section-number">19.11 </span>Why Does Neither Feed Update nor GOS Upgrade Work After a Factory Reset?<a class="headerlink" href="#why-does-neither-feed-update-nor-gos-upgrade-work-after-a-factory-reset" title="Link to this heading">¶</a></h2>
+<p>A factory reset deletes the whole system including the Greenbone Enterprise Feed subscription key.
+The subscription key is mandatory for feed updates and GOS upgrade.</p>
+<ol class="arabic">
+<li><p>Reactivate the subscription key:</p>
+<p>A backup key is delivered with each appliance (see Chapter <a class="reference internal" href="managing-gos.html#gsf-accesskey"><span class="std std-ref">6.1.1</span></a>).
+Use this key to reactivate the appliance.
+The activation is described in the setup guide of the respective appliance model (see Chapter <a class="reference internal" href="setting-up-the-appliance.html#setup-guides"><span class="std std-ref">4</span></a>).</p>
+</li>
+<li><p>Update the system to the current version:</p>
+<p>Depending on the GOS version, the respective upgrade procedure has to be executed.</p>
+</li>
+</ol>
+</section>
+<section id="how-can-an-older-backup-or-beaming-image-be-restored">
+<h2><span class="section-number">19.12 </span>How Can an Older Backup or Beaming Image Be Restored?<a class="headerlink" href="#how-can-an-older-backup-or-beaming-image-be-restored" title="Link to this heading">¶</a></h2>
+<p>Only backups and beaming images created with the currently used GOS version or the previous GOS version can be restored.
+For GOS 24.10, only backups and beaming images from GOS 22.04 or GOS 24.10 can be imported.
+If an older backup or beaming image should be imported, for example from GOS 20.08 or GOS 21.04, an appliance with a matching GOS version has to be used.</p>
+<p>Backups and beaming images from GOS versions newer than the currently used GOS version are not supported as well.
+If a newer backup or beaming image should be imported, an appliance with a matching GOS version has to be used.</p>
+<p>If there are any questions, contact the <a class="reference external" href="https://www.greenbone.net/en/technical-support/">Greenbone Enterprise Support</a>.</p>
+</section>
+<section id="what-can-be-done-if-the-gos-administration-menu-is-not-displayed-correctly-in-putty">
+<span id="index-10"></span><h2><span class="section-number">19.13 </span>What Can Be Done if the GOS Administration Menu Is not Displayed Correctly in PuTTY?<a class="headerlink" href="#what-can-be-done-if-the-gos-administration-menu-is-not-displayed-correctly-in-putty" title="Link to this heading">¶</a></h2>
+<p>Check the settings in PuTTY by selecting <span class="target" id="gos-webui-7"></span><em>Window &gt; Translation</em> in the left panel.
+<span class="target" id="gos-webui-8"></span><em>UTF-8</em> has to be selected in the drop-down list <span class="target" id="gos-webui-9"></span><em>Remote character set</em> (see <a class="reference internal" href="#fig-faq2"><span class="std std-numref">Fig. 19.2</span></a>).</p>
+<figure class="align-center" id="id9">
+<span id="fig-faq2"></span><a class="reference internal image-reference" href="_images/faq2.png"><img alt="_images/faq2.png" src="_images/faq2.png" style="width: 50%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 19.2 </span><span class="caption-text">Selecting the remote character set</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="how-can-the-gmp-status-be-checked-without-using-credentials">
+<span id="index-11"></span><h2><span class="section-number">19.14 </span>How Can the GMP Status Be Checked Without Using Credentials?<a class="headerlink" href="#how-can-the-gmp-status-be-checked-without-using-credentials" title="Link to this heading">¶</a></h2>
+<ol class="arabic">
+<li><p>Build an SSH connection to the appliance via command line using the GMP user:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">gmp</span><span class="o">@&lt;</span><span class="n">appliance</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Replace <kbd class="kbd docutils literal notranslate">&lt;appliance&gt;</kbd> with the IP address or DNS name of the appliance.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No input prompt is displayed but the command can be entered nevertheless.</p>
+</div>
+</li>
+<li><p>Enter <code class="docutils literal notranslate"><span class="pre">&lt;get_version/&gt;</span></code>.</p>
+<p>→ If GMP is activated, the output should look like <code class="docutils literal notranslate"><span class="pre">&lt;get_version_response</span> <span class="pre">status=&quot;200&quot;</span> <span class="pre">status_text=&quot;OK&quot;&gt;&lt;version&gt;8.0&lt;/version&gt;&lt;/get_version_response&gt;</span></code>.</p>
+</li>
+</ol>
+</section>
+<section id="what-should-be-done-if-the-self-check-shows-raid-array-degraded">
+<span id="index-12"></span><h2><span class="section-number">19.15 </span>What Should Be Done if the Self-Check Shows “RAID Array degraded”?<a class="headerlink" href="#what-should-be-done-if-the-self-check-shows-raid-array-degraded" title="Link to this heading">¶</a></h2>
+<p>The appliance models Greenbone Enterprise 6500/6400/5400/5300 use RAID (Redundant Array of Independent Disks) 6 as a software RAID.
+RAID is a data storage virtualization technology that combines multiple hard disk drive (HDD) components into one or more logical units for the purposes of data redundancy.
+For RAID 6, at least 4 HDDs are required for the RAID, and thus the data rendundancy, to function.
+The appliance itself will still function if up to 2 HDDs fail.</p>
+<p>If one or more HDD(s) fail(s), GOS will show the self-check warnings <code class="docutils literal notranslate"><span class="pre">RAID</span> <span class="pre">Array</span> <span class="pre">degraded</span></code> with the hint <code class="docutils literal notranslate"><span class="pre">Replace</span> <span class="pre">the</span> <span class="pre">failed</span> <span class="pre">disk</span></code>, and <code class="docutils literal notranslate"><span class="pre">Check</span> <span class="pre">for</span> <span class="pre">system</span> <span class="pre">integrity</span> <span class="pre">status</span></code> with the hint <code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">system</span> <span class="pre">integrity</span> <span class="pre">may</span> <span class="pre">be</span> <span class="pre">endangered.</span> <span class="pre">Please</span> <span class="pre">contact</span> <span class="pre">the</span> <span class="pre">support.</span></code>
+The integrity check fails due to the failed HDD(s).</p>
+<p>Failed HDDs must be replaced and the RAID must be repaired.
+Contact the <a class="reference external" href="https://www.greenbone.net/en/technical-support/">Greenbone Enterprise Support</a> for assistance.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="glossary.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><span class="section-number">20 </span>Glossary</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="architecture.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><span class="section-number">18 </span>Architecture</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2015–2025, Greenbone AG
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Aug 18, 2025</div>
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/greenbone/gsm-manual" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">19 Frequently Asked Questions</a><ul>
+<li><a class="reference internal" href="#why-is-the-scanning-process-so-slow">19.1 Why Is the Scanning Process so Slow?</a></li>
+<li><a class="reference internal" href="#what-influences-the-scan-capacity">19.2 What Influences the Scan Capacity?</a></li>
+<li><a class="reference internal" href="#why-is-a-service-product-not-detected">19.3 Why Is a Service/Product Not Detected?</a></li>
+<li><a class="reference internal" href="#why-is-a-vulnerability-not-detected">19.4 Why Is a Vulnerability Not Detected?</a></li>
+<li><a class="reference internal" href="#why-do-the-results-for-the-same-target-differ-across-several-consecutive-scans">19.5 Why Do the Results for the Same Target Differ across Several Consecutive Scans?</a></li>
+<li><a class="reference internal" href="#why-is-it-not-possible-to-edit-scan-configurations-port-lists-compliance-policies-or-report-formats">19.6 Why Is It Not Possible to Edit Scan Configurations, Port Lists, Compliance Policies, or Report Formats?</a></li>
+<li><a class="reference internal" href="#why-is-it-not-possible-to-delete-scan-configurations-port-lists-compliance-policies-or-report-formats">19.7 Why Is It Not Possible to Delete Scan Configurations, Port Lists, Compliance Policies, or Report Formats?</a></li>
+<li><a class="reference internal" href="#why-does-a-vnc-dialog-appear-on-the-scanned-target-system">19.8 Why Does a VNC Dialog Appear on the Scanned Target System?</a></li>
+<li><a class="reference internal" href="#why-does-the-scan-trigger-alarms-on-other-security-tools">19.9 Why Does the Scan Trigger Alarms on Other Security Tools?</a></li>
+<li><a class="reference internal" href="#how-can-a-factory-reset-of-the-appliance-be-performed">19.10 How Can a Factory Reset of the Appliance Be Performed?</a></li>
+<li><a class="reference internal" href="#why-does-neither-feed-update-nor-gos-upgrade-work-after-a-factory-reset">19.11 Why Does Neither Feed Update nor GOS Upgrade Work After a Factory Reset?</a></li>
+<li><a class="reference internal" href="#how-can-an-older-backup-or-beaming-image-be-restored">19.12 How Can an Older Backup or Beaming Image Be Restored?</a></li>
+<li><a class="reference internal" href="#what-can-be-done-if-the-gos-administration-menu-is-not-displayed-correctly-in-putty">19.13 What Can Be Done if the GOS Administration Menu Is not Displayed Correctly in PuTTY?</a></li>
+<li><a class="reference internal" href="#how-can-the-gmp-status-be-checked-without-using-credentials">19.14 How Can the GMP Status Be Checked Without Using Credentials?</a></li>
+<li><a class="reference internal" href="#what-should-be-done-if-the-self-check-shows-raid-array-degraded">19.15 What Should Be Done if the Self-Check Shows “RAID Array degraded”?</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=8cef54a6"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

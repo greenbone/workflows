@@ -1,0 +1,637 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="13 Managing SecInfo" href="managing-secinfo.html" /><link rel="prev" title="11 Performing Compliance Scans and Special Scans" href="compliance-and-special-scans.html" />
+        <link rel="prefetch" href="_static/logo.png" as="image" />
+
+    <link rel="shortcut icon" href="_static/Gb_favicon_head_32x32.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2025.07.19 -->
+        <title>12 Managing Assets - Greenbone Enterprise Appliance – GOS 24.10.4</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_greenbone.css?v=86d35ff1" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #4D4D4D;
+  --color-foreground-primary: 4D4D4D;
+  --color-foreground-secondary: #808080;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --color-admonition-title--note-background: #D8F1E2;
+  --color-admonition-title--warning: #E5393D;
+  --color-admonition-title--warning-background: #FBDDDE;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #FFFFFF;
+  --color-background-secondary: #F5F5F5;
+  --color-sidebar-background: #F5F5F5;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #F5F5F5;
+  --color-foreground-primary: F5F5F5;
+  --color-foreground-secondary: #E6E6E6;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #171717;
+  --color-background-secondary: #4D4D4D;
+  --color-sidebar-background: #333333;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #F5F5F5;
+  --color-foreground-primary: F5F5F5;
+  --color-foreground-secondary: #E6E6E6;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #171717;
+  --color-background-secondary: #4D4D4D;
+  --color-sidebar-background: #333333;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Greenbone Enterprise Appliance – GOS 24.10.4</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Greenbone Enterprise Appliance – GOS 24.10.4</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1 Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read-before-use.html">2 Read Before Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appliance-overview.html">3 Greenbone Enterprise Appliance – Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setting-up-the-appliance.html">4 Setting up the Greenbone Enterprise Appliance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading-gos.html">5 Upgrading the Greenbone Enterprise Appliance to the Latest Major Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-gos.html">6 Managing the Greenbone Operating System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web-interface.html">7 Getting to Know the Web Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web-interface-access.html">8 Managing the Web Interface Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scanning.html">9 Scanning a System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">10 Reports and Vulnerability Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compliance-and-special-scans.html">11 Performing Compliance Scans and Special Scans</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">12 Managing Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-secinfo.html">13 Managing SecInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmp.html">14 Using the Greenbone Management Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="master-sensor-setup.html">15 Using a Master-Sensor Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">16 Managing the Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting-other-systems.html">17 Connecting the Greenbone Enterprise Appliance to Other Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">18 Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">19 Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">20 Glossary</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="managing-assets">
+<span id="asset-management"></span><span id="index-0"></span><h1><span class="section-number">12 </span>Managing Assets<a class="headerlink" href="#managing-assets" title="Link to this heading">¶</a></h1>
+<p>The assets include hosts, operating systems, and TLS certificates.
+They are collected during vulnerability scans.</p>
+<p>When creating a new task, it is possible to specify whether the host details collected during a scan should be stored in the asset database (see Chapter <a class="reference internal" href="scanning.html#creating-task"><span class="std std-ref">9.2.2</span></a>).
+The details are stored if the default task settings are used.</p>
+<section id="creating-and-managing-hosts">
+<span id="asset-hosts"></span><span id="index-1"></span><h2><span class="section-number">12.1 </span>Creating and Managing Hosts<a class="headerlink" href="#creating-and-managing-hosts" title="Link to this heading">¶</a></h2>
+<p>During a scan, information about each scanned host is collected.
+The hosts are identified by their IP addresses.</p>
+<p>For each identified host it is checked whether it already exists in the hosts assets.
+If not, a new host asset is created.</p>
+<p>Both when scanning a newly created host and when scanning an existing host, several host details (host names, IP and MAC addresses, operating systems, SSH keys and X.509 certificates) are added to the host asset as identifiers.</p>
+<p>If <a class="reference external" href="https://httpd.apache.org/docs/current/vhosts/">vhost</a> scanning is enabled – which it is by default – (see Chapter <a class="reference internal" href="scanning.html#scanning-vhosts"><span class="std std-ref">9.13.4</span></a>), each vhost will be added as its own asset entry.
+Thus, due to the nature of vhosts, IP address identifiers may appear multiple times.
+Such assets must then be distinguished by their other host identifiers.</p>
+<section id="creating-a-host">
+<span id="create-host"></span><h3><span class="section-number">12.1.1 </span>Creating a Host<a class="headerlink" href="#creating-a-host" title="Link to this heading">¶</a></h3>
+<p>Hosts can also be manually added to the asset management to create targets from them (see Chapter <a class="reference internal" href="#target-from-host"><span class="std std-ref">12.1.3</span></a>).</p>
+<p>Except for the IP address, no other details about the host can be defined but further details will be added when scanning the manually added host.</p>
+<p>A host can be created as follows:</p>
+<ol class="arabic">
+<li><p>Select <span class="target" id="gos-webui-0"></span><em>Assets &gt; Hosts</em> in the menu.</p></li>
+<li><p>Create a new host by clicking <a class="reference internal" href="_images/new.png"><img alt="" src="_images/new.png" style="height: 1.2em;" /></a> in the upper left corner of the page.</p></li>
+<li><p>Enter the IP address of the host in the input box <span class="target" id="gos-webui-1"></span><em>Name</em> (see <a class="reference internal" href="#fig-host-new"><span class="std std-numref">Fig. 12.1</span></a>).</p>
+<figure class="align-center" id="id2">
+<span id="fig-host-new"></span><a class="reference internal image-reference" href="_images/host_new.png"><img alt="_images/host_new.png" src="_images/host_new.png" style="width: 70%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.1 </span><span class="caption-text">Creating a new host</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>Click <span class="target" id="gos-webui-2"></span><em>Save</em>.</p></li>
+</ol>
+<p>This feature is also available via GMP (see Chapter <a class="reference internal" href="gmp.html#gmp"><span class="std std-ref">14</span></a>). The import of hosts from a configuration management database can be achieved using this option.</p>
+</section>
+<section id="managing-hosts">
+<span id="id1"></span><h3><span class="section-number">12.1.2 </span>Managing Hosts<a class="headerlink" href="#managing-hosts" title="Link to this heading">¶</a></h3>
+<p><strong>List Page</strong></p>
+<p>All existing hosts can be displayed by selecting <span class="target" id="gos-webui-3"></span><em>Assets &gt; Hosts</em> in the menu (see <a class="reference internal" href="#fig-hosts-scanned"><span class="std std-numref">Fig. 12.2</span></a>).</p>
+<figure class="align-center" id="id3">
+<span id="fig-hosts-scanned"></span><a class="reference internal image-reference" href="_images/hosts_scanned.png"><img alt="_images/hosts_scanned.png" src="_images/hosts_scanned.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.2 </span><span class="caption-text">Page <em>Hosts</em> displaying all scanned hosts</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>For all hosts the following actions are available:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/delete.png"><img alt="" src="_images/delete.png" style="height: 1.2em;" /></a> Delete the host.</p></li>
+<li><p><a class="reference internal" href="_images/edit.png"><img alt="" src="_images/edit.png" style="height: 1.2em;" /></a> Edit the host.</p></li>
+<li><p><a class="reference internal" href="_images/new.png"><img alt="" src="_images/new.png" style="height: 1.2em;" /></a> Create a new target from the host (see Chapter <a class="reference internal" href="#target-from-host"><span class="std std-ref">12.1.3</span></a>).</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the host as an XML file.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By clicking <a class="reference internal" href="_images/delete.png"><img alt="" src="_images/delete.png" style="height: 1.2em;" /></a>, <a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> or <a class="reference internal" href="_images/new.png"><img alt="" src="_images/new.png" style="height: 1.2em;" /></a> below the list of hosts more than one host can be deleted, exported or used to create a new target at a time. The drop-down list is used to select which hosts are deleted, exported or used to create a new target.</p>
+</div>
+<p><strong>Details Page</strong></p>
+<p>Click on the name of a host to display the details of the host. Click <a class="reference internal" href="_images/details.png"><img alt="" src="_images/details.png" style="height: 1.2em;" /></a> to open the details page of the host.</p>
+<p>The following registers are available:</p>
+<dl>
+<dt>Information</dt><dd><p>General information about the host.</p>
+<p>Any identifying information collected for the host during scans, for example, host names, IP and MAC addresses, operating systems, SSH keys and X.509 certificates, is displayed in the section <em>All Identifiers</em> (see <a class="reference internal" href="#fig-all-identifiers"><span class="std std-numref">Fig. 12.3</span></a>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If identifiers have duplicates, only the latest identifiers are shown.
+In this case, the section is named <em>Latest Identifiers</em> and all identifiers can be displayed by clicking <em>Show all Identifiers</em> below the table.</p>
+</div>
+<p>For all host identifiers the following action is available:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/delete.png"><img alt="" src="_images/delete.png" style="height: 1.2em;" /></a> Delete the identifier.</p></li>
+</ul>
+<figure class="align-center" id="id4">
+<span id="fig-all-identifiers"></span><a class="reference internal image-reference" href="_images/all_identifiers.png"><img alt="_images/all_identifiers.png" src="_images/all_identifiers.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.3 </span><span class="caption-text">All identifiers</span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</dd>
+<dt>User Tags</dt><dd><p>Assigned tags (see Chapter <a class="reference internal" href="web-interface.html#tags"><span class="std std-ref">7.4</span></a>).</p>
+</dd>
+<dt>Permissions</dt><dd><p>Assigned permissions (see Chapter <a class="reference internal" href="web-interface-access.html#permissions"><span class="std std-ref">8.4</span></a>).</p>
+<p>The following actions are available in the upper left corner:</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/help.png"><img alt="" src="_images/help.png" style="height: 1.2em;" /></a> Open the corresponding chapter of the user manual.</p></li>
+<li><p><a class="reference internal" href="_images/list.png"><img alt="" src="_images/list.png" style="height: 1.2em;" /></a> Show the list page of all hosts.</p></li>
+<li><p><a class="reference internal" href="_images/new.png"><img alt="" src="_images/new.png" style="height: 1.2em;" /></a> Create a new host (see Chapter <a class="reference internal" href="#create-host"><span class="std std-ref">12.1.1</span></a>).</p></li>
+<li><p><a class="reference internal" href="_images/edit.png"><img alt="" src="_images/edit.png" style="height: 1.2em;" /></a> Edit the host.</p></li>
+<li><p><a class="reference internal" href="_images/trashcan.png"><img alt="" src="_images/trashcan.png" style="height: 1.2em;" /></a> Delete the host.</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the host as an XML file.</p></li>
+<li><p><a class="reference internal" href="_images/results.png"><img alt="" src="_images/results.png" style="height: 1.2em;" /></a> Show the corresponding results.</p></li>
+</ul>
+</section>
+<section id="creating-a-target-from-hosts">
+<span id="target-from-host"></span><span id="index-2"></span><h3><span class="section-number">12.1.3 </span>Creating a Target from Hosts<a class="headerlink" href="#creating-a-target-from-hosts" title="Link to this heading">¶</a></h3>
+<p>A target with a set of hosts can be created as follows:</p>
+<ol class="arabic">
+<li><p>Filter the hosts so that only the hosts that should be used for the target (for example only Microsoft Windows hosts) are displayed (see Chapter <a class="reference internal" href="web-interface.html#powerfilter"><span class="std std-ref">7.3</span></a>).</p></li>
+<li><p>Create a new target by clicking <a class="reference internal" href="_images/new.png"><img alt="" src="_images/new.png" style="height: 1.2em;" /></a> below the list of hosts (see <a class="reference internal" href="#fig-host-new-target"><span class="std std-numref">Fig. 12.4</span></a>).</p>
+<p>→ The window for creating a target is opened. The input box <span class="target" id="gos-webui-4"></span><em>Hosts</em> is prefilled with the set of displayed hosts.</p>
+<figure class="align-center" id="id5">
+<span id="fig-host-new-target"></span><a class="reference internal image-reference" href="_images/host_new_target.png"><img alt="_images/host_new_target.png" src="_images/host_new_target.png" style="width: 35%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.4 </span><span class="caption-text">Creating a target with the displayed hosts</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>Define the target and click <span class="target" id="gos-webui-5"></span><em>Save</em>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For the information to enter in the input boxes see Chapter <a class="reference internal" href="scanning.html#vulnerabilitymanagement-create-target"><span class="std std-ref">9.2.1</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If additional suitable hosts show up in further scans they will <strong>not</strong> be added to the target.</p>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="managing-operating-systems">
+<span id="assets-os"></span><span id="index-3"></span><h2><span class="section-number">12.2 </span>Managing Operating Systems<a class="headerlink" href="#managing-operating-systems" title="Link to this heading">¶</a></h2>
+<p>The operating systems view within the asset management provides a different view on the stored data.
+While the hosts view is centered on the individual hosts, this view focuses on the operating systems detected during all vulnerability scans.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For a reliable operating system identification, VT(s) specific to the operating system(s) in question must be available in the Greenbone Enterprise Feed.
+If no specific VTs are available, the appliance still tries to identify the operating system(s), but the identification happens with a lower quality of detection and is prone to false-positive detections.</p>
+</div>
+<p><strong>List Page</strong></p>
+<p>All operating systems can be displayed by selecting <span class="target" id="gos-webui-6"></span><em>Assets &gt; Operating Systems</em> in the menu (see <a class="reference internal" href="#fig-operatingsystems-listpage"><span class="std std-numref">Fig. 12.5</span></a>).</p>
+<p>For all operating systems the following information is displayed:</p>
+<dl class="simple">
+<dt>Name</dt><dd><p>CPE (see Chapter <a class="reference internal" href="managing-secinfo.html#cpe"><span class="std std-ref">13.2.2</span></a>) of the operating system.</p>
+</dd>
+<dt>Title</dt><dd><p>Plain name of the operating system.</p>
+</dd>
+<dt>Severity – Latest</dt><dd><p>Severity detected for the operating system during the last scan that found this operating system on a host.
+Only hosts where the respective operating system was determined to be the best match are taken into account.</p>
+</dd>
+<dt>Severity – Highest</dt><dd><p>Highest severity detected for the operating system during all scans that found this operating system on a host.
+Only hosts where the respective operating system was determined to be the best match are taken into account.</p>
+</dd>
+<dt>Severity – Average</dt><dd><p>Average severity detected for the operating system during all scans that found this operating system on a host.
+Only hosts where the respective operating system was determined to be the best match are taken into account.</p>
+</dd>
+<dt>Hosts – All</dt><dd><p>All hosts where the operating system was detected.
+By clicking on the number of hosts, the page <em>Hosts</em> is opened.
+A filter is applied to show only the hosts for which the selected operating system was detected.</p>
+</dd>
+<dt>Hosts – Best OS</dt><dd><p>Hosts where the operating system was detected as the best match.
+By clicking on the number of hosts, the page <em>Hosts</em> is opened.
+A filter is applied to show only the hosts for which the selected operating system was detected as the best match.</p>
+</dd>
+<dt>Modified</dt><dd><p>Date and time of last modification.</p>
+</dd>
+</dl>
+<figure class="align-center" id="id6">
+<span id="fig-operatingsystems-listpage"></span><a class="reference internal image-reference" href="_images/operatingsystems_listpage.png"><img alt="_images/operatingsystems_listpage.png" src="_images/operatingsystems_listpage.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.5 </span><span class="caption-text">Page <em>Operating Systems</em> displaying all scanned operating systems</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>For all operating systems the following actions are available:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/delete.png"><img alt="" src="_images/delete.png" style="height: 1.2em;" /></a> Delete the operating system. Only operating systems which are currently not used can be deleted.</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the operating system as an XML file.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By clicking <a class="reference internal" href="_images/delete.png"><img alt="" src="_images/delete.png" style="height: 1.2em;" /></a> or <a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> below the list of operating systems more than one operating system can be deleted or exported at a time.
+The drop-down list is used to select which operating systems are deleted or exported.</p>
+</div>
+<p><strong>Details Page</strong></p>
+<p>Click on the name of an operating system to open the details page of the operating system.</p>
+<p>The following registers are available:</p>
+<dl class="simple">
+<dt>Information</dt><dd><p>General information about the operating system.</p>
+</dd>
+<dt>User Tags</dt><dd><p>Assigned tags (see Chapter <a class="reference internal" href="web-interface.html#tags"><span class="std std-ref">7.4</span></a>).</p>
+</dd>
+<dt>Permissions</dt><dd><p>Assigned permissions (see Chapter <a class="reference internal" href="web-interface-access.html#permissions"><span class="std std-ref">8.4</span></a>).</p>
+</dd>
+</dl>
+<p>The following actions are available in the upper left corner:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/help.png"><img alt="" src="_images/help.png" style="height: 1.2em;" /></a> Open the corresponding chapter of the user manual.</p></li>
+<li><p><a class="reference internal" href="_images/list.png"><img alt="" src="_images/list.png" style="height: 1.2em;" /></a> Show the list page of all operating systems.</p></li>
+<li><p><a class="reference internal" href="_images/delete.png"><img alt="" src="_images/delete.png" style="height: 1.2em;" /></a> Delete the operating system. Only operating systems which are currently not used can be deleted.</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the operating system as an XML file.</p></li>
+<li><p><a class="reference internal" href="_images/host.png"><img alt="" src="_images/host.png" style="height: 1.2em;" /></a> (left) Show the hosts for which the operating system was detected.</p></li>
+<li><p><a class="reference internal" href="_images/host.png"><img alt="" src="_images/host.png" style="height: 1.2em;" /></a> (right) Show the hosts for which the operating system is the best match.</p></li>
+</ul>
+</section>
+<section id="managing-tls-certificates">
+<span id="index-4"></span><h2><span class="section-number">12.3 </span>Managing TLS Certificates<a class="headerlink" href="#managing-tls-certificates" title="Link to this heading">¶</a></h2>
+<p>This view focuses on the TLS certificates collected during all vulnerability scans and provides a quick overview of whether they are valid or expired.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only basic certificate information (host, port, activation and expiry dates, fingerprints) is included.</p>
+<p>There is no support for Online Certificate Status Protocol (OCSP) or Certificate Revocation List (CRL) functionalities.</p>
+</div>
+<p><strong>List Page</strong></p>
+<p>All existing TLS certificates can be displayed by selecting <span class="target" id="gos-webui-7"></span><em>Assets &gt; TLS Certificates</em> in the menu (see <a class="reference internal" href="#fig-tls-certificates-listpage"><span class="std std-numref">Fig. 12.6</span></a>).</p>
+<p>For all TLS certificates the following actions are available:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/delete.png"><img alt="" src="_images/delete.png" style="height: 1.2em;" /></a> Delete the TLS certificate.</p></li>
+<li><p><a class="reference internal" href="_images/download.png"><img alt="" src="_images/download.png" style="height: 1.2em;" /></a> Download the TLS certificate.</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the TLS certificate as an XML file.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By clicking <a class="reference internal" href="_images/delete.png"><img alt="" src="_images/delete.png" style="height: 1.2em;" /></a> or <a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> below the list of TLS certificates more than one TLS certificate can be deleted or exported at a time.
+The drop-down list is used to select which TLS certificates are deleted or exported.</p>
+</div>
+<figure class="align-center" id="id7">
+<span id="fig-tls-certificates-listpage"></span><a class="reference internal image-reference" href="_images/tls_certificates_listpage.png"><img alt="_images/tls_certificates_listpage.png" src="_images/tls_certificates_listpage.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.6 </span><span class="caption-text">Page <em>TLS Certificates</em> displaying all collected TLS certificates</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><strong>Details Page</strong></p>
+<p>Click on the name of a TLS certificate to display the details of the TLS certificate. Click <a class="reference internal" href="_images/details.png"><img alt="" src="_images/details.png" style="height: 1.2em;" /></a> to open the details page of the TLS certificate.</p>
+<p>The following registers are available:</p>
+<dl class="simple">
+<dt>Information</dt><dd><p>General information about the TLS certificate.</p>
+</dd>
+<dt>User Tags</dt><dd><p>Assigned tags (see Chapter <a class="reference internal" href="web-interface.html#tags"><span class="std std-ref">7.4</span></a>).</p>
+</dd>
+<dt>Permissions</dt><dd><p>Assigned permissions (see Chapter <a class="reference internal" href="web-interface-access.html#permissions"><span class="std std-ref">8.4</span></a>).</p>
+</dd>
+</dl>
+<p>The following actions are available in the upper left corner:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/help.png"><img alt="" src="_images/help.png" style="height: 1.2em;" /></a> Open the corresponding chapter of the user manual.</p></li>
+<li><p><a class="reference internal" href="_images/list.png"><img alt="" src="_images/list.png" style="height: 1.2em;" /></a> Show the list page of all TLS certificates.</p></li>
+<li><p><a class="reference internal" href="_images/delete.png"><img alt="" src="_images/delete.png" style="height: 1.2em;" /></a> Delete the TLS certificate.</p></li>
+<li><p><a class="reference internal" href="_images/download.png"><img alt="" src="_images/download.png" style="height: 1.2em;" /></a> Download the TLS certificate.</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the TLS certificate as an XML file.</p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="managing-secinfo.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><span class="section-number">13 </span>Managing SecInfo</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="compliance-and-special-scans.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><span class="section-number">11 </span>Performing Compliance Scans and Special Scans</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2015–2025, Greenbone AG
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Aug 18, 2025</div>
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/greenbone/gsm-manual" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">12 Managing Assets</a><ul>
+<li><a class="reference internal" href="#creating-and-managing-hosts">12.1 Creating and Managing Hosts</a><ul>
+<li><a class="reference internal" href="#creating-a-host">12.1.1 Creating a Host</a></li>
+<li><a class="reference internal" href="#managing-hosts">12.1.2 Managing Hosts</a></li>
+<li><a class="reference internal" href="#creating-a-target-from-hosts">12.1.3 Creating a Target from Hosts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#managing-operating-systems">12.2 Managing Operating Systems</a></li>
+<li><a class="reference internal" href="#managing-tls-certificates">12.3 Managing TLS Certificates</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=8cef54a6"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

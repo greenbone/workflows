@@ -1,0 +1,7 @@
+<!doctype html><meta charset="utf-8">
+<title>gettext</title>
+<h1>gettext</h1>
+<pre id="c" style="white-space:pre-wrap"></pre>
+<script>
+fetch('./index.pot').then(r=>r.text()).then(t=>{document.getElementById('c').textContent=t;}).catch(e=>{document.getElementById('c').textContent=Failed to load index.pot: '+e; });
+</script>

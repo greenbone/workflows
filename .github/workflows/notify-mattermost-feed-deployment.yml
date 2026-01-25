@@ -23,10 +23,13 @@ on:
         description: "Mattermost use shortline mode. Default: true"
         type: string
         default: "true"
+      product:
+        required: false
+        type: string
       stage:
         description: "Deployment stage (e.g., enterprise, enterprise-staging, community, community-staging)."
         type: string
-        required: true
+        required: false  
     secrets:
       MATTERMOST_WEBHOOK_URL:
         required: true
@@ -50,6 +53,7 @@ jobs:
           commit: ${{ inputs.commit }}
           workflow: ${{ github.run_id }}
           workflow-name: ${{ github.workflow }}
+          product: ${{ inputs.product }}
           status: ${{ inputs.status }}
           shortline: ${{ inputs.shortline }}
           stage: ${{ inputs.stage }}

@@ -1,0 +1,1037 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="14 Using the Greenbone Management Protocol" href="gmp.html" /><link rel="prev" title="12 Managing Assets" href="managing-assets.html" />
+        <link rel="prefetch" href="_static/logo.png" as="image" />
+
+    <link rel="shortcut icon" href="_static/Gb_favicon_head_32x32.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2025.07.19 -->
+        <title>13 Managing SecInfo - Greenbone Enterprise Appliance – GOS 24.10.4</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_greenbone.css?v=86d35ff1" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #4D4D4D;
+  --color-foreground-primary: 4D4D4D;
+  --color-foreground-secondary: #808080;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --color-admonition-title--note-background: #D8F1E2;
+  --color-admonition-title--warning: #E5393D;
+  --color-admonition-title--warning-background: #FBDDDE;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #FFFFFF;
+  --color-background-secondary: #F5F5F5;
+  --color-sidebar-background: #F5F5F5;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #F5F5F5;
+  --color-foreground-primary: F5F5F5;
+  --color-foreground-secondary: #E6E6E6;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #171717;
+  --color-background-secondary: #4D4D4D;
+  --color-sidebar-background: #333333;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  --font-stack: Roboto, Helvetica, sans-serif;
+  --color-content-foreground: #F5F5F5;
+  --color-foreground-primary: F5F5F5;
+  --color-foreground-secondary: #E6E6E6;
+  --color-code-background: #333333;
+  --color-code-foreground: #E6E6E6;
+  --color-admonition-title--note: #11AB51;
+  --admonition-font-size: 0.9rem;
+  --color-background-primary: #171717;
+  --color-background-secondary: #4D4D4D;
+  --color-sidebar-background: #333333;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Greenbone Enterprise Appliance – GOS 24.10.4</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Greenbone Enterprise Appliance – GOS 24.10.4</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1 Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read-before-use.html">2 Read Before Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appliance-overview.html">3 Greenbone Enterprise Appliance – Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setting-up-the-appliance.html">4 Setting up the Greenbone Enterprise Appliance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading-gos.html">5 Upgrading the Greenbone Enterprise Appliance to the Latest Major Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-gos.html">6 Managing the Greenbone Operating System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web-interface.html">7 Getting to Know the Web Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web-interface-access.html">8 Managing the Web Interface Access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scanning.html">9 Scanning a System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">10 Reports and Vulnerability Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compliance-and-special-scans.html">11 Performing Compliance Scans and Special Scans</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing-assets.html">12 Managing Assets</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">13 Managing SecInfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmp.html">14 Using the Greenbone Management Protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="master-sensor-setup.html">15 Using a Master-Sensor Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">16 Managing the Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting-other-systems.html">17 Connecting the Greenbone Enterprise Appliance to Other Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">18 Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">19 Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">20 Glossary</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="managing-secinfo">
+<span id="secinfo"></span><span id="index-0"></span><h1><span class="section-number">13 </span>Managing SecInfo<a class="headerlink" href="#managing-secinfo" title="Link to this heading">¶</a></h1>
+<p>The SecInfo management provides centralized access to a wide range of information technology (IT) security information including the following categories:</p>
+<dl class="simple">
+<dt>Vulnerability Tests (VT)</dt><dd><p>VTs test the target system for potential vulnerabilities.</p>
+</dd>
+<dt>Common Vulnerabilities and Exposures (CVE)</dt><dd><p>CVEs are vulnerabilities published by vendors and security researchers.</p>
+</dd>
+<dt>Common Platform Enumeration (CPE)</dt><dd><p>CPE offers standardized names for products used in the IT.</p>
+</dd>
+<dt>CERT-Bund Advisories</dt><dd><p>CERT-Bund Advisories are published by the <a class="reference external" href="https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Cyber-Sicherheitslage/Reaktion/CERT-Bund/cert-bund_node.html">CERT-Bund</a>,
+the Computer Emergency Response Team of the <a class="reference external" href="https://www.bsi.bund.de/EN/Home/home_node.html">German Federal Office for Information Security (BSI)</a> (German: Bundesamt für Sicherheit
+in der Informationstechnik, abbreviated as BSI).
+The main task of the CERT-Bund is the operation of a warning and information service publishing information regarding new vulnerabilities and security risks as well as threats for IT systems.</p>
+</dd>
+<dt>DFN-CERT Advisories</dt><dd><p>DFN-CERT advisories are published by the <a class="reference external" href="https://www.dfn-cert.de/">DFN-CERT</a> [German only], the Computer Emergency Response Team of the <a class="reference external" href="https://www.dfn.de/en/">German National Research and Education Network</a> (German: Deutsches Forschungsnetz, abbreviated as DFN).</p>
+</dd>
+</dl>
+<p>CVEs and CPEs are published and made accessible by the <a class="reference external" href="https://www.nist.gov">National Institute of Standards and Technology (NIST)</a> as part of the <a class="reference external" href="https://nvd.nist.gov/">National Vulnerability Database
+(NVD)</a> (see Chapter <a class="reference internal" href="#scap"><span class="std std-ref">13.2</span></a>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Greenbone is also offering all SecInfo data online, accessible via the <a class="reference external" href="https://secinfo.greenbone.net">SecInfo portal</a>.
+The SecInfo portal provides all SecInfo described in the following chapters and the CVSS calculator.</p>
+<p>Access to the SecInfo Portal is provided by activating a guest access (see Chapter <a class="reference internal" href="web-interface-access.html#guest-login"><span class="std std-ref">8.1.4</span></a>).</p>
+</div>
+<section id="vulnerability-tests-vt">
+<span id="nvts"></span><span id="index-1"></span><h2><span class="section-number">13.1 </span>Vulnerability Tests (VT)<a class="headerlink" href="#vulnerability-tests-vt" title="Link to this heading">¶</a></h2>
+<p>VTs are test routines used by the appliance. They are part of the Greenbone Enterprise Feed which is updated regularly.
+VTs include information about development date, affected systems, impact of vulnerabilities and remediation.</p>
+<p><strong>List Page</strong></p>
+<p>All existing VTs can be displayed by selecting <span class="target" id="gos-webui-0"></span><em>SecInfo &gt; NVTs</em> in the menu.</p>
+<p>For all VTs the following information is displayed:</p>
+<dl>
+<dt>Name</dt><dd><p>Name of the VT.</p>
+</dd>
+<dt>Family</dt><dd><p>Family of VTs to which the VT belongs.</p>
+</dd>
+<dt>Created</dt><dd><p>Date and time of creation.</p>
+</dd>
+<dt>Modified</dt><dd><p>Date and time of last modification.</p>
+</dd>
+<dt>CVE</dt><dd><p>CVE that is checked for using the VT.</p>
+<p>If multiple CVEs are linked to a VT, the following rules apply:</p>
+<ul class="simple">
+<li><p>The CVE with the highest severity is displayed.</p></li>
+<li><p>If multiple CVEs have the same highest severity, then of those CVEs, the CVE with the highest EPSS score is displayed.</p></li>
+<li><p>If multiple CVEs also have the same EPSS score, then of those CVEs, the CVE with the latest modification date is displayed.</p></li>
+<li><p>If multiple CVEs also have the same modification date, then all those CVEs are displayed.</p></li>
+</ul>
+</dd>
+<dt>Solution Type <a class="reference internal" href="_images/solution_type.png"><img alt="" src="_images/solution_type.png" style="height: 1.2em;" /></a></dt><dd><p>Type of measure to remedy the vulnerability.
+The following solution types exist:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/st_vendorfix.png"><img alt="" src="_images/st_vendorfix.png" style="height: 1.2em;" /></a> Vendor fix: Information is available about an official fix that is issued by the original vendor of the affected product.
+Unless otherwise noted, it is assumed that this fix fully resolves the vulnerability.</p></li>
+<li><p><a class="reference internal" href="_images/st_workaround.png"><img alt="" src="_images/st_workaround.png" style="height: 1.2em;" /></a> Workaround: Information about a configuration or specific deployment scenario that can be used to avoid exposure to the vulnerability is available.
+This is usually the “first line of defense” against a new vulnerability before a mitigation or vendor fix has been issued or even discovered.</p></li>
+<li><p><a class="reference internal" href="_images/st_mitigation.png"><img alt="" src="_images/st_mitigation.png" style="height: 1.2em;" /></a> Mitigation: Information about a configuration or specific deployment scenario that helps to reduce the risk of the vulnerability is available but that does not resolve the vulnerability on the affected product.</p></li>
+<li><p><a class="reference internal" href="_images/st_willnotfix.png"><img alt="" src="_images/st_willnotfix.png" style="height: 1.2em;" /></a> Will not fix: There is no fix for the vulnerability and there never will be one.
+This is often the case when a product has been orphaned, is no longer maintained or otherwise deprecated.
+Information should contain details about why there will be no fix issued.</p></li>
+<li><p><a class="reference internal" href="_images/st_nonavailable.png"><img alt="" src="_images/st_nonavailable.png" style="height: 1.2em;" /></a> None: Currently there is no fix available.
+Information should contain details about why there is no fix.</p></li>
+</ul>
+</dd>
+<dt>Severity</dt><dd><p>Qualitative measure of a vulnerability’s severity according to the Common Vulnerability Scoring System (CVSS) (see Chapter <a class="reference internal" href="#cvss"><span class="std std-ref">13.2.3</span></a>).
+This includes a severity score, which is a number from 0.0 to 10.0, with 10.0 being the most severe, and a severity class based on the score:</p>
+<ul class="simple">
+<li><p>High: 7.0–10.0</p></li>
+<li><p>Medium: 4.0–6.9</p></li>
+<li><p>Low: 0.1–3.9</p></li>
+<li><p>Log: 0.0</p></li>
+</ul>
+<p>If multiple CVEs are linked to the VT, the severity of the CVE with the highest severity is displayed.</p>
+</dd>
+<dt>QoD</dt><dd><p>Short for “Quality of Detection”.
+The QoD describes the reliability of the executed vulnerability detection.
+It is a value between 0 % and 100 %, with 100 % being the most reliable.</p>
+<p>By default, only results that were detected by VTs with a QoD of 70 % or higher are displayed.
+The filter can be adjusted to show results with a lower QoD (see Chapter <a class="reference internal" href="web-interface.html#adjusting-filter"><span class="std std-ref">7.3.1</span></a>).</p>
+<p>For more information see Chapter <a class="reference internal" href="reports.html#quality-of-detection-concept"><span class="std std-ref">10.2.6</span></a>.</p>
+</dd>
+<dt>EPSS</dt><dd><p>Measure of a vulnerability’s likelihood of exploitation according to the Exploit Prediction Scoring System (EPSS) (see Chapter <a class="reference internal" href="#epss"><span class="std std-ref">13.2.4</span></a>).</p>
+<p>The score indicates the probability of attempts to exploit a vulnerability being observed in the next 30 days and is a number between 0 and 1.
+The higher the value, the greater the probability that a vulnerability will actually be exploited.</p>
+<p>The percentile indicates the proportion of vulnerabilities that were rated the same or lower than the vulnerability.
+This helps putting the score into context.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By clicking <a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> below the list of VTs more than one VT can be exported at a time. The drop-down list is used to select which VTs are exported.</p>
+</div>
+<p><strong>Details Page</strong></p>
+<p>Click on the name of a VT to display the details of the VT. Click <a class="reference internal" href="_images/details.png"><img alt="" src="_images/details.png" style="height: 1.2em;" /></a> to open the details page of the VT.</p>
+<p>The following registers are available:</p>
+<dl class="simple">
+<dt>Information</dt><dd><p>General information about the VT.</p>
+</dd>
+<dt>Preferences</dt><dd><p>Preferences of the VT (see Chapter <a class="reference internal" href="scanning.html#nvt-preferences"><span class="std std-ref">9.9.5</span></a>).</p>
+</dd>
+<dt>User Tags</dt><dd><p>Assigned tags (see Chapter <a class="reference internal" href="web-interface.html#tags"><span class="std std-ref">7.4</span></a>).</p>
+</dd>
+</dl>
+<p>The following actions are available in the upper left corner:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/help.png"><img alt="" src="_images/help.png" style="height: 1.2em;" /></a> Open the corresponding chapter of the user manual.</p></li>
+<li><p><a class="reference internal" href="_images/list.png"><img alt="" src="_images/list.png" style="height: 1.2em;" /></a> Show the list page of all VTs.</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the VT as an XML file.</p></li>
+<li><p><a class="reference internal" href="_images/new_note.png"><img alt="" src="_images/new_note.png" style="height: 1.2em;" /></a> Create a new note for the VT (see Chapter <a class="reference internal" href="reports.html#create-note"><span class="std std-ref">10.7.1</span></a>).</p></li>
+<li><p><a class="reference internal" href="_images/new_override.png"><img alt="" src="_images/new_override.png" style="height: 1.2em;" /></a> Create a new override for the VT (see Chapter <a class="reference internal" href="reports.html#create-override"><span class="std std-ref">10.8.1</span></a>).</p></li>
+<li><p><a class="reference internal" href="_images/results.png"><img alt="" src="_images/results.png" style="height: 1.2em;" /></a> Show the corresponding results.</p></li>
+<li><p><a class="reference internal" href="_images/vulnerability.png"><img alt="" src="_images/vulnerability.png" style="height: 1.2em;" /></a> Show the corresponding vulnerability.</p></li>
+</ul>
+</section>
+<section id="security-content-automation-protocol-scap">
+<span id="scap"></span><span id="index-2"></span><h2><span class="section-number">13.2 </span>Security Content Automation Protocol (SCAP)<a class="headerlink" href="#security-content-automation-protocol-scap" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference external" href="https://www.nist.gov">National Institute of Standards and Technology (NIST)</a> provides the <a class="reference external" href="https://nvd.nist.gov/">National Vulnerability Database (NVD)</a>.
+The NVD is a data repository for the vulnerability management of the US government.
+The goal is the standardized provision of the data for automated processing.
+By that, vulnerability management is supported and the implementation of compliance guidelines is verified.</p>
+<p>The NVD provides different databases including the following:</p>
+<ul class="simple">
+<li><p>Checklists</p></li>
+<li><p>Vulnerabilities</p></li>
+<li><p>Misconfigurations</p></li>
+<li><p>Products</p></li>
+<li><p>Threat metrics</p></li>
+</ul>
+<p>The NVD utilizes the <a class="reference external" href="https://csrc.nist.gov/projects/security-content-automation-protocol/">Security Content Automation Protocol</a> (SCAP).
+SCAP is a combination of different interoperable standards.
+Many standards were developed or derived from public discussion.</p>
+<p>The public participation of the community in the development is an important aspect for accepting and spreading SCAP standards.
+SCAP is currently specified in version 1.3 and includes the following components:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Languages</dt><dd><ul>
+<li><p>XCCDF: Extensible Configuration Checklist Description Format</p></li>
+<li><p>OVAL: Open Vulnerability and Assessment Language</p></li>
+<li><p>OCIL: Open Checklist Interactive Language</p></li>
+<li><p>Asset Identification</p></li>
+<li><p>ARF: Asset Reporting Format</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Collections</dt><dd><ul>
+<li><p>CCE: Common Configuration Enumeration</p></li>
+<li><p>CPE: Common Platform Enumeration</p></li>
+<li><p>CVE: Common Vulnerabilities and Exposure</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Metrics</dt><dd><ul>
+<li><p>CVSS: Common Vulnerability Scoring System</p></li>
+<li><p>CCSS: Common Configuration Scoring System</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Integrity</dt><dd><ul>
+<li><p>TMSAD: Trust Model for Security Automation Data</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>OVAL, CCE, CPE and CVE are trademarks of NIST.</p>
+<p>The Greenbone Enterprise Appliance uses CVE, CPE and CVSS.
+By utilizing these standards, the interoperability with other systems is guaranteed.
+The standards also allow comparing the results.</p>
+<p>Vulnerability assessment systems such as the Greenbone Enterprise Appliance can be validated by NIST respectively.
+The appliance has been validated with respect to <a class="reference external" href="https://csrc.nist.gov/Projects/Security-Content-Automation-Protocol/SCAP-Releases">SCAP version 1.0</a>.</p>
+<section id="cve">
+<span id="index-3"></span><span id="id3"></span><h3><span class="section-number">13.2.1 </span>CVE<a class="headerlink" href="#cve" title="Link to this heading">¶</a></h3>
+<p>In order to avoid multiple naming of the same vulnerability by different organizations and to ensure a uniform naming convention, <a class="reference external" href="https://www.mitre.org/">MITRE</a> founded the <a class="reference external" href="https://www.cve.org/">Common Vulnerabilities and Exposure (CVE)</a> program.
+Every vulnerability is assigned a unique identifier, consisting of the release year and a simple number, and serves as a central reference.</p>
+<p>CVEs are published and made accessible by the <a class="reference external" href="https://www.nist.gov/">National Institute of Standards and Technology (NIST)</a> in the <a class="reference external" href="https://nvd.nist.gov/">National Vulnerability Database (NVD)</a>.
+The NVD complements the CVEs with information regarding the elimination, severity, potential impact and affected products of the vulnerability.</p>
+<p>Greenbone refers to the NVD and the appliance combines the CVE information, VTs and CERT-Bund/DFN-CERT advisories.</p>
+<p><strong>List Page</strong></p>
+<p>All existing CVEs can be displayed by selecting <span class="target" id="gos-webui-1"></span><em>SecInfo &gt; CVEs</em> in the menu.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The availability of a CVE on the appliance depends on its availability in the NVD.
+As soon as it has been published there, it takes 1–2 working days for it to appear in the SecInfo.</p>
+<p>Columns like <em>Severity</em> or <em>EPSS</em> may display <em>N/A</em> for one of the following reasons:</p>
+<ul>
+<li><p>The CVE was published but no vulnerability analysis/severity assessment was carried out by the NVD yet.
+This can take a few days up to a few weeks.</p>
+<p>Such CVEs can be identified when inspecting the <a class="reference external" href="https://nvd.nist.gov/vuln/search">corresponding NVD entry</a>.
+As long as <em>not available</em> is displayed for the severity, <em>N/A</em> is shown for the severity on the appliance.</p>
+</li>
+<li><p>There is always a delay of 1–2 working days between the vulnerability analysis/severity assessment and the time the updated information is displayed in the SecInfo management.</p></li>
+</ul>
+<p>The availability of a CVE on the appliance does not mean that it is also covered by a VT.
+To determine whether a specific CVE is covered, the filter <code class="docutils literal notranslate"><span class="pre">cve=&lt;CVE-ID&gt;</span></code> can be used on the <em>NVTs</em> page (see Chapter <a class="reference internal" href="#nvts"><span class="std std-ref">13.1</span></a>).</p>
+</div>
+<dl>
+<dt>Name</dt><dd><p>Unique identifier of the CVE consisting of the release year and a simple number.</p>
+</dd>
+<dt>Description</dt><dd><p>Extended information about the CVE.
+This can include in which versions the vulnerability occurs, how it is caused and how it can be exploited by attackers.</p>
+</dd>
+<dt>Published</dt><dd><p>Date and time the CVE was published in the NVD.</p>
+</dd>
+<dt>CVSS Base Vector</dt><dd><p>CVSS vector used for calculating the severity of a CVE.
+This vector includes the CVSS version defined for the CVE.</p>
+<p>By clicking on the vector, the page <em>CVSSv2/CVSSv3/CVSSv4 (Base) Score Calculator</em> is opened.
+The fields of the corresponding calculator are already filled in, depending on which CVSS version is used to calculate the severity of the CVE (see Chapter <a class="reference internal" href="#cvss"><span class="std std-ref">13.2.3</span></a>).</p>
+</dd>
+<dt>Severity</dt><dd><p>Qualitative measure of a vulnerability’s severity according to the Common Vulnerability Scoring System (CVSS) (see Chapter <a class="reference internal" href="#cvss"><span class="std std-ref">13.2.3</span></a>).
+This includes a severity score, which is a number from 0.0 to 10.0, with 10.0 being the most severe, and a severity class based on the score:</p>
+<ul class="simple">
+<li><p>High: 7.0–10.0</p></li>
+<li><p>Medium: 4.0–6.9</p></li>
+<li><p>Low: 0.1–3.9</p></li>
+<li><p>Log: 0.0</p></li>
+</ul>
+</dd>
+<dt>EPSS</dt><dd><p>Measure of a vulnerability’s likelihood of exploitation according to the Exploit Prediction Scoring System (EPSS) (see Chapter <a class="reference internal" href="#epss"><span class="std std-ref">13.2.4</span></a>).</p>
+<p>The score indicates the probability of attempts to exploit a vulnerability being observed in the next 30 days and is a number between 0 and 1.
+The higher the value, the greater the probability that a vulnerability will actually be exploited.</p>
+<p>The percentile indicates the proportion of vulnerabilities that were rated the same or lower than the vulnerability.
+This helps putting the score into context.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By clicking <a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> below the list of CVEs more than one CVE can be exported at a time. The drop-down list is used to select which CVEs are exported.</p>
+</div>
+<p><strong>Details Page</strong></p>
+<p>Click on the name of a CVE to display the details of the CVE. Click <a class="reference internal" href="_images/details.png"><img alt="" src="_images/details.png" style="height: 1.2em;" /></a> to open the details page of the CVE (see <a class="reference internal" href="#fig-cve-detailspage"><span class="std std-numref">Fig. 13.1</span></a>).</p>
+<figure class="align-center" id="id14">
+<span id="fig-cve-detailspage"></span><a class="reference internal image-reference" href="_images/cve_detailspage.png"><img alt="_images/cve_detailspage.png" src="_images/cve_detailspage.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.1 </span><span class="caption-text">Details page of a CVE</span><a class="headerlink" href="#id14" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The following registers are available:</p>
+<dl class="simple">
+<dt>Information</dt><dd><p>General information about the CVE.</p>
+</dd>
+<dt>User Tags</dt><dd><p>Assigned tags (see Chapter <a class="reference internal" href="web-interface.html#tags"><span class="std std-ref">7.4</span></a>).</p>
+</dd>
+</dl>
+<p>The following actions are available in the upper left corner:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/help.png"><img alt="" src="_images/help.png" style="height: 1.2em;" /></a> Open the corresponding chapter of the user manual.</p></li>
+<li><p><a class="reference internal" href="_images/list.png"><img alt="" src="_images/list.png" style="height: 1.2em;" /></a> Show the list page of all CVEs.</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the CVE as an XML file.</p></li>
+</ul>
+</section>
+<section id="cpe">
+<span id="index-4"></span><span id="id6"></span><h3><span class="section-number">13.2.2 </span>CPE<a class="headerlink" href="#cpe" title="Link to this heading">¶</a></h3>
+<p>Common Platform Enumeration (CPE) is a structured naming scheme for information technology systems, platforms and packages.
+Based on the generic syntax for Uniform Resource Identifiers (URI), CPE includes a formal name format, a language for describing complex platforms, a method for checking names against a system and a description format for binding text and tests to a name.</p>
+<p>CPEs are published and made accessible by the <a class="reference external" href="https://www.nist.gov/">National Institute of Standards and Technology (NIST)</a> in the <a class="reference external" href="https://nvd.nist.gov/">National Vulnerability Database (NVD)</a>.</p>
+<p>A CPE name starts with “cpe:/”, followed by up to seven components separated by colons (see <a class="reference internal" href="#fig-cpe-name-structure"><span class="std std-numref">Fig. 13.2</span></a>).</p>
+<figure class="align-center" id="id15">
+<span id="fig-cpe-name-structure"></span><a class="reference internal image-reference" href="_images/cpe_name_structure.png"><img alt="_images/cpe_name_structure.png" src="_images/cpe_name_structure.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.2 </span><span class="caption-text">Name structure of a CPE name</span><a class="headerlink" href="#id15" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The combination of CPE and CVE standards enables the conclusion of existing vulnerabilities when discovering a platform or product.</p>
+<p><strong>List Page</strong></p>
+<p>All existing CPEs can be displayed by selecting <span class="target" id="gos-webui-2"></span><em>SecInfo &gt; CPEs</em> in the menu.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The availability of a CPE on the appliance depends on its availability in the NVD.
+As soon as it has been published there, it takes 1–2 working days for it to appear in the SecInfo.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By clicking <a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> below the list of CPEs more than one CPE can be exported at a time. The drop-down list is used to select which CPEs are exported.</p>
+</div>
+<p><strong>Details Page</strong></p>
+<p>Click on the name of a CPE to display the details of the CPE. Click <a class="reference internal" href="_images/details.png"><img alt="" src="_images/details.png" style="height: 1.2em;" /></a> to open the details page of the CPE.</p>
+<p>The following registers are available:</p>
+<dl class="simple">
+<dt>Information</dt><dd><p>General information about the CPE.</p>
+</dd>
+<dt>User Tags</dt><dd><p>Assigned tags (see Chapter <a class="reference internal" href="web-interface.html#tags"><span class="std std-ref">7.4</span></a>).</p>
+</dd>
+</dl>
+<p>The following actions are available in the upper left corner:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/help.png"><img alt="" src="_images/help.png" style="height: 1.2em;" /></a> Open the corresponding chapter of the user manual.</p></li>
+<li><p><a class="reference internal" href="_images/list.png"><img alt="" src="_images/list.png" style="height: 1.2em;" /></a> Show the list page of all CPEs.</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the CPE as an XML file.</p></li>
+</ul>
+</section>
+<section id="cvss">
+<span id="index-5"></span><span id="id9"></span><h3><span class="section-number">13.2.3 </span>CVSS<a class="headerlink" href="#cvss" title="Link to this heading">¶</a></h3>
+<p>To support the interpretation of a vulnerability, the Common Vulnerability Scoring System (CVSS) was invented.
+CVSS is an industry standard for describing the severity of security risks in computer systems.</p>
+<p>Security risks are rated and compared using different criteria.
+This allows for the creation of a priority list of countermeasures.</p>
+<p>CVSS is developed by the <a class="reference external" href="https://www.first.org/cvss/">CVSS Special Interest Group (CVSS-SIG)</a> of the <a class="reference external" href="https://www.first.org/">Forum of Incident Response and Security Teams (FIRST)</a>.
+The current CVSS version is 4.0.</p>
+<p>GOS 24.10 supports CVSS v4.0.
+However, since CVSS v4.0 is still in the early stages of industry-wide adoption, CVSS v4.0 data is not yet available in the feed.
+VTs and CVEs may contain CVSS v2 and/or CVSS v3.0/v3.1 data.</p>
+<ul class="simple">
+<li><p>If a VT/CVE contains both CVSS v2 data and CVSS v3.0/v3.1 data, the CVSS v3.0/v3.1 data is always used and shown.</p></li>
+<li><p>The <em>CVSS Base Vector</em> shown in the details preview and on the details page of a VT can be v2, v3.0 or v3.1.</p></li>
+<li><p>The <em>CVSS Base Vector</em> shown in the table on the page <em>CVEs</em> can be v2, v3.0 or v3.1.
+Clicking on the CVSS base vector opens the page <em>CVSSv2/CVSSv3/CVSSv4 (Base) Score Calculator</em>.
+The input boxes of the corresponding calculator are already pre-filled.</p></li>
+</ul>
+<p>The CVSS score supports base score metrics, temporal score metrics, and environmental score metrics.</p>
+<dl class="simple">
+<dt>Base score metrics</dt><dd><p>Base score metrics test the exploitability of a vulnerability and their impact on the target system.
+Access, complexity and requirement of authentication are rated.
+Additionally, they rate whether the confidentiality, integrity or availability is threatened.</p>
+</dd>
+<dt>Temporal score metrics</dt><dd><p>Temporal score metrics test whether a completed example code exists, the vendor already supplied a patch and confirmed the vulnerability.
+The score will be changing drastically in the course of time.</p>
+</dd>
+<dt>Environmental score metrics</dt><dd><p>Environmental score metrics describe the effect of a vulnerability within an organization. They take damage, target distribution, confidentiality, integrity and availability into account.
+This assessment strongly depends on the environment in which the vulnerable product is used.</p>
+</dd>
+</dl>
+<p>Since the base score metrics are merely meaningful in general and can be determined permanently, the appliance provides them as part of the SecInfo data.</p>
+<p>The CVSS calculator can be opened by selecting <span class="target" id="gos-webui-3"></span><em>Help &gt; CVSS Calculator</em> in the menu (see <a class="reference internal" href="#fig-cvss-calc"><span class="std std-numref">Fig. 13.3</span></a>).
+The calculator for CVSS version 2.0, the calculator for CVSS version 3.0/3.1 and the calculator for CVSS version 4.0 are displayed.</p>
+<figure class="align-center" id="id16">
+<span id="fig-cvss-calc"></span><a class="reference internal image-reference" href="_images/cvss_calc.png"><img alt="_images/cvss_calc.png" src="_images/cvss_calc.png" style="width: 70%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 13.3 </span><span class="caption-text">CVSS calculator for calculating severity scores</span><a class="headerlink" href="#id16" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="cvss-version-2-0">
+<h4><span class="section-number">13.2.3.1 </span>CVSS Version 2.0<a class="headerlink" href="#cvss-version-2-0" title="Link to this heading">¶</a></h4>
+<p>The following formula is used by the CVSS calculator for version 2.0:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">BaseScore</span> <span class="o">=</span> <span class="n">roundTo1Decimal</span><span class="p">(</span> <span class="p">(</span> <span class="p">(</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="n">Impact</span> <span class="p">)</span> <span class="o">+</span>
+            <span class="p">(</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">Exploitability</span> <span class="p">)</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="p">)</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span> <span class="n">Impact</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>“Impact” is calculated as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Impact</span> <span class="o">=</span> <span class="mf">10.41</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ConfImpact</span><span class="p">)</span> <span class="o">*</span>
+         <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">IntegImpact</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">AvailImpact</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>“Exploitability” is calculated as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Exploitability</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">AccessVector</span> <span class="o">*</span> <span class="n">AccessComplexity</span> <span class="o">*</span> <span class="n">Authentication</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">f(</span> <span class="pre">Impact</span> <span class="pre">)</span></code> is 0, if the impact is 0.</p>
+<p>In all other cases the value is 1.176.</p>
+</div>
+<p>The other values are constants:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Access Vector</dt><dd><ul>
+<li><p>Requires local access: 0.395</p></li>
+<li><p>Adjacent network accessible: 0.646</p></li>
+<li><p>Network accessible: 1.0</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Access Complexity</dt><dd><ul>
+<li><p>High: 0.35</p></li>
+<li><p>Medium: 0.61</p></li>
+<li><p>Low: 0.71</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Authentication</dt><dd><ul>
+<li><p>Requires multiple instances of authentication: 0.45</p></li>
+<li><p>Requires single instance of authentication: 0.56</p></li>
+<li><p>Requires no authentication: 0.704</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>ConfImpact</dt><dd><ul>
+<li><p>None: 0.0</p></li>
+<li><p>Partial: 0.275</p></li>
+<li><p>Complete: 0.660</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>IntegImpact</dt><dd><ul>
+<li><p>None: 0.0</p></li>
+<li><p>Partial: 0.275</p></li>
+<li><p>Complete: 0.660</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>AvailImpact</dt><dd><ul>
+<li><p>None: 0.0</p></li>
+<li><p>Partial: 0.275</p></li>
+<li><p>Complete: 0.660</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="cvss-version-3-0-3-1">
+<h4><span class="section-number">13.2.3.2 </span>CVSS Version 3.0/3.1<a class="headerlink" href="#cvss-version-3-0-3-1" title="Link to this heading">¶</a></h4>
+<p>The following formula is used by the CVSS calculator for version 3.0/3.1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">If</span> <span class="n">Impact</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">BaseScore</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="o">*</span> <span class="n">If</span> <span class="n">Scope</span> <span class="ow">is</span> <span class="s2">&quot;Unchanged&quot;</span><span class="p">:</span>
+   <span class="n">BaseScore</span> <span class="o">=</span> <span class="n">Roundup</span> <span class="p">(</span><span class="n">Minimum</span> <span class="p">((</span><span class="n">Impact</span> <span class="o">+</span> <span class="n">Exploitability</span><span class="p">),</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="o">*</span> <span class="n">If</span> <span class="n">Scope</span> <span class="ow">is</span> <span class="s2">&quot;Changed&quot;</span><span class="p">:</span>
+   <span class="n">BaseScore</span> <span class="o">=</span> <span class="n">Roundup</span> <span class="p">(</span><span class="n">Minimum</span> <span class="p">(</span><span class="mf">1.08</span> <span class="o">*</span> <span class="p">(</span><span class="n">Impact</span> <span class="o">+</span> <span class="n">Exploitability</span><span class="p">),</span> <span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>“ISS” (Impact Sub-Score) is calculated as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ISS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Confidentiality</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Integrity</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Availability</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>“Impact” is calculated as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* If Scope is &quot;Unchanged&quot;:
+   Impact = 6.42 * ISS
+
+* If Scope is &quot;Changed&quot;:
+   Impact = 7.52 * (ISS - 0.029) - 3.25 * (ISS - 0.02)¹⁵
+</pre></div>
+</div>
+<p>“Exploitability” is calculated as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Exploitability</span> <span class="o">=</span> <span class="mf">8.22</span> <span class="o">*</span> <span class="n">Attack</span> <span class="n">Vector</span> <span class="o">*</span> <span class="n">Attack</span> <span class="n">Complexity</span>
+                 <span class="o">*</span> <span class="n">Privileges</span> <span class="n">Required</span> <span class="o">*</span> <span class="n">User</span> <span class="n">Interaction</span>
+</pre></div>
+</div>
+<p>The other values are constants:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Attack Vector</dt><dd><ul>
+<li><p>Network: 0.85</p></li>
+<li><p>Adjacent: 0.62</p></li>
+<li><p>Local: 0.55</p></li>
+<li><p>Physical: 0.2</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Attack Complexity</dt><dd><ul>
+<li><p>Low: 0.77</p></li>
+<li><p>High: 0.44</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Privileges Required</dt><dd><ul>
+<li><p>None: 0.85</p></li>
+<li><p>Low: 0.62 (or 0.68 if Scope is “Changed”)</p></li>
+<li><p>High: 0.27 (or 0.5 if Scope is “Changed”)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>User Interaction</dt><dd><ul>
+<li><p>None: 0.85</p></li>
+<li><p>Required: 0.62</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Confidentiality</dt><dd><ul>
+<li><p>None: 0.0</p></li>
+<li><p>Low: 0.22</p></li>
+<li><p>High: 0.56</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Integrity</dt><dd><ul>
+<li><p>None: 0.0</p></li>
+<li><p>Low: 0.22</p></li>
+<li><p>High: 0.56</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Availability</dt><dd><ul>
+<li><p>None: 0.0</p></li>
+<li><p>Low: 0.22</p></li>
+<li><p>High: 0.56</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="cvss-version-4-0">
+<h4><span class="section-number">13.2.3.3 </span>CVSS Version 4.0<a class="headerlink" href="#cvss-version-4-0" title="Link to this heading">¶</a></h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>GOS 24.10 supports CVSS 4.0.
+However, since CVSS v4.0 is still in the early stages of industry-wide adoption, CVSS v4.0 data is not yet available in the feed.</p>
+</div>
+<p>The CVSS calculator is already available for CVSS v4.0.
+The calculation used for version 4.0 is described in <a class="reference external" href="https://www.first.org/cvss/v4-0/specification-document">this documentation</a>.</p>
+</section>
+</section>
+<section id="epss">
+<span id="index-6"></span><span id="id10"></span><h3><span class="section-number">13.2.4 </span>EPSS<a class="headerlink" href="#epss" title="Link to this heading">¶</a></h3>
+<p>To estimate the likelihood of a vulnerability being exploited, the Exploit Prediction Scoring System (EPSS) was invented.
+EPSS estimates the probability of attempts to exploit a vulnerability being observed in the next 30 days.</p>
+<p>EPSS is developed by the <a class="reference external" href="https://www.first.org/epss/">EPSS Special Interest Group (EPSS-SIG)</a> of the <a class="reference external" href="https://www.first.org/">Forum of Incident Response and Security Teams (FIRST)</a>.
+The current EPSS version is 3.0.</p>
+<p>EPSS calculates a probability for exploitation activity in the next 30 days, which is a value between 0 and 1.
+This serves as the primary EPSS score.
+The higher the value, the greater the probability that a vulnerability will actually be exploited.
+In addition, EPSS puts this score into context by creating the percentile indicating the proportion of vulnerabilities that were rated the same or lower than the vulnerability.</p>
+<p>The calculation does not take into account the environment in which the vulnerability occurs, nor any remediation measures that may be in place.
+Furthermore, the value does not provide any information about the impact of an exploitation.</p>
+<p>The EPSS data is refreshed on a daily basis for all published CVEs.</p>
+</section>
+</section>
+<section id="cert-bund-advisories">
+<span id="index-7"></span><h2><span class="section-number">13.3 </span>CERT-Bund Advisories<a class="headerlink" href="#cert-bund-advisories" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference external" href="https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Cyber-Sicherheitslage/Reaktion/CERT-Bund/cert-bund_node.html">CERT-Bund</a>, the Computer Emergency Response Team of
+the German Federal Office for Information Security (BSI), is the central point of contact for preventive and reactive measures regarding security related computer incidents.</p>
+<p>With the intention of avoiding harm and limiting potential damage, the work of CERT-Bund includes the following:</p>
+<ul class="simple">
+<li><p>Creating and publishing recommendations for preventive measures</p></li>
+<li><p>Pointing out vulnerabilities in hardware and software products</p></li>
+<li><p>Proposing measures to address known vulnerabilities</p></li>
+<li><p>Supporting public agencies efforts to respond to IT security incidents</p></li>
+<li><p>Recommending various mitigation measures</p></li>
+<li><p>Working closely with the <a class="reference external" href="https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Cyber-Sicherheitslage/Reaktion/Nationales-IT-Lagezentrum/nationales-it-lagezentrum_node.html">National IT Situation Centre</a>
+and the <a class="reference external" href="https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Cyber-Sicherheitslage/Reaktion/IT-Krisenreaktionszentrum/it-krisenreaktionszentrum_node.html">National IT Crisis Response Centre</a></p></li>
+</ul>
+<p>The services of CERT-Bund are primarily available to federal authorities and include the following:</p>
+<ul class="simple">
+<li><p>24 hour on call duty in cooperation with the IT Situation Centre</p></li>
+<li><p>Analyzing incoming incident reports</p></li>
+<li><p>Creating recommendations derived from incidents</p></li>
+<li><p>Supporting federal authorities during IT security incidents</p></li>
+<li><p>Operating a warning and information service</p></li>
+<li><p>Active alerting of the federal administration in case of imminent danger</p></li>
+</ul>
+<p>The CERT-Bund offers a warning and information service (German: Warn- und Informationsdienst, abbreviated as “WID”).
+Currently this service offers two different types of information:</p>
+<dl class="simple">
+<dt>Advisories</dt><dd><p>This information service is only available to federal agencies as a closed list.
+The advisories describe current information about security critical incidents in computer systems and detailed measures to remediate security risks.</p>
+</dd>
+<dt>Short Information</dt><dd><p>Short information features the short description of current information regarding security risks and vulnerabilities.
+This information is not always verified and could be incomplete or even inaccurate.</p>
+</dd>
+</dl>
+<p>The Greenbone Enterprise Feed contains the CERT-Bund Short Information.
+Both the information in the <a class="reference external" href="https://www.bsi.bund.de/DE/Service-Navi/Abonnements/Warnmeldungen/warnmeldungen_node.html">old format</a> [German only] (up to June 2022) and the information in the
+<a class="reference external" href="https://wid.cert-bund.de/portal/wid/kurzinformationen">new format</a> [German only] (from June 2022) are included.</p>
+<ul class="simple">
+<li><p>There are very minor differences in the advisory metadata between both formats. The formats can be used interchangeably for all use cases.</p></li>
+<li><p>Information of the old format follow the scheme <code class="docutils literal notranslate"><span class="pre">CB-KYY/ID</span></code>, for example <code class="docutils literal notranslate"><span class="pre">CB-K22/0704</span></code>.</p></li>
+<li><p>Information of the new format follow the scheme <code class="docutils literal notranslate"><span class="pre">WID-SEC-YYYY-ID</span></code>, for example <code class="docutils literal notranslate"><span class="pre">WID-SEC-2022-0311</span></code>.</p></li>
+</ul>
+<p><strong>List Page</strong></p>
+<p>All existing CERT-Bund advisories can be displayed by selecting <span class="target" id="gos-webui-4"></span><em>SecInfo &gt; CERT-Bund Advisories</em> in the menu.</p>
+<p>The severity displayed for a CERT-Bund advisory is not taken directly from the advisory.
+Instead, it is the highest severity among all CVEs referenced in the advisory.
+If no CVEs are references in the CERT-Bund advisory, <em>N/A</em> is shown for its severity.
+For more information about CVEs and the severity shown for them, see Chapters <a class="reference internal" href="#cve"><span class="std std-ref">13.2.1</span></a> and <a class="reference internal" href="#cvss"><span class="std std-ref">13.2.3</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By clicking <a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> below the list of CERT-Bund advisories more than one CERT-Bund advisory can be exported at a time. The drop-down list is used to select which CERT-Bund advisories are exported.</p>
+</div>
+<p><strong>Details Page</strong></p>
+<p>Click on the name of a CERT-Bund advisory to display the details of the CERT-Bund advisory. Click <a class="reference internal" href="_images/details.png"><img alt="" src="_images/details.png" style="height: 1.2em;" /></a> to open the details page of the CERT-Bund advisory.</p>
+<p>The following registers are available:</p>
+<dl class="simple">
+<dt>Information</dt><dd><p>General information about the CERT-Bund advisory.</p>
+</dd>
+<dt>User Tags</dt><dd><p>Assigned tags (see Chapter <a class="reference internal" href="web-interface.html#tags"><span class="std std-ref">7.4</span></a>).</p>
+</dd>
+</dl>
+<p>The following actions are available in the upper left corner:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/help.png"><img alt="" src="_images/help.png" style="height: 1.2em;" /></a> Open the corresponding chapter of the user manual.</p></li>
+<li><p><a class="reference internal" href="_images/list.png"><img alt="" src="_images/list.png" style="height: 1.2em;" /></a> Show the list page of all CERT-Bund advisories.</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the CERT-Bund advisory as an XML file.</p></li>
+</ul>
+</section>
+<section id="dfn-cert-advisories">
+<span id="index-8"></span><h2><span class="section-number">13.4 </span>DFN-CERT Advisories<a class="headerlink" href="#dfn-cert-advisories" title="Link to this heading">¶</a></h2>
+<p>While the individual VTs, CVEs and CPEs are created primarily to be processed by computer systems, the <a class="reference external" href="https://www.dfn-cert.de/">DFN-CERT</a> [German only] publishes new advisories regularly.</p>
+<p>The DFN-CERT is responsible for hundreds of universities and research institutions that are associated with the <a class="reference external" href="https://www.dfn.de/en/">German Research and Education Network</a> (German: Deutsches Forschungsnetz, abbreviated as DFN).
+Additionally, it provides key security services to government and industry.</p>
+<p>An advisory describes especially critical security risks that require fast reacting.
+The DFN-CERT advisory service includes the categorization, distribution and rating of advisories issued by different software vendors and distributors.
+Advisories are obtained by the Greenbone Enterprise Appliance and stored in the database for reference.</p>
+<p><strong>List Page</strong></p>
+<p>All existing DFN-CERT advisories can be displayed by selecting <span class="target" id="gos-webui-5"></span><em>SecInfo &gt; DFN-CERT Advisories</em> in the menu.</p>
+<p>The severity displayed for a DFN-CERT advisory is not taken directly from the advisory.
+Instead, it is the highest severity among all CVEs referenced in the advisory.
+If no CVEs are references in the DFN-CERT advisory, <em>N/A</em> is shown for its severity.
+For more information about CVEs and the severity shown for them, see Chapters <a class="reference internal" href="#cve"><span class="std std-ref">13.2.1</span></a> and <a class="reference internal" href="#cvss"><span class="std std-ref">13.2.3</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By clicking <a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> below the list of DFN-CERT advisories more than one DFN-CERT advisory can be exported at a time. The drop-down list is used to select which DFN-CERT advisories are exported.</p>
+</div>
+<p><strong>Details Page</strong></p>
+<p>Click on the name of a DFN-CERT advisory to display the details of the DFN-CERT advisory. Click <a class="reference internal" href="_images/details.png"><img alt="" src="_images/details.png" style="height: 1.2em;" /></a> to open the details page of the DFN-CERT advisory.</p>
+<p>The following registers are available:</p>
+<dl class="simple">
+<dt>Information</dt><dd><p>General information about the DFN-CERT advisory.</p>
+</dd>
+<dt>User Tags</dt><dd><p>Assigned tags (see Chapter <a class="reference internal" href="web-interface.html#tags"><span class="std std-ref">7.4</span></a>).</p>
+</dd>
+</dl>
+<p>The following actions are available in the upper left corner:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_images/help.png"><img alt="" src="_images/help.png" style="height: 1.2em;" /></a> Open the corresponding chapter of the user manual.</p></li>
+<li><p><a class="reference internal" href="_images/list.png"><img alt="" src="_images/list.png" style="height: 1.2em;" /></a> Show the list page of all DFN-CERT advisories.</p></li>
+<li><p><a class="reference internal" href="_images/export.png"><img alt="" src="_images/export.png" style="height: 1.2em;" /></a> Export the DFN-CERT advisory as an XML file.</p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="gmp.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><span class="section-number">14 </span>Using the Greenbone Management Protocol</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="managing-assets.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><span class="section-number">12 </span>Managing Assets</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2015–2025, Greenbone AG
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Aug 18, 2025</div>
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/greenbone/gsm-manual" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">13 Managing SecInfo</a><ul>
+<li><a class="reference internal" href="#vulnerability-tests-vt">13.1 Vulnerability Tests (VT)</a></li>
+<li><a class="reference internal" href="#security-content-automation-protocol-scap">13.2 Security Content Automation Protocol (SCAP)</a><ul>
+<li><a class="reference internal" href="#cve">13.2.1 CVE</a></li>
+<li><a class="reference internal" href="#cpe">13.2.2 CPE</a></li>
+<li><a class="reference internal" href="#cvss">13.2.3 CVSS</a><ul>
+<li><a class="reference internal" href="#cvss-version-2-0">13.2.3.1 CVSS Version 2.0</a></li>
+<li><a class="reference internal" href="#cvss-version-3-0-3-1">13.2.3.2 CVSS Version 3.0/3.1</a></li>
+<li><a class="reference internal" href="#cvss-version-4-0">13.2.3.3 CVSS Version 4.0</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#epss">13.2.4 EPSS</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cert-bund-advisories">13.3 CERT-Bund Advisories</a></li>
+<li><a class="reference internal" href="#dfn-cert-advisories">13.4 DFN-CERT Advisories</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=8cef54a6"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>
