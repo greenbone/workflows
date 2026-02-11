@@ -80,6 +80,7 @@ jobs:
           format: ${{ inputs.sbom-format }}
           output: ${{ inputs.output-file-name }}
           github-pat: ${{ secrets.GITHUB_TOKEN }}
+          timeout: 50m0s
 
       - name: Push and sign artifact
         uses: greenbone/actions/push-and-sign-artifact@v3.31.0
