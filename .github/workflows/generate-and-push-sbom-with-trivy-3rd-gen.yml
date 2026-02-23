@@ -70,7 +70,7 @@ jobs:
       - self-hosted-generic-vm-amd64
     steps:
       - name: Scan image in a private registry
-        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
+        uses: aquasecurity/trivy-action@e368e328979b113139d6f9068e03accaed98a518 # 0.34.1
         env:
           TRIVY_USERNAME: ${{ secrets[inputs.image-registry-username-secret-name] }}
           TRIVY_PASSWORD: ${{ secrets[inputs.image-registry-password-secret-name] }}
