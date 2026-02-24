@@ -303,6 +303,10 @@ jobs:
           annotations: ${{ needs.meta-data.outputs.annotations }}
           tags: ${{ needs.meta-data.outputs.tags }}
 
+      # Otherwise, the downloaded digest files are included.
+      - name: Remove download/upload digest tmp folder
+        run: rm -rf '${{ runner.temp }}/digests'
+
       - name: Upload digest
         uses: greenbone/actions/upload-digest@v3
         with:
