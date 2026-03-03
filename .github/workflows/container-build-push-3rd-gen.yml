@@ -230,7 +230,6 @@ jobs:
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
     needs:
       - building-container-greenbone
-      - push-sbom
     runs-on: self-hosted-generic
     steps:
       - name: Trigger harbor replication
@@ -251,7 +250,6 @@ jobs:
     needs:
       - building-container-ghcr
       - building-container-greenbone
-      - push-sbom
       - harbor-replication
     runs-on: "ubuntu-latest"
     steps:
