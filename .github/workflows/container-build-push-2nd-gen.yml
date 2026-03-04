@@ -247,7 +247,7 @@ jobs:
           DETECT="openvas-scanner openvas-feed-sync openvas-gpg-data openvas-redis"
           OPENVAS_URL="$(echo "${{ inputs.image-url }}" | sed 's@community/@openvas-detect-dev/@')"
           OPENVAS_SCAN_URL="$(echo "${{ inputs.image-url }}" | sed 's@community/@openvas-scan-dev/@')"
-          OPENVAS_SCAN_URL="$(echo "$OPENVAS_SCAN_URL}" | sed 's@openvas-detect-dev/@openvas-scan-dev/@')"
+          OPENVAS_SCAN_URL="$(echo "$OPENVAS_SCAN_URL" | sed 's@openvas-detect-dev/@openvas-scan-dev/@')"
           if [ "${{ inputs.service }}" ]; then
             echo 'url<<EOF' >> $GITHUB_OUTPUT
             echo "${{ vars.GREENBONE_REGISTRY }}/${{ inputs.image-url }}" >> $GITHUB_OUTPUT
