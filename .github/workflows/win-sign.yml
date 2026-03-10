@@ -1,0 +1,61 @@
+name: Windows Sign
+
+# This workflow is a standardized way to sign Windows binaries using our Windows Sign Runner.
+# Never use it any other way, as this runner does not have an automatic cleanup function.
+
+on:
+  workflow_call:
+    inputs:
+      download-artifact-pattern:
+        description: "Artifact to download."
+        required: true
+        type: string
+      upload-artifact-name:
+        description: "The new sign artifact name."
+        required: true
+        type: string
+      sign-file-name:
+        description: "File name to sign."
+        required: true
+        type: string
+
+    secrets:
+      ETOKEN_PASSWORD:
+        required: false
+
+jobs:
+  win-sign:
+    name: Windows Sign
+    runs-on: win-codesign
+    steps:
+      - name: Cleanup
+        run: |
+          Remove-Item -Path "./*.zip", "./*.msi", "./*.exe" -Force
+
+      - name: Download artifact
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          path: .
+          pattern: ${{ inputs.download-artifact-pattern }}
+
+      - name: Sign file
+        run: |
+          $password = "${{ secrets.ETOKEN_PASSWORD }}"
+          $signtool = "D:\scripts\signtool.exe"
+          $cert = "D:\scripts\codesign.crt"
+          & $signtool sign `
+            /f $cert `
+            /fd sha256 `
+            /tr http://timestamp.digicert.com `
+            /td sha256 `
+            /csp "eToken Base Cryptographic Provider" `
+            /k "[{{$password}}]=p11#06b39a69b00a3b54" `
+            ${{ inputs.sign-file-name }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ${{ inputs.upload-artifact-name }}
+          path: "./${{ inputs.sign-file-name }}"
+          if-no-files-found: error
+          retention-days: 1
