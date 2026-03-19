@@ -35,14 +35,6 @@ on:
         description: "Image url/name without registry. Default is github.repository"
         default: "${{ github.repository }}"
         type: string
-      image-platforms:
-        description: "Image platforms to build for. Default is linux/amd64"
-        default: linux/amd64
-        type: string
-      use-greenbonebot:
-        description: "Use the greenbonebot token as registry login. Default is false"
-        default: "false"
-        type: string
       notify:
         description: "Enable mattermost notify. Default is true"
         default: "true"
@@ -67,10 +59,6 @@ on:
         required: false
       MATTERMOST_WEBHOOK_URL:
         required: false
-      DOCKERHUB_USERNAME:
-        required: false
-      DOCKERHUB_TOKEN:
-        required: false
       GREENBONE_REGISTRY:
         required: false
       GREENBONE_REGISTRY_USER:
@@ -85,64 +73,16 @@ on:
     outputs:
       digest:
         description: "The container digest"
-        value: ${{ jobs.building-container.outputs.digest }}
+        value: ${{ jobs.build.outputs.digest }}
 
 jobs:
-  # We have to look, if our self hosted runner are be able to have this in hand.
-  # Otherwise we need to keep this for PR builds.
-  building-container-ghcr:
-    runs-on: "ubuntu-latest"
+  meta:
+    name: Meta Data
+    runs-on: ubuntu-latest
     outputs:
-      digest: ${{ steps.build-and-push.outputs.digest }}
+      url: ${{ steps.image-url.outputs.url }}
+      name: ${{ steps.image-url.outputs.name }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Container build push 3rd gen
-        id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@v3
-        with:
-          build-context: ${{ inputs.build-context }}
-          build-docker-file: ${{ inputs.build-docker-file }}
-          build-args: ${{ inputs.build-args }}
-          build-secrets: ${{ contains(inputs.build-secret-greenbonebot, 'true') && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN) || inputs.build-secrets }}
-          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
-          cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
-          # The tlog function does not currently support an ed25519 key.
-          cosign-tlog-upload: "false"
-          image-url: ${{ inputs.image-url }}
-          image-labels: ${{ inputs.image-labels }}
-          image-tags: |
-            # create container tag for git tags
-            type=ref,event=tag,value=latest
-            type=match,pattern=v(.*),group=1
-            type=ref,event=pr
-            # use unstable for main branch
-            type=raw,value=unstable,enable={{is_default_branch}}
-            # use unstable-release for release branches
-            type=raw,value=unstable-release,enable=${{startsWith(github.ref, 'refs/heads/release/')}}
-          image-platforms: ${{ inputs.image-platforms }}
-          registry: ${{ vars.IMAGE_REGISTRY }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ contains(inputs.use-greenbonebot, 'true') && secrets.GREENBONE_BOT_TOKEN || secrets.GITHUB_TOKEN }}
-          scout-user: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_USERNAME || '' }}
-          scout-password: ${{ contains(inputs.scout, 'true') && secrets.DOCKERHUB_TOKEN || '' }}
-
-  building-container-greenbone:
-    # At the moment, we use this job only to build tagged releases and not for every PR build.
-    # Once we have enough capacity, we can change this and remove the GHCR build job.
-    if: (inputs.service) && (startsWith(github.ref, 'refs/tags/v'))
-    runs-on: self-hosted-generic
-    outputs:
-      digest: ${{ steps.build-and-push.outputs.digest }}
-      image-url: ${{ steps.image-url.outputs.url }}
-      image-name: ${{ steps.image-url.outputs.name }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      # Since all image URLs are derived from the GitHub repository URL, we need to reformat them to obtain the correct product OCI URLs.
-      # We can remove this step after incorporate everything directly into the respective workflow calls within the service repositories.
       - name: Create image url
         id: image-url
         shell: bash
@@ -189,89 +129,59 @@ jobs:
           echo "url=$url" >> $GITHUB_OUTPUT
           echo "name=$(basename ${{ inputs.image-url }})" >> $GITHUB_OUTPUT
 
-      - name: Container build push 3rd gen
-        id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@v3
-        with:
-          build-context: ${{ inputs.build-context }}
-          build-docker-file: ${{ inputs.build-docker-file }}
-          build-args: ${{ inputs.build-args }}
-          build-secrets: ${{ contains(inputs.build-secret-greenbonebot, 'true') && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN) || inputs.build-secrets }}
-          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
-          cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
-          # The tlog function does not currently support an ed25519 key.
-          cosign-tlog-upload: "false"
-          image-url: ${{ steps.image-url.outputs.url }}
-          image-labels: ${{ inputs.image-labels }}
-          image-tags: |
-            # create container tag for git tags
-            type=ref,event=tag,value=latest
-            type=match,pattern=v(.*),group=1
-            type=ref,event=pr
-            # use unstable for main branch
-            type=raw,value=unstable,enable={{is_default_branch}}
-            # use unstable-release for release branches
-            type=raw,value=unstable-release,enable=${{startsWith(github.ref, 'refs/heads/release/')}}
-          registry: ${{ vars.GREENBONE_REGISTRY }}
-          registry-username: ${{ secrets.GREENBONE_REGISTRY_USER }}
-          registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
+  build:
+    name: Container build push 3rd gen
+    needs: meta
+    uses: greenbone/workflows/.github/workflows/container-push.yml@main
+    with:
+      build-context: ${{ inputs.build-context }}
+      build-docker-file: ${{ inputs.build-docker-file }}
+      build-args: ${{ inputs.build-args }}
+      build-secrets: ${{ inputs.build-secrets }}
+      build-secrets-name: ${{ contains(inputs.build-secret-greenbonebot, 'true') && 'GREENBONE_BOT_PACKAGES_READ_TOKEN' }}
+      image-labels: ${{ inputs.image-labels }}
+      image-urls: |
+        ghcr.io/${{ inputs.image-url }}
+        ${{ vars.GREENBONE_REGISTRY }}/${{ needs.meta.outputs.url }}
+    secrets: inherit
 
   push-sbom:
     name: Scan image and push SBOM
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
-    needs: building-container-greenbone
+    needs: build
     uses: greenbone/workflows/.github/workflows/generate-and-push-sbom-with-trivy-3rd-gen.yml@main
     with:
-      image-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.building-container-greenbone.outputs.image-url }}:${{ github.ref_name }}"
-      image-registry-username-secret-name: "GREENBONE_REGISTRY_READ_USER"
-      image-registry-password-secret-name: "GREENBONE_REGISTRY_READ_TOKEN"
-      output-file-name: "${{ needs.building-container-greenbone.outputs.image-name }}.${{ github.ref_name }}.sbom.json"
-      artifact-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.building-container-greenbone.outputs.image-url }}-sbom:${{ github.ref_name }}"
+      image-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.meta.outputs.url }}:${{ github.ref_name }}"
+      image-registry-username-secret-name: "GREENBONE_REGISTRY_USER"
+      image-registry-password-secret-name: "GREENBONE_REGISTRY_TOKEN"
+      output-file-name: "${{ needs.meta.outputs.name }}.${{ github.ref_name }}.sbom.json"
+      artifact-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.meta.outputs.url }}-sbom:${{ github.ref_name }}"
     secrets: inherit
 
-  harbor-replication:
+  automatix:
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
     needs:
-      - building-container-greenbone
-    runs-on: self-hosted-generic
-    steps:
-      - name: Trigger harbor replication
-        shell: bash
-        run: |
-          if ! [ '${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}' ]; then
-            echo "Secret GREENBONE_REGISTRY_REPLICATION_TOKEN does not exist"
-            exit 0
-          fi
-          curl --fail-with-body -X POST \
-            https://${{ vars.GREENBONE_REGISTRY }}/api/v2.0/replication/executions \
-            -u '${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}:${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}' \
-            -H "Content-Type: application/json" \
-            -d '{"policy_id": 1}'
-
-  building-product-compose:
-    if: inputs.service && startsWith(github.ref, 'refs/tags/v')
-    needs:
-      - building-container-ghcr
-      - building-container-greenbone
+      - meta
+      - build
       - harbor-replication
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
       - name: Trigger product compose upgrade
         uses: greenbone/actions/trigger-workflow@v3
         with:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
-          repository: "greenbone/automatix"
-          workflow: "push.yml"
-          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.building-container-greenbone.outputs.image-url }}", "digest": "${{ needs.building-container-greenbone.outputs.digest }}", "version": "${{ github.ref_name }}"}'
+          repository: greenbone/automatix
+          workflow: push.yml
+          inputs: '{"service": "${{ inputs.service }}", "image-url": "${{ needs.meta.outputs.url }}", "digest": "${{ needs.build.outputs.digest }}", "version": "${{ github.ref_name }}"}'
 
   notify:
     needs:
-      - building-container-ghcr
-      - building-container-greenbone
+      - meta
+      - build
       - push-sbom
       - harbor-replication
-      - building-product-compose
-    if: ${{ !cancelled() && startsWith(github.ref, 'refs/tags/v') && startsWith(inputs.notify, 'true') }}
+      - automatix
+    if: ${{ !cancelled() && inputs.service && startsWith(github.ref, 'refs/tags/v') && startsWith(inputs.notify, 'true') }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
     with:
       status: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
