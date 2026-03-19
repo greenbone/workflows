@@ -145,10 +145,12 @@ jobs:
         ${{ vars.GREENBONE_REGISTRY }}/${{ needs.meta.outputs.url }}
     secrets: inherit
 
-  push-sbom:
+  sbom:
     name: Scan image and push SBOM
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
-    needs: build
+    needs:
+      - meta
+      - build
     uses: greenbone/workflows/.github/workflows/generate-and-push-sbom-with-trivy-3rd-gen.yml@main
     with:
       image-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.meta.outputs.url }}:${{ github.ref_name }}"
@@ -157,6 +159,20 @@ jobs:
       output-file-name: "${{ needs.meta.outputs.name }}.${{ github.ref_name }}.sbom.json"
       artifact-url: "${{ vars.GREENBONE_REGISTRY }}/${{ needs.meta.outputs.url }}-sbom:${{ github.ref_name }}"
     secrets: inherit
+
+  harbor-replication:
+    if: github.event_name != 'pull_request'
+    needs:
+      - meta
+      - build
+    runs-on: self-hosted-generic
+    steps:
+      - name: Trigger harbor replication
+        uses: greenbone/actions/trigger-harbor-replication@v3
+        with:
+          registry: ${{ vars.GREENBONE_REGISTRY }}
+          user: ${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}
+          token: ${{ secrets.GREENBONE_REGISTRY_REPLICATION_TOKEN }}
 
   automatix:
     if: inputs.service && startsWith(github.ref, 'refs/tags/v')
@@ -178,7 +194,6 @@ jobs:
     needs:
       - meta
       - build
-      - push-sbom
       - harbor-replication
       - automatix
     if: ${{ !cancelled() && inputs.service && startsWith(github.ref, 'refs/tags/v') && startsWith(inputs.notify, 'true') }}
