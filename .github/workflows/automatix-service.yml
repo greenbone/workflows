@@ -94,7 +94,7 @@ jobs:
     needs: digest
     uses: greenbone/workflows/.github/workflows/generate-and-push-sbom-with-trivy-3rd-gen.yml@main
     with:
-      image-url: "${{ inputs.url }}:${{ inputs.tag }}"
+      image-url: "${{ inputs.url }}@${{ needs.digest.outputs.digest }}"
       image-registry-username-secret-name: "GREENBONE_REGISTRY_USER"
       image-registry-password-secret-name: "GREENBONE_REGISTRY_TOKEN"
       output-file-name: "${{ needs.digest.outputs.name }}.${{ inputs.tag }}.sbom.json"
