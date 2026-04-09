@@ -48,7 +48,7 @@ on:
         required: false
         default: |
           ghcr.io/${{ github.repository }},enable=true
-          ${{ vars.GREENBONE_REGISTRY }}/community/${{ github.event.repository.name }},enable=${{ github.event_name != 'pull_request' }}
+          ${{ vars.GREENBONE_REGISTRY }}/community/${{ github.event.repository.name }},enable=${{ github.event_name != 'pull_request' && github.ref_type == 'tag' }}
       annotation-levels:
         description: |
           "The levels to apply the annotations to. ghcr.io only supports index "
