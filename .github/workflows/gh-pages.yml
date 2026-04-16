@@ -58,7 +58,7 @@ jobs:
           --jq '.artifacts[] | select(.name=="github-pages") | .id' | \
         xargs -r -I{} gh api -X DELETE repos/${{ github.repository }}/actions/artifacts/{}
     - name: Upload pages artifact
-      uses: actions/upload-pages-artifact@v4
+      uses: actions/upload-pages-artifact@v5
       with:
         path: merged
     - name: Deploy to GitHub Pages
