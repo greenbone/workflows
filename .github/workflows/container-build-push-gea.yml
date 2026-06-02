@@ -167,7 +167,7 @@ jobs:
 
       - name: Checkout repository
         if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ steps.properties.outputs.ref }}
 
@@ -238,7 +238,7 @@ jobs:
     runs-on: ${{ matrix.arch.runner }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ needs.meta-data.outputs.ref }}
 
