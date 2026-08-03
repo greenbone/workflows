@@ -177,7 +177,7 @@ jobs:
         run: |
           git fetch --tags --force
 
-      - uses: greenbone/actions/is-latest-tag@v3
+      - uses: greenbone/actions/is-latest-tag@v3.36.12
         if: ${{ github.event_name != 'pull_request' }}
         id: latest
         with:
@@ -249,7 +249,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: greenbone/actions/container-build-push-by-digest@v3
+      - uses: greenbone/actions/container-build-push-by-digest@v3.36.12
         id: build-image
         with:
           build-args: ${{ inputs.build-args }}
@@ -259,7 +259,7 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
 
       - name: Upload digest
-        uses: greenbone/actions/upload-digest@v3
+        uses: greenbone/actions/upload-digest@v3.36.12
         with:
           digest: "${{ inputs.main-image }}@${{ steps.build-image.outputs.digest }}"
           name: digests${{ inputs.name && format('-{0}', inputs.name) || '' }}-${{ matrix.arch.name }}
@@ -291,13 +291,13 @@ jobs:
 
       - name: Download digests
         id: digests
-        uses: greenbone/actions/download-digest@v3
+        uses: greenbone/actions/download-digest@v3.36.12
         with:
           pattern: "digests${{ inputs.name && format('-{0}', inputs.name) || '' }}-*"
 
       - name: Create and push multi-arch container image
         id: march
-        uses: greenbone/actions/create-multi-arch-container-image@v3
+        uses: greenbone/actions/create-multi-arch-container-image@v3.36.12
         with:
           digests: ${{ steps.digests.outputs.digests }}
           annotations: ${{ needs.meta-data.outputs.annotations }}
@@ -308,7 +308,7 @@ jobs:
         run: rm -rf '${{ runner.temp }}/digests'
 
       - name: Upload digest
-        uses: greenbone/actions/upload-digest@v3
+        uses: greenbone/actions/upload-digest@v3.36.12
         with:
           digest: "${{ steps.march.outputs.digest }}"
           name: march-digests${{ inputs.name && format('-{0}', inputs.name) || '' }}-${{ matrix.arch.name }}

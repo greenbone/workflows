@@ -63,12 +63,12 @@ jobs:
           github.event.pull_request.merged == true )
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: greenbone/actions/release-type@v3
+      - uses: greenbone/actions/release-type@v3.36.12
         id: release-type
         with:
           release-type-input: ${{ inputs.release-type }}
       - name: Release with release action
-        uses: greenbone/actions/release@v3
+        uses: greenbone/actions/release@v3.36.12
         with:
           git-tag-prefix: ${{ inputs.git-tag-prefix }}
           github-user: ${{ secrets.GREENBONE_BOT }}

@@ -133,7 +133,7 @@ jobs:
 
       - name: Container build and push
         id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@v3
+        uses: greenbone/actions/container-build-push-generic@v3.36.12
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
@@ -168,7 +168,7 @@ jobs:
 
       - name: Container build and push
         id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@v3
+        uses: greenbone/actions/container-build-push-generic@v3.36.12
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}

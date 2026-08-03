@@ -53,7 +53,7 @@ jobs:
       - name: Download digests
         if: inputs.artifact-pattern
         id: digests
-        uses: greenbone/actions/download-digest@v3
+        uses: greenbone/actions/download-digest@v3.36.12
         with:
           pattern: "march-digests${{ inputs.artifact-pattern && format('-{0}', inputs.artifact-pattern) || '' }}-*"
 
@@ -81,7 +81,7 @@ jobs:
           password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
       - name: Container signing
-        uses: greenbone/actions/container-signing@v3
+        uses: greenbone/actions/container-signing@v3.36.12
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger product compose upgrade
-        uses: greenbone/actions/trigger-workflow@v3
+        uses: greenbone/actions/trigger-workflow@v3.36.12
         with:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"

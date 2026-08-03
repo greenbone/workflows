@@ -44,7 +44,7 @@ jobs:
     if: ${{ !cancelled() }}
     steps:
       - name: Notify Mattermost Feed Deployment
-        uses: greenbone/actions/mattermost-notify@v3
+        uses: greenbone/actions/mattermost-notify@v3.36.12
         with:
           url: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: ${{ secrets.MATTERMOST_FEED_CHANNEL }}

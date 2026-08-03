@@ -83,7 +83,7 @@ jobs:
           timeout: 50m0s
 
       - name: Push and sign artifact
-        uses: greenbone/actions/push-and-sign-artifact@v3.31.0
+        uses: greenbone/actions/push-and-sign-artifact@v3.36.12
         with:
           artifact-file: ${{ inputs.output-file-name }}
           artifact-url: ${{ inputs.artifact-url }}

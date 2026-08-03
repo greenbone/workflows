@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Install python, poetry and dependencies
-        uses: greenbone/actions/poetry@v3
+        uses: greenbone/actions/poetry@v3.36.12
         with:
           python-version: ${{ inputs.python-version }}
       - name: Run unit tests

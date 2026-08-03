@@ -108,7 +108,7 @@ jobs:
           git status
           echo ${{ inputs.ref-name }}
 
-      - uses: greenbone/actions/is-latest-tag@v3
+      - uses: greenbone/actions/is-latest-tag@v3.36.12
         id: latest
         with:
           # It looks like the action doesn't use its default value even when an empty input is set.
@@ -137,7 +137,7 @@ jobs:
 
       - name: Container build and push 2nd gen
         id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@v3
+        uses: greenbone/actions/container-build-push-generic@v3.36.12
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
@@ -197,7 +197,7 @@ jobs:
 
       - name: Container build and push 2nd gen
         id: build-and-push
-        uses: greenbone/actions/container-build-push-generic@v3
+        uses: greenbone/actions/container-build-push-generic@v3.36.12
         with:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
@@ -299,7 +299,7 @@ jobs:
 
       - name: Create multi arch manifest
         id: manifest
-        uses: greenbone/actions/container-multi-arch-manifest@v3
+        uses: greenbone/actions/container-multi-arch-manifest@v3.36.12
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
@@ -322,7 +322,7 @@ jobs:
     runs-on: self-hosted-generic
     steps:
       - name: Trigger harbor replication
-        uses: greenbone/actions/trigger-harbor-replication@v3
+        uses: greenbone/actions/trigger-harbor-replication@v3.36.12
         with:
           registry: ${{ vars.GREENBONE_REGISTRY }}
           user: ${{ secrets.GREENBONE_REGISTRY_REPLICATION_USER }}
@@ -354,7 +354,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: Trigger product compose upgrade
-        uses: greenbone/actions/trigger-workflow@v3
+        uses: greenbone/actions/trigger-workflow@v3.36.12
         with:
           token: ${{ secrets.GREENBONE_BOT_TOKEN }}
           repository: "greenbone/automatix"
