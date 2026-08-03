@@ -127,7 +127,7 @@ jobs:
     steps:
       - name: Checkout repository
         id: checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ inputs.ref-name }}
 
@@ -162,7 +162,7 @@ jobs:
     steps:
       - name: Checkout repository
         id: checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ inputs.ref-name }}
 
@@ -194,7 +194,7 @@ jobs:
     steps:
       - name: Generate Docker metadata
         id: meta
-        uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf # v6.0.0
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ${{ inputs.registry }}/${{ inputs.image-url }}
           flavor: ${{ inputs.image-flavor }}
@@ -202,7 +202,7 @@ jobs:
 
       - name: Create multi arch manifest
         id: manifest
-        uses: greenbone/actions/container-multi-arch-manifest@f0c8b8268b98d09237774489fefc2c0ab77703aa # v3.27.13
+        uses: greenbone/actions/container-multi-arch-manifest@aa49604a7c2a28d7810d23addac6513af7d8e11f # v3.36.12
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}

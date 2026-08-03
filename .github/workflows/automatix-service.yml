@@ -74,7 +74,7 @@ jobs:
     runs-on: self-hosted-generic-vm-amd64
     steps:
       - name: Login to Greenbone Container Registry
-        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        uses: docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7 # v4.5.1
         with:
           registry: ${{ vars.GREENBONE_REGISTRY }}
           username: ${{ secrets.GREENBONE_REGISTRY_USER }}
