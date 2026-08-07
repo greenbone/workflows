@@ -88,4 +88,4 @@ jobs:
           update-project: ${{ inputs.update-project }}
           next-version: ${{ inputs.next-version }}
           github-pre-release: ${{ inputs.github-pre-release }}
-          sign-release-files: ${{ inputs.sign-release-files}}
+          sign-release-files: ${{ inputs.sign-release-files }}
