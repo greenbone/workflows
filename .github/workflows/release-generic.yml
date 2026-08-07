@@ -27,6 +27,10 @@ on:
       github-pre-release:
         description: "Set to `'true'` to enforce uploading the release to GitHub as a pre-release"
         type: string
+      sign-release-files:
+        description: "Create and upload release file signatures. Default is 'true'. Set to an other string then 'true' to disable the signatures."
+        default: "true"
+        type: string
     secrets:
       GREENBONE_BOT:
         required: true
@@ -84,3 +88,4 @@ jobs:
           update-project: ${{ inputs.update-project }}
           next-version: ${{ inputs.next-version }}
           github-pre-release: ${{ inputs.github-pre-release }}
+          sign-release-files: ${{ inputs.sign-release-files}}
