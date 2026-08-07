@@ -49,7 +49,7 @@ jobs:
       release-version: ${{ inputs.release-version }}
       versioning-scheme: "semver"
       update-project: ${{ inputs.update-project }}
-      sign-release-files: ${{ inputs.sign-release-files}}
+      sign-release-files: ${{ inputs.sign-release-files }}
     secrets:
       GREENBONE_BOT: ${{ secrets.GREENBONE_BOT }}
       GREENBONE_BOT_MAIL: ${{ secrets.GREENBONE_BOT_MAIL }}
