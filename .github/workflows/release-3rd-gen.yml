@@ -19,6 +19,10 @@ on:
         description: "Update version in project files like `pyproject.toml`. Default is 'true'."
         default: "true"
         type: string
+      sign-release-files:
+        description: "Create and upload release file signatures. Default is 'true'. Set to an other string then 'true' to disable the signatures."
+        default: "true"
+        type: string
     secrets:
       GREENBONE_BOT:
         required: true
@@ -45,6 +49,7 @@ jobs:
       release-version: ${{ inputs.release-version }}
       versioning-scheme: "semver"
       update-project: ${{ inputs.update-project }}
+      sign-release-files: ${{ inputs.sign-release-files}}
     secrets:
       GREENBONE_BOT: ${{ secrets.GREENBONE_BOT }}
       GREENBONE_BOT_MAIL: ${{ secrets.GREENBONE_BOT_MAIL }}
