@@ -157,6 +157,9 @@ jobs:
             *"scan-management"*)
               url="opensight-management-console-dev/$(basename ${{ inputs.image-url }})"
               ;;
+            *"scan-control"*)
+              url="opensight-management-console-dev/$(basename ${{ inputs.image-url }})"
+              ;;
             *"management-console"*)
               url="opensight-management-console-dev/$(basename ${{ inputs.image-url }})"
               ;;
