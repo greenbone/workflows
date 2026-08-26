@@ -2,15 +2,23 @@ name: Activate Auto-Merge on a PR
 
 on:
   pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
   workflow_call:
     inputs:
       mode:
         description: "Select merge mode. Options are squash and rebase. Default is rebase"
         default: "rebase"
         type: string
+      github-token:
+        description: "Token to use for enabling auto-merge"
+        type: string
     secrets:
       GREENBONE_BOT_TOKEN:
-        required: true
+        required: false
 
 permissions:
   contents: write
@@ -18,11 +26,11 @@ permissions:
 
 jobs:
   auto-merge:
-    if: ${{ !github.event.pull_request.draft }}
+    if: ${{ (github.event_name == 'pull_request' || github.event_name == 'pull_request_target') && !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     steps:
       - name: Enable auto-merge for open PRs
         uses: greenbone/actions/auto-merge@v3
         with:
-          mode: ${{ inputs.mode }}
-          github-token: ${{secrets.GREENBONE_BOT_TOKEN}}
+          mode: ${{ inputs.mode || 'rebase' }}
+          github-token: ${{ inputs['github-token'] || secrets.GREENBONE_BOT_TOKEN || github.token }}
