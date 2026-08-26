@@ -1,4 +1,4 @@
-name: Activate Auto-Merge (Squash) on a PR
+name: Activate Auto-Merge on a PR
 
 on:
   pull_request_target:
@@ -22,15 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Enable auto-merge for open PRs
-        run: |
-          MERGE_METHOD="$(gh pr view "$PR_URL" --json autoMergeRequest --jq '.autoMergeRequest.mergeMethod // ""')"
-
-          if [ -n "$MERGE_METHOD" ]; then
-            echo "Auto-merge is already enabled with method: $MERGE_METHOD"
-            exit 0
-          fi
-
-          gh pr merge --auto --rebase "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GREENBONE_BOT_TOKEN}}
+        uses: greenbone/actions/auto-merge@v3
+        with:
+          mode: ${{ inputs.mode }}
+          github-token: ${{secrets.GREENBONE_BOT_TOKEN}}
