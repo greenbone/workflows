@@ -149,7 +149,7 @@ jobs:
         run: |
           case "${{ inputs.image-url }}" in
             *"agent-control"*)
-              url="agents-dev/$(basename ${{ inputs.image-url }})"
+              url="openvas-agents-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"asset-management"*)
               url="opensight-asset-dev/$(basename ${{ inputs.image-url }})"
@@ -188,7 +188,7 @@ jobs:
               url="opensight-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *"skiron"*)
-              url="agents-dev/$(basename ${{ inputs.image-url }})"
+              url="openvas-agents-dev/$(basename ${{ inputs.image-url }})"
               ;;
             *)
               echo "No supported service in ${{ inputs.image-url }}"
