@@ -122,12 +122,12 @@ jobs:
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ inputs.build-args }}
           build-secrets: ${{ format(
-            '{0}{1}',
+            '{0} {1}',
               contains(inputs.build-secret-greenbonebot, 'true')
                 && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
                 || inputs.build-secrets,
               contains(inputs.build-secret-github-token, 'true')
-                && format('{0}GITHUB_TOKEN={1}', '\n', secrets.GITHUB_TOKEN)
+                && format('GITHUB_TOKEN={0}', secrets.GITHUB_TOKEN)
                 || ''
             ) }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
