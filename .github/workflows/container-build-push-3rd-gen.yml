@@ -127,7 +127,7 @@ jobs:
                 && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
                 || inputs.build-secrets,
               contains(inputs.build-secret-github-token, 'true')
-                && format('GITHUB_TOKEN={0}', secrets.GITHUB_TOKEN)
+                && format('GITHUB_TOKEN="{0}"', github.token)
                 || ''
             ) }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
