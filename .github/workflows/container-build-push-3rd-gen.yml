@@ -121,13 +121,14 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ inputs.build-args }}
-          build-secrets: ${{ format(
-            '{0} {1}',
+          build-secrets: |
+            ${{ format(
+            '{0}{1}',
               contains(inputs.build-secret-greenbonebot, 'true')
-                && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
+                && format('"GREENBONE_BOT_PACKAGES_READ_TOKEN={0}"', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
                 || inputs.build-secrets,
               contains(inputs.build-secret-github-token, 'true')
-                && format('GITHUB_TOKEN="{0}"', github.token)
+                && format('"GITHUB_TOKEN={0}"', github.token)
                 || ''
             ) }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
