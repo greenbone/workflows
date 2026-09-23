@@ -101,7 +101,7 @@ on:
     outputs:
       digest:
         description: "The container digest"
-        value: ${{ jobs.building-container.outputs.digest }}
+        value: ${{ jobs.building-container-greenbone.outputs.digest }}
 
 jobs:
   # We have to look, if our self hosted runner are be able to have this in hand.
@@ -221,13 +221,14 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ inputs.build-args }}
-          build-secrets: ${{ format(
+          build-secrets: |
+            ${{ format(
             '{0}{1}',
               contains(inputs.build-secret-greenbonebot, 'true')
-                && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
+                && format('"GREENBONE_BOT_PACKAGES_READ_TOKEN={0}"', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
                 || inputs.build-secrets,
               contains(inputs.build-secret-github-token, 'true')
-                && format('{0}GITHUB_TOKEN={1}', '\n', secrets.GITHUB_TOKEN)
+                && format('"GITHUB_TOKEN={0}"', github.token)
                 || ''
             ) }}
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
