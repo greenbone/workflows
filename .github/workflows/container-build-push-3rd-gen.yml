@@ -24,7 +24,7 @@ on:
         default: "false"
         type: string
       build-secret-github-token:
-        description: "Set the GREENBONE_BOT_PACKAGES_READ_TOKEN as image build secret. Default is false"
+        description: "Set the GITHUB_TOKEN as image build secret. Default is false"
         default: "false"
         type: string
       service:
