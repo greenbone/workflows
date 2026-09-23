@@ -23,6 +23,10 @@ on:
         description: "Set the GREENBONE_BOT_PACKAGES_READ_TOKEN as image build secret. Default is false"
         default: "false"
         type: string
+      build-secret-github-token:
+        description: "Set the GITHUB_TOKEN as image build secret. Default is false"
+        default: "false"
+        type: string
       service:
         description: "The name of the service to update. If not set, no service update will be done in the product compose files. Default is empty"
         default: ""
@@ -97,7 +101,7 @@ on:
     outputs:
       digest:
         description: "The container digest"
-        value: ${{ jobs.building-container.outputs.digest }}
+        value: ${{ jobs.building-container-greenbone.outputs.digest }}
 
 jobs:
   # We have to look, if our self hosted runner are be able to have this in hand.
@@ -117,8 +121,16 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ inputs.build-args }}
-          build-secrets: ${{ contains(inputs.build-secret-greenbonebot, 'true') && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN) || inputs.build-secrets }}
-          cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
+          build-secrets: |
+            ${{ format(
+            '{0}{1}',
+              contains(inputs.build-secret-greenbonebot, 'true')
+                && format('"GREENBONE_BOT_PACKAGES_READ_TOKEN={0}"', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
+                || inputs.build-secrets,
+              contains(inputs.build-secret-github-token, 'true')
+                && format('"GITHUB_TOKEN={0}"', github.token)
+                || ''
+            ) }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
           # The tlog function does not currently support an ed25519 key.
           cosign-tlog-upload: "false"
@@ -209,7 +221,16 @@ jobs:
           build-context: ${{ inputs.build-context }}
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ inputs.build-args }}
-          build-secrets: ${{ contains(inputs.build-secret-greenbonebot, 'true') && format('GREENBONE_BOT_PACKAGES_READ_TOKEN={0}', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN) || inputs.build-secrets }}
+          build-secrets: |
+            ${{ format(
+            '{0}{1}',
+              contains(inputs.build-secret-greenbonebot, 'true')
+                && format('"GREENBONE_BOT_PACKAGES_READ_TOKEN={0}"', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
+                || inputs.build-secrets,
+              contains(inputs.build-secret-github-token, 'true')
+                && format('"GITHUB_TOKEN={0}"', github.token)
+                || ''
+            ) }}
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
           # The tlog function does not currently support an ed25519 key.
