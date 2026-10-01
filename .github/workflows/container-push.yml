@@ -202,7 +202,7 @@ jobs:
 
       - name: Create multi arch manifest
         id: manifest
-        uses: greenbone/actions/container-multi-arch-manifest@aa49604a7c2a28d7810d23addac6513af7d8e11f # v3.36.12
+        uses: greenbone/actions/container-multi-arch-manifest@80a38a10bb7eb2b3c12f7f0361532dc6120342d6 # v3.36.20
         with:
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
