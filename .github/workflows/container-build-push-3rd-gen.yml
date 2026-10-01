@@ -122,15 +122,12 @@ jobs:
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ inputs.build-args }}
           build-secrets: |
-            ${{ format(
-            '{0}{1}',
-              contains(inputs.build-secret-greenbonebot, 'true')
-                && format('"GREENBONE_BOT_PACKAGES_READ_TOKEN={0}"', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
-                || inputs.build-secrets,
-              contains(inputs.build-secret-github-token, 'true')
-                && format('"GITHUB_TOKEN={0}"', github.token)
-                || ''
-            ) }}
+            ${{ contains(inputs.build-secret-greenbonebot, 'true')
+              && format('"GREENBONE_BOT_PACKAGES_READ_TOKEN={0}"', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
+            || contains(inputs.build-secret-github-token, 'true')
+              && format('"GITHUB_TOKEN={0}"', github.token)
+            || inputs.build-secrets
+            }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
           # The tlog function does not currently support an ed25519 key.
           cosign-tlog-upload: "false"
@@ -222,15 +219,12 @@ jobs:
           build-docker-file: ${{ inputs.build-docker-file }}
           build-args: ${{ inputs.build-args }}
           build-secrets: |
-            ${{ format(
-            '{0}{1}',
-              contains(inputs.build-secret-greenbonebot, 'true')
-                && format('"GREENBONE_BOT_PACKAGES_READ_TOKEN={0}"', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
-                || inputs.build-secrets,
-              contains(inputs.build-secret-github-token, 'true')
-                && format('"GITHUB_TOKEN={0}"', github.token)
-                || ''
-            ) }}
+            ${{ contains(inputs.build-secret-greenbonebot, 'true')
+              && format('"GREENBONE_BOT_PACKAGES_READ_TOKEN={0}"', secrets.GREENBONE_BOT_PACKAGES_READ_TOKEN)
+            || contains(inputs.build-secret-github-token, 'true')
+              && format('"GITHUB_TOKEN={0}"', github.token)
+            || inputs.build-secrets
+            }}
           cosign-key: ${{ secrets.COSIGN_KEY_OPENSIGHT }}
           cosign-key-password: ${{ secrets.COSIGN_KEY_PASSWORD_OPENSIGHT }}
           # The tlog function does not currently support an ed25519 key.
