@@ -11,8 +11,8 @@ on:
         default: ""
         type: string
       python-version:
-        description: "Python version to use. Default is Python '3.10'."
-        default: "3.10"
+        description: "Python version to use. Default is Python '3.11'."
+        default: "3.11"
         type: string
       test-command:
         description: "Command to run the unit tests. Default is 'python -m unittest -v'."
@@ -45,3 +45,14 @@ jobs:
     with:
       mypy-arguments: ${{ inputs.mypy-arguments }}
       python-version: ${{ inputs.python-version }}
+
+  all-python-ci-jobs-passed:
+    name: All Python CI jobs passed
+    needs: [linting, test, mypy]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all CI jobs to succeed
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: jq -e 'all(.[]; .result == "success")' <<<"$NEEDS"

@@ -10,7 +10,7 @@ on:
         type: string
       python-version:
         description: "Python version to use"
-        default: "3.10"
+        default: "3.11"
         type: string
 
 jobs:
