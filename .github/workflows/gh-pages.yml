@@ -30,6 +30,15 @@ jobs:
         pattern: html-*
         path: doc-packages
         merge-multiple: true
+    - name: Validate downloaded HTML artifacts
+      shell: bash
+      run: |
+        shopt -s nullglob
+        archives=(doc-packages/html-*.tar.xz)
+        if (( ${#archives[@]} == 0 )); then
+          echo "::error::No HTML artifact archives were downloaded (expected doc-packages/html-*.tar.xz). They may have expired or were not generated. Re-run all jobs to rebuild the artifacts."
+          exit 1
+        fi
     - name: Extract packages
       run: |
         ls -R doc-packages/
