@@ -283,15 +283,10 @@ jobs:
             -d '{"policy_id": 1}'
 
   building-product-compose:
-    # A disabled replication job must not skip the compose update.
-    if: >-
-      !cancelled() && inputs.service && startsWith(github.ref, 'refs/tags/v') && inputs.automatix == 'true' &&
-      needs.building-container-ghcr.result == 'success' && needs.building-container-greenbone.result == 'success' &&
-      (!inputs.enable-harbor-replication || needs.harbor-replication.result == 'success')
+    if: inputs.service && startsWith(github.ref, 'refs/tags/v') && inputs.automatix == 'true'
     needs:
       - building-container-ghcr
       - building-container-greenbone
-      - harbor-replication
     runs-on: "ubuntu-latest"
     steps:
       - name: Trigger product compose upgrade
@@ -307,7 +302,6 @@ jobs:
       - building-container-ghcr
       - building-container-greenbone
       - push-sbom
-      - harbor-replication
       - building-product-compose
     if: ${{ !cancelled() && startsWith(github.ref, 'refs/tags/v') && startsWith(inputs.notify, 'true') }}
     uses: greenbone/workflows/.github/workflows/notify-mattermost-3rd-gen.yml@main
