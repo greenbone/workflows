@@ -97,6 +97,12 @@ on:
         required: false
       GREENBONE_REGISTRY_TOKEN:
         required: false
+      GREENBONE_REGISTRY_REPLICATION_USER:
+        description: "Deprecated: unused; retained for backward compatibility."
+        required: false
+      GREENBONE_REGISTRY_REPLICATION_TOKEN:
+        description: "Deprecated: unused; retained for backward compatibility."
+        required: false
 
     outputs:
       digest:
