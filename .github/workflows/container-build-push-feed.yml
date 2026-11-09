@@ -3,6 +3,11 @@ name: Sensor Build and Push
 on:
   workflow_call:
     inputs:
+      enable-harbor-replication:
+        description: "Enable Harbor replication. Default is false."
+        required: false
+        default: false
+        type: boolean
       ref-name:
         description: "The ref to build a container image from. For example a tag v23.0.0."
         type: string
@@ -59,8 +64,10 @@ on:
       GREENBONE_REGISTRY_TOKEN:
         required: false
       GREENBONE_REGISTRY_REPLICATION_USER:
+        description: "User for Harbor replication when enable-harbor-replication is true."
         required: false
       GREENBONE_REGISTRY_REPLICATION_TOKEN:
+        description: "Token for Harbor replication when enable-harbor-replication is true."
         required: false
       MATTERMOST_WEBHOOK_URL:
         required: false
@@ -189,7 +196,7 @@ jobs:
           registry-password: ${{ secrets.GREENBONE_REGISTRY_TOKEN }}
 
   harbor-replication:
-    if: github.event_name != 'pull_request'
+    if: inputs.enable-harbor-replication && github.event_name != 'pull_request'
     needs: create-multi-arch-manifest
     runs-on: self-hosted-generic
     steps:
