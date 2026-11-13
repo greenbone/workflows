@@ -16,6 +16,11 @@ permissions:
 jobs:
   gh-pages-deploy:
     runs-on: ubuntu-latest
+    # All callers in a repository deploy to the same Pages site.
+    # Do not interrupt an active deployment when a newer run is ready.
+    concurrency:
+      group: github-pages-${{ github.repository }}
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
